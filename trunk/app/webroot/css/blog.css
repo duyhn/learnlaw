@@ -1,0 +1,115 @@
+﻿#banner-main-blog {
+    background: #CEEDFF url(../images/slider_img4.jpg) no-repeat;
+    width:960px;
+    height:300px;
+    float:left;
+
+}
+
+#bodyblog{
+    /*font-family: Times New Roman, Times, serif;*/
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:12px;
+    color:#333;
+    margin:0;
+    padding:0;
+    margin-top:30px;
+    background: #CEEDFF url(../images/image.jpg) no-repeat;
+    background-attachment:fixed; 
+    margin-bottom:30px;
+    height: 100%;	   
+}
+
+#main #sidebar-right-blog {
+    float:right;
+    width:210px;
+    margin: 0px 15px 10px 10px;
+}
+
+#main #content1-blog {
+    width:970px;
+    height:auto;
+    float: left;
+    margin-top:10px;
+    padding-left: 20px;
+    padding: 0 0 0 2px;
+    background-color:#DBE8F9;
+    box-shadow: 0px 0px 5px #999999;
+}
+#main #content-blog {
+    width:730px;
+    height:auto;
+    float: left;
+    margin-top:10px;
+    padding: 0 0 0 2px;	
+    border-right: 2px solid rgb(176, 196, 222);
+}
+
+.contain_total-blog{
+    border-bottom: 2px solid rgb(176, 196, 222);
+    margin: 0 20px 0 20px;
+    padding-bottom: 20px;
+}
+.contain_title-blog{	
+    font-size:11pt;
+    font-weight:bold;
+    margin-top:5px;
+}
+
+/*---------Blog  Archive-----------*/
+.block-archive {
+    width: 200px;
+    margin-bottom:15px;
+}
+
+.block-archive .block-title-archive {
+    font-size:16px;
+    font-weight:bold;
+    padding:5px 20px 0px 20px;
+    height:20px;
+}
+.block-archive .block-content-archive {
+    font-size: 14px;
+    margin-left: 30px;
+    margin-bottom: 10px;
+}
+#show-archive{
+    float: left;
+    font-size: 15px;
+    padding-right:10px;
+    cursor: pointer;
+}
+.block ul {
+    list-style:none;
+    padding:0;
+}
+.block ul li { 
+    border-bottom:1px dashed #666;
+    padding:5px 5px 5px 15px;
+    background:url(images/bullet-small.png) left 6px no-repeat;
+}
+
+
+.div-limited-archive {
+    min-height: 100px;
+    height:100%;
+}
+
+.page{
+    float: right;
+    margin-right: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: solid 1px #dcdcdc;
+    text-align: center;
+    width: 30px;
+    background-color: #efefef;
+}
+
+.Home{
+    padding-top: 250px;
+    margin-left: 350px;
+    font-weight: bold;
+    font-size: 23px;
+    
+}

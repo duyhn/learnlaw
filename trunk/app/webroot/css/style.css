@@ -1,0 +1,92 @@
+body{
+    background:url(../images/bg.png) repeat; 
+    font-family: 'Oleo Script', cursive;
+}
+
+.lg-container{
+    width:275px;
+    margin:100px auto;
+    padding:20px 40px;
+    border:1px solid #f4f4f4;
+    background:rgba(255,255,255,.5);
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    border-radius:10px;
+
+    -webkit-box-shadow: 0 0 2px #aaa;
+    -moz-box-shadow: 0 0 2px #aaa;
+    box-shadow: 0 0 2px #aaa;
+}
+.lg-container h1{
+    font-size:40px;
+    text-align:center;
+}
+#lg-form > div {
+    margin:10px 5px;
+    padding:5px 0;
+}
+#lg-form label{
+    display: none;
+    font-size: 20px;
+    line-height: 25px;
+}
+#lg-form input[type="text"],
+#lg-form input[type="password"]{
+    border:1px solid rgba(51,51,51,.5);
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    border-radius:10px;
+    padding: 5px;
+    font-size: 16px;
+    line-height: 20px;
+    width: 100%;
+    font-family: 'Oleo Script', cursive;
+    text-align:center;
+}
+#lg-form div:nth-child(3) {
+    text-align:center;
+}
+#lg-form button{
+    font-family: 'Oleo Script', cursive;
+    font-size: 18px;
+    border:1px solid #000;
+    padding:5px 10px;
+    border:1px solid rgba(51,51,51,.5);
+    -webkit-border-radius:10px;
+    -moz-border-radius:10px;
+    border-radius:10px;
+
+    -webkit-box-shadow: 2px 1px 1px #aaa;
+    -moz-box-shadow: 2px 1px 1px #aaa;
+    box-shadow: 2px 1px 1px #aaa;
+    cursor:pointer;
+}
+#lg-form button:active{
+    -webkit-box-shadow: 0px 0px 1px #aaa;
+    -moz-box-shadow: 0px 0px 1px #aaa;
+    box-shadow: 0px 0px 1px #aaa;
+}
+#lg-form button:hover{
+    background:#f4f4f4;
+}
+#message{width:100%;text-align:center}
+/*login bao loi*/
+
+.error {
+    color: red;
+}
+.link{
+    font-size:16px;
+    font-weight:bold;
+    color: #07C;
+    padding:20px 5px 10px 30px;
+}
+th {padding: 10px 8px;border-bottom: 2px solid #6678b1;}
+th a {font-size: 15px;font-weight: bold;color: #039; text-decoration: none; }
+td {color: #669; padding: 9px 8px 0px 8px;}
+tbody tr:hover td { color: #009; }
+ul.nav1 {overflow: hidden; padding: 0px;}
+ul.nav1 li { display: inline; float: left;margin: 0px 5px;background: #8AB1FE;}
+ul.nav1 li a {color: white;text-decoration: none;display: block; padding: 3px 8px;}
+ul.nav1 li:hover {background: #3A7ABE;}
+ul.nav1 li.current {font-weight: bold; padding: 3px 8px; }
