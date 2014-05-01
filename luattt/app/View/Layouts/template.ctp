@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php
-echo $this->Common->create_heaeder($title_for_layout);
+//$this->Common->getRss();
+echo $this->Common->create_heaeder($this->Session->read('Username'));
 
 ?>
        <div class="clear"></div>
@@ -22,11 +23,12 @@ echo $this->Common->create_heaeder($title_for_layout);
                 </div>
                 <div class="content1">
                     <div class="content">
+                    <?php echo $this->Contentnews->hienthinoidung();?>
                     </div>
                 </div>
                 <div class="clear"></div>
             </div>
-            <div class="cach"><?php echo $this->Common->getRss()?></div>
+            <div class="cach"></div>
            <div id='footer'><?php  
            		$data=$this->Common->general();
            		echo $data['footer'];

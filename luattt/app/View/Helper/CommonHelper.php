@@ -15,12 +15,12 @@ class CommonHelper extends HtmlHelper{
 		return $data;
 	}
 	//
-	function create_heaeder($tittle){
-		
+	function create_heaeder($username){
+		$tt="Learn Law";
 		$data= $this->general();
 		$header="<html xmlns='http://www.w3.org/1999/xhtml'><head>";
 		$header.=$this->charset();
-		$header.="<title>". $tittle."</title>";
+		$header.="<title>".$tt."</title>";
 		$header.=$this->css(array("styles.css","lightbox.css","tabs.css"));
 		$header.= $this->script(array('jquery-1.7.2.min.js','validate.js','lightbox.js','jcarousellite_1.0.1c4.js','jquery.jgfeed','news.js','general.js'));
 		$header.=$this->css(array("themes/1/js-image-slider.css","generic.css"));
@@ -29,8 +29,8 @@ class CommonHelper extends HtmlHelper{
 		$header.="<div id='bttop'>BACK TO TOP</div></head>";
 		$header.="<body>";
 		$header.="<div id='wrapper'><div id='header'>".$data['header']."</div><div class='cach'></div>";
-		$header.="<div id='menu-nav'>".$this->create_menu()."</div>";
-		//$this->getRss();
+		$header.="<div id='menu-nav'>".$this->create_menu($username)."</div>";
+		
 		return $header;
 	}
 	//
@@ -40,7 +40,7 @@ class CommonHelper extends HtmlHelper{
 		$footer.="</div></body></html>";
 	}
 	//
-	function create_menu(){
+	function create_menu($username){
 
 		$menu="<ul class='nav'><li class='trangchu'>".$this->link('Trang chủ',array('controller' => 'templates','action' => 'index','full_base' => true)
 		)."</li><li class='gioithieu'>";
@@ -56,8 +56,16 @@ class CommonHelper extends HtmlHelper{
 		$menu.="</ul></li><li class='tailieu'>".$this->link('Tài Liệu',array('controller' => 'tailieu','action' => '','full_base' => true))."</li>";
 		$menu.="<li class='hoptac'>".$this->link('Diễn đàn',array('controller' => 'diendan','action' => '','full_base' => true))."</li>";
 		$menu.="<li class='lienhe'>".$this->link('Thi online',array('controller' => 'diendan','action' => '','full_base' => true))."</li>";
-		$menu.="<li style='float:right'><a href='#'>Logout</a></li>";
-		$menu.="<li id='login' style='float:right'><a href='#'>Login</a></li>";
+		
+		if(!isset($username)){
+			$menu.="<li id='' style='float:right'>".$this->link('Đăng ký',array('controller' => 'users','action' => 'register','full_base' => true))."</li>";
+			$menu.="<li id='login' style='float:right'><a href='#'>Đăng nhập</a></li>";
+			
+		}
+		else {
+			$menu.="<li style='float:right'>".$this->link('Thoát',array('controller' => 'users','action' => 'logout','full_base' => true))."</li>";
+			$menu.="<span class='titlelog'>Xin chào: ".$username." </span>";
+			}
 		$menu.=$this->login()."</ul>";		
 		return $menu;
 	}
@@ -158,10 +166,10 @@ class CommonHelper extends HtmlHelper{
 	function login(){
 		$login = "<div class='login' style='display:none'>";
       $login.="<div class='title'><h1>Login</h1><a href='#' class='close'></a></div>";
-      $login.="<form method='post' action=''>";
+      $login.="<form method='post' action='/luattt/users/login'>";
         $login.="<p><input type='text' id='username' name='username' value='' placeholder='Username'></p>";
         $login.="<input type='password' id='password' name='password' value='' placeholder='Password'></p>";     
-        $login.="<p id='btnLogin' class='submit'><input type='submit' name='commit' value='Login'></p>";
+        $login.="<p id='btnLogin' class='submit'><input type='submit' name='ok' value='Login'></p>";
       $login.="</form></div>";
       return $login;
 	}

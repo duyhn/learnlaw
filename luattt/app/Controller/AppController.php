@@ -32,9 +32,9 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 	var $layout = null; // biến layout
-	var $helpers = array("Html","Common","Gioithieu","Session");
-	//var $component = array("Session");
-	var $_sessionUsername  = "Username";
+	var $helpers = array("Form","Html","Common","Gioithieu","Session","Contentnews");
+	var $component = array("Session");
+	var $sessionUsername  = "Username";
 	function beforeFilter()
 	{
 		/*Security::setHash("md5");
@@ -65,6 +65,9 @@ class AppController extends Controller {
 				case "gioithieu" :
 					$this->layout="gioithieu";
 					break;
+				case "users" :
+						$this->layout="usertemplate";
+						break;
 				default:
 					$this->layout="default";
 			}
@@ -74,35 +77,5 @@ class AppController extends Controller {
 			echo "vbbb";
 		}
 	
-	}
-	//
-	function getTintuc($theloai){
-		echo "welcome";
-	}
-
-
-	//--------- Login
-	function login(){
-		$error="";// thong bao loi
-		if($this->Session->read($this->_sessionUsername))
-		$this->redirect("view");
-
-		if(isset($_POST['ok'])){
-			$username = $_POST['username'];
-			$password = $_POST['password'];
-			if($this->User->checkLogin($username,$password)){
-				$this->Session->write($this->_sessionUsername,$username);
-				$this->redirect("view");
-			}else{
-				$error = "Username or Password wrong";
-			}
-		}
-		$this->set("error",$error);
-		$this->render("/Layouts/login");
-	}
-	//---------- Logout
-	function logout(){
-		$this->Session->delete($this->_sessionUsername);
-		$this->redirect("login");
 	}
 }

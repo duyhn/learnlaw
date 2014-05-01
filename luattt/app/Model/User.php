@@ -1,5 +1,5 @@
 <?php
-class User extends LuatAppModel{
+class User extends AppModel{
 	var $name="User";
 	private $userName;
 	private $password;
@@ -24,9 +24,9 @@ class User extends LuatAppModel{
 	}
 	//
 	function checkLogin(){
-		$sql = "Select username,pass from users Where username='$this->userName' AND pass ='$this->password'";
-		$this->query($sql);
-		if($this->getNumRows()==0){
+		$sql = "Select username,pass from users Where username='".$this->getUserName()."' AND pass ='".$this->getPassword()."'";
+		$data=$this->query($sql);
+		if(count($data)==0){
 			return false;
 		}
 		return true;
