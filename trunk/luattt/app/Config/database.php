@@ -72,7 +72,7 @@ class DATABASE_CONFIG {
 		'password' => '',
 		'database' => 'luatvn',
 		'prefix' => '',
-		//'encoding' => 'utf8',
+		'encoding' => 'utf8',
 	);
 
 	public $test = array(
@@ -83,6 +83,6 @@ class DATABASE_CONFIG {
 		'password' => '',
 		'database' => '',
 		'prefix' => '',
-		//'encoding' => 'utf8',
+		'encoding' => 'utf8',
 	);
 }

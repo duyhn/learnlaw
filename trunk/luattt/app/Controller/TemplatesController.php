@@ -6,10 +6,12 @@ class TemplatesController extends AppController{
 		$this->set('title_for_layout', 'Learn laws');
 		$this->set("content","Welcome");
 		//$dt=$this->Tbltintuc->find("all");
-		$this->set("data","ðá");
+		$this->set("data","ï¿½ï¿½");
+		
 	}
 	/*function content(){
 		
 	}*/
+	
 }
 ?>

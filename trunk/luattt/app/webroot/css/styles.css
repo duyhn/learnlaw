@@ -700,3 +700,10 @@ margin: -20px -20px 21px;
 .lt-ie9 input[type=text], .lt-ie9 input[type=password] {
   line-height: 20px;
 }
+
+.titlelog{
+	float:right;
+	font:12px;
+	padding-top:10px;
+	color:#fff;
+}
