@@ -1,11 +1,10 @@
 <?php
 class ContentnewsHelper extends FormHelper{
 	
-	function hienthinoidung(){
+	function hienthinoidung($idtloai){
 		$nd= new TbltintucModel();
-		$idtloai=2;//xemlai
 		$out="";
-		$data=$nd->query( "SELECT tieude,id_tintuc,ngaythang, solanxem,id_theloai FROM tbltintucs where id_theloai=".$idtloai." ORDER BY ngaythang");
+		$data=$nd->query( "SELECT tieude,id_tintuc,ngaythang, solanxem,id_theloai FROM tbltintucs where id_theloai=".$idtloai." ORDER BY ngaythang LIMIT 0,6");
         foreach ($data as $item) {
             $id_tintuc= $item['tbltintucs']['id_tintuc'];
             $tieude= $item['tbltintucs']['tieude'];

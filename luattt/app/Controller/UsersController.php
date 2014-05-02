@@ -19,12 +19,15 @@ class UsersController extends AppController{
 				$error = "Username or Password wrong";
 			}
 		}
+		header("Location: {$_SERVER['HTTP_REFERER']}");
+    	exit;
 		//$url=$_SERVER[ 'REQUEST_URI' ];
-		$this->render("index");
+		//$this->render("index");
 	}  //---------- Logout 
     function logout(){ 
         $this->Session->delete($this->sessionUsername,$this->User->getUserName());
-        $this->render("index");
+        header("Location: {$_SERVER['HTTP_REFERER']}");
+    	exit;
     } 
     function register(){
     	if(isset($_POST['ok'])){

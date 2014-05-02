@@ -1,6 +1,6 @@
 <?php
 App::import("Model", "Tbltintuc");
-
+include_once('simple_html_dom.php');
 class CommonHelper extends HtmlHelper{
 
 	function general(){
@@ -177,7 +177,7 @@ class CommonHelper extends HtmlHelper{
 	function getRss($urlrss,$idloai){
 		
 		try {
-			include_once('simple_html_dom.php');
+			
 			
 			$tbltt = new TbltintucModel();
 			$dom=new DOMDocument('1.0','utf-8');//tao doi tuong dom
@@ -205,12 +205,12 @@ class CommonHelper extends HtmlHelper{
 				$spanNgay=$html->find("span.date");
 				$divMota=$html->find("div.mota");
 				$divcontent=$html->find("div.news-content");
-				$content="<div>".$spanNgay[0]->outertext."".$divMota[0]->outertext."".$divcontent[0]->outertext."</div>";
+				$content="<div>".$divMota[0]->outertext."".$divcontent[0]->outertext."</div>";
 				//lu vao csdl
 				$data=$tbltt->query("SELECT * FROM tbltintucs WHERE 	tieude='".$element[0]->innertext."'");
 					
 				if(count($data)==0){
-					$tbltt->query("insert into tbltintucs(tieude,noidung,id_theloai) values('".$element[0]->innertext."','".$content."',".$idloai.")");
+					$tbltt->query("insert into tbltintucs(tieude,noidung,ngaythang,id_theloai) values('".$element[0]->innertext."','".$content."','".date('y/m/d h:i:s',time())."',".$idloai.")");
 				}
 			}
 		} catch (Exception $e) {
@@ -218,19 +218,64 @@ class CommonHelper extends HtmlHelper{
 		}
 		
 	}
+	//
+	function getRssPhobien($urlrss,$idloai){
+	
+		try {
+			
+				
+			$tbltt = new TbltintucModel();
+			$dom=new DOMDocument('1.0','utf-8');//tao doi tuong dom
+			$dom->load($urlrss)    ;//muon lay rss tu trang nao thi ban khai bao day
+			$items = $dom->getElementsByTagName("item");//lay cac element co tag name la item va gan vao bien $items
+			$dom1=new DOMDocument('1.0','utf-8');
+			$i=0;
+				
+			foreach($items as $item)//lap
+			{
+				$i++;
+				if($i==5)
+					break;
+				$titles=$item->getElementsByTagName('title');//lay cac element co tag name la title va gan vao bien $titles
+				$title=$titles->item(0);//lay ra gia tri dau tuien trong array $titles
+					
+				$descriptions=$item->getElementsByTagName('description');
+				$des=$descriptions->item(0);
+				$links=$item->getElementsByTagName('link');
+				$link=$links->item(0);
+				//load tin tuc
+				$html = new simple_html_dom();
+				$html->load_file($link->nodeValue);
+				$element = $html->find("h1");
+				$p=$html->find("p.des");
+				//$divMota=$html->find("div.mota");
+				$divcontent=$html->find("div.box-content-news-detail");
+				$content="<div>".$p[0]->outertext."".$divcontent[0]->outertext."</div>";
+				//lu vao csdl
+				$data=$tbltt->query("SELECT * FROM tbltintucs WHERE 	tieude='".$element[0]->innertext."'");
+					
+				if(count($data)==0){
+					$tbltt->query("insert into tbltintucs(tieude,noidung,ngaythang,id_theloai) values('".$element[0]->innertext."','".$content."','".date('y/m/d h:i:s',time())."',".$idloai.")");
+				}
+			}
+		} catch (Exception $e) {
+			echo "error";
+		}
+	
+	}
 	//30/4/2014
 	function createTopRight(){
 		$tbltt = new TbltintucModel();
 		
 		$topright="<div class='div-text'><ul id='tabs'><li><a href='#' name='tab1'>Tin mới nhất</a></li>";
 		$topright.="<li><a href='#' name='tab2'>Chính sách mới</a></li></ul>";
-		$topright.="<div id='contenttab'><div id='tab1' class='blockcontent-body'>";
+		$topright.="<div id='contenttab'><div id='tab1' class='blockcontent-body jcarouse'>";
 		$data=$tbltt->query("SELECT * FROM tbltintucs ORDER BY ngaythang DESC LIMIT 0,5");
 		foreach ($data as $dt){
 			$topright.="<ul><li><a href='#'>".$dt['tbltintucs']['tieude']."</a></li></ul>";
 		}
 		$topright.="</div><div id='tab2' class='blockcontent-body'>";
-		$data=$tbltt->query("SELECT * FROM tbltintucs where id_theloai=1 ORDER BY ngaythang DESC LIMIT 0,5");
+		$data=$tbltt->query("SELECT * FROM tbltintucs where id_theloai=5 ORDER BY ngaythang DESC LIMIT 0,5");
 		foreach ($data as $dt){
 			$topright.="<ul><li><a href='#'>".$dt['tbltintucs']['tieude']."</a></li></ul>";
 		}
