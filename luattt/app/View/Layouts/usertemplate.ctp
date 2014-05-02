@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php
-//echo $error." ".$this->Session->read("Username");
+
 echo $this->Common->create_heaeder($this->Session->read('Username'));
 
 ?>
@@ -23,6 +23,7 @@ echo $this->Common->create_heaeder($this->Session->read('Username'));
                 </div>
                 <div class="content1">
                     <div class="content">
+                    <?php echo $this->User->register();?>
                     </div>
                 </div>
                 <div class="clear"></div>

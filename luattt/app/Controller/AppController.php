@@ -32,7 +32,7 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 	var $layout = null; // biến layout
-	var $helpers = array("Form","Html","Common","Gioithieu","Session","Contentnews");
+	var $helpers = array("Form","Html","Common","Gioithieu","Session","Contentnews","User");
 	var $component = array("Session");
 	var $sessionUsername  = "Username";
 	function beforeFilter()
@@ -57,7 +57,7 @@ class AppController extends Controller {
 	function _configLayout(){
 		//echo $this->params['controller'];
 		 $tem=$this->params['controller'];
-		if(isset($this->params['controller'])){
+		/*if(isset($this->params['controller'])){
 			switch ($tem){
 				case "templates" :
 					$this->layout="template";
@@ -75,7 +75,7 @@ class AppController extends Controller {
 		else{
 			$this->layout  = "default";
 			echo "vbbb";
-		}
+		}*/
 	
 	}
 }
