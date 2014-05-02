@@ -1,4 +1,5 @@
 <?php
+//App::import('Helper', 'User');
 class UsersController extends AppController{
 	var $name="Users";
 	//var $_sessionUsername  = "Username";
@@ -18,13 +19,25 @@ class UsersController extends AppController{
 				$error = "Username or Password wrong";
 			}
 		}
-		$this->render("/users/login");
+		//$url=$_SERVER[ 'REQUEST_URI' ];
+		$this->render("index");
 	}  //---------- Logout 
     function logout(){ 
         $this->Session->delete($this->sessionUsername,$this->User->getUserName());
+        $this->render("index");
     } 
     function register(){
-    	$this->Session->delete($this->sessionUsername,$this->User->getUserName());
+    	if(isset($_POST['ok'])){
+    		
+    		$this->User->save($this->request->data);
+    		$this->render("index");
+    	}
+    	else{
+    		
+    		$this->render("register");
+    		//$this->Session->delete($this->sessionUsername,$this->User->getUserName());
+    	}
+    	
     }
 	
 	

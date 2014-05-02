@@ -73,14 +73,14 @@ class CommonHelper extends HtmlHelper{
 		$time = new TbltintucModel();
 		$data=$time->query("SELECT * FROM tbltintucs ORDER BY ngaythang DESC LIMIT 0,5");
 
-		$right="<div class='block' id='link' ><div class='block-title'>TIN MỚI NHẤT<div id='show' class='mo1'></div> <div id='show' class='dong1'></div>  </div>";
+		$right="<div class='block' id='link' ><div class='block-title'>Tin Mới Nhất<div id='show' class='mo1'></div> <div id='show' class='dong1'></div>  </div>";
 		$right.= "<div class='block-content' id='link11'>";
 		foreach ($data as $item){
 			$right.="<ul><li><a href='#'>". $item['tbltintucs']['tieude']."</a></ul></li>";
 		}
 		$right.="</div></div>";
 		$data=$time->query("SELECT * FROM tbltintucs  ORDER BY solanxem DESC LIMIT 0,5");
-		$right.="<div class='block' id='link' ><div class='block-title'>TIN NỔI BẬT<div id='show' class='mo2'></div> <div id='show' class='dong2'></div></div>";
+		$right.="<div class='block' id='link' ><div class='block-title'>Tin Nổi Bật<div id='show' class='mo2'></div> <div id='show' class='dong2'></div></div>";
 		$right.="<div class='jcarouse' id='link12'><ul>";
 		foreach ($data as $item){
 			$right.="<li><div class='thumb'>";
@@ -98,7 +98,7 @@ class CommonHelper extends HtmlHelper{
 		include('modules/giaodien/poll.module.php');
 		?>*/
 		//$right.="</div></div></div>";
-		$right.="<div class='block' id='link'><div class='block-title'>THỐNG KÊ<div id='show' class='mo4'></div> <div id='show' class='dong4'></div></div>";
+		$right.="<div class='block' id='link'><div class='block-title'>Thống Kê<div id='show' class='mo4'></div> <div id='show' class='dong4'></div></div>";
 		$right.="<div class='block-content' id=link14' style='height: 50px; padding: 1em;'>";
 		/*$data=$time->query("select * from thamdos order by qid desc");*/
 		$right.=$this->create_countvisiter();
@@ -174,14 +174,14 @@ class CommonHelper extends HtmlHelper{
       return $login;
 	}
 	//
-	function getRss(){
+	function getRss($urlrss,$idloai){
 		
 		try {
 			include_once('simple_html_dom.php');
 			
 			$tbltt = new TbltintucModel();
 			$dom=new DOMDocument('1.0','utf-8');//tao doi tuong dom
-			$dom->load('http://www.moj.gov.vn/_layouts/GenRss.aspx?List=60BA73DF-77BC-4E2B-A006-82B37A1C39C6')    ;//muon lay rss tu trang nao thi ban khai bao day
+			$dom->load($urlrss)    ;//muon lay rss tu trang nao thi ban khai bao day
 			$items = $dom->getElementsByTagName("item");//lay cac element co tag name la item va gan vao bien $items
 			$dom1=new DOMDocument('1.0','utf-8');
 			$i=0;
@@ -210,7 +210,7 @@ class CommonHelper extends HtmlHelper{
 				$data=$tbltt->query("SELECT * FROM tbltintucs WHERE 	tieude='".$element[0]->innertext."'");
 					
 				if(count($data)==0){
-					$tbltt->query("insert into tbltintucs(tieude,noidung,id_theloai) values('".$element[0]->innertext."','".$content."',1)");
+					$tbltt->query("insert into tbltintucs(tieude,noidung,id_theloai) values('".$element[0]->innertext."','".$content."',".$idloai.")");
 				}
 			}
 		} catch (Exception $e) {
@@ -221,14 +221,20 @@ class CommonHelper extends HtmlHelper{
 	//30/4/2014
 	function createTopRight(){
 		$tbltt = new TbltintucModel();
-		$data=$tbltt->query("SELECT * FROM tbltintucs where id_theloai=1 ORDER BY ngaythang DESC LIMIT 0,5");
+		
 		$topright="<div class='div-text'><ul id='tabs'><li><a href='#' name='tab1'>Tin mới nhất</a></li>";
 		$topright.="<li><a href='#' name='tab2'>Chính sách mới</a></li></ul>";
 		$topright.="<div id='contenttab'><div id='tab1' class='blockcontent-body'>";
+		$data=$tbltt->query("SELECT * FROM tbltintucs ORDER BY ngaythang DESC LIMIT 0,5");
 		foreach ($data as $dt){
 			$topright.="<ul><li><a href='#'>".$dt['tbltintucs']['tieude']."</a></li></ul>";
 		}
-		$topright.="</div><div id='tab2' class='blockcontent-body'></div></div></div>";
+		$topright.="</div><div id='tab2' class='blockcontent-body'>";
+		$data=$tbltt->query("SELECT * FROM tbltintucs where id_theloai=1 ORDER BY ngaythang DESC LIMIT 0,5");
+		foreach ($data as $dt){
+			$topright.="<ul><li><a href='#'>".$dt['tbltintucs']['tieude']."</a></li></ul>";
+		}
+		$topright.=" </div></div></div>";
 		return $topright;
 	}
 }
