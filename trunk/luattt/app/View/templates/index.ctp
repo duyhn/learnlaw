@@ -43,10 +43,9 @@ echo $this->Common->create_heaeder($this->Session->read('Username'));
                 </div>
                 <div class="clear"></div>
             </div>
-            <div class="cach"></div>
            <div id='footer'><?php  
            		$data=$this->Common->general();
            		echo $data['footer'];
-           		 ?></div>;
+           		 ?></div>
 	</div></body></html>
         

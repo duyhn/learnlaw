@@ -1,7 +1,7 @@
 <?php
 class Tblloaitailieu extends AppModel{
 	var $name="Tblloaitailieu";
-	/*private $tenloai;
+	private $tenloai;
 	private $mota;
 	public $primaryKey = 'idloai';
 	
@@ -23,7 +23,7 @@ class Tblloaitailieu extends AppModel{
 			$this->mota="";
 		}
 		return $this->mota;
-	}*/
+	}
 	
 }
 ?>

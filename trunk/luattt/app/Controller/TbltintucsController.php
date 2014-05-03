@@ -1,10 +1,50 @@
 <?php
+App::import("Model", "Tbltintuc");
 class TbltintucsController extends AppController{
-	public $name = "Tbltintucs";// ten cua Controller Tblloaitailieu
+		public $name = "Tbltintucs";// ten cua Controller Tblloaitailieu
 	public $helpers = array('Form','Paginator','Html','Common','Js');
 	public $components = array('Session', 'RequestHandler','Paginator');
 	public $paginate = array();
 	public $uses = array('Tbltintuc');
+
+	//var $uses = array('Tbltintuc');
+    
+	function  index(){
+		$Tbltintucs = $this->Tbltintuc->find('all');
+		$this->set("Tbltintucs", $Tbltintucs);
+		$this->set('title_for_layout', 'Learn laws');
+	}
+	function view($id)
+        {
+        	$tb=new TbltintucModel();
+          	$data= $tb->findTinbyId($id);
+          	$this->set('data', $data);  
+        }
+
+    function edit($id = null)
+    {
+      if(empty($this->data))
+          {
+            if($id)
+            {
+              $Tbltintuc = $this->Tbltintuc->read(null, $id);
+              $this->data = $Tbltintuc;
+            } 
+          }
+          else
+          {
+             if($this->Tbltintuc->save($this->data))
+             {
+               $this->redirect('templates');
+             }
+          }      
+    }
+    
+    function delete($id)
+    {
+      $this->Tbltintuc->del($id);
+          $this->redirect('templates');            
+    }
 	//nhan request tu form va chuyen d lieu lai cho result()
 	function search()
 	{
@@ -55,7 +95,6 @@ class TbltintucsController extends AppController{
 					'limit' => 4,
 					'order' => array('tieude' => 'desc'),
 			);
-
 			$this->data = $data;//giu lai gia tri tim kiem tren form tim kiem
 			$this->set("posts",$this->paginate("Tbltintuc",$conditions));
 		}
@@ -69,5 +108,5 @@ class TbltintucsController extends AppController{
 			}
 		}
 	}
+	
 }
-?>
