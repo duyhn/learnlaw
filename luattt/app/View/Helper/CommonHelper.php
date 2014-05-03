@@ -1,6 +1,6 @@
 <?php
-App::import("Model", "Tbltintuc");
-include_once('simple_html_dom.php');
+App::import("Model", "Common");
+
 class CommonHelper extends HtmlHelper{
 
 	function general(){
@@ -70,13 +70,14 @@ class CommonHelper extends HtmlHelper{
 		return $menu;
 	}
 	function create_right(){
-		$time = new TbltintucModel();
+		$time = new CommonModel();
 		$data=$time->query("SELECT * FROM tbltintucs ORDER BY ngaythang DESC LIMIT 0,5");
 
-		$right="<div class='block' id='link' ><div class='block-title'>Tin Mới Nhất<div id='show' class='mo1'></div> <div id='show' class='dong1'></div>  </div>";
+		$right="<div class='block' id='link' ><div class='block-title'>Thông Báo<div id='show' class='mo1'></div> <div id='show' class='dong1'></div>  </div>";
 		$right.= "<div class='block-content' id='link11'>";
 		foreach ($data as $item){
-			$right.="<ul><li><a href='#'>". $item['tbltintucs']['tieude']."</a></ul></li>";
+			$tt=$item['tbltintucs']['tieude'];
+			$right.="<ul><li>".$this->link($tt,array('controller' => 'Tbltintucs','action' => 'view',$item['tbltintucs']['id_tintuc']))."</ul></li>";
 		}
 		$right.="</div></div>";
 		$data=$time->query("SELECT * FROM tbltintucs  ORDER BY solanxem DESC LIMIT 0,5");
@@ -87,7 +88,8 @@ class CommonHelper extends HtmlHelper{
 			$right.=$this->image("anhTintuc/".$item['tbltintucs']['ten_anh'], array('repeat alt' => $item['tbltintucs']['tieude'],'title'=>$item['tbltintucs']['tieude']));
 			//$right.="<img src='anhTintuc/".$item['tbltintucs']['ten_anh']."' repeat alt='".$item['tbltintucs']['tieude']."' title='".$item['tbltintucs']['tieude']."' />";
 			$right.="</div><div class='info'>";
-			$right.="<a href='#'>".$item['tbltintucs']['tieude']."</a></div><div class='clr'></div></li>";
+			$tt=$item['tbltintucs']['tieude'];
+			$right.=$this->link($tt,array('controller' => 'Tbltintucs','action' => 'view',$item['tbltintucs']['id_tintuc']))."</div><div class='clr'></div></li>";
 		}
 		$right.="</ul></div></div>";
 		/*$right.="<div class='block' id='link'>";
@@ -116,7 +118,7 @@ class CommonHelper extends HtmlHelper{
 	}*/
 	//
 	function create_countonline(){
-		$time = new TbltintucModel();
+		$time = new CommonModel();
 		$countonline="</br>Đang truy cập :";
 		$tg=time();
 		$tgout=900;
@@ -129,7 +131,7 @@ class CommonHelper extends HtmlHelper{
 	}
 	//
 	function create_countvisiter(){
-		$time = new TbltintucModel();
+		$time = new CommonModel();
 		$countvisiter="</br>Số lượt truy cập: ";
 		$tg=time();
 		$tgout=900;
@@ -151,7 +153,7 @@ class CommonHelper extends HtmlHelper{
 	}
 	//
 	function slideImage(){
-		$time = new TbltintucModel();
+		$time = new CommonModel();
 		$data=$time->query("SELECT * FROM tbltintucs WHERE hien_an = 1 LIMIT 0,7");
 		$silde="<div id='sliderFrame'><div id='slider'>";
 		foreach($data as $item){
@@ -174,12 +176,12 @@ class CommonHelper extends HtmlHelper{
       return $login;
 	}
 	//
-	function getRss($urlrss,$idloai){
+	function getRss(){
 		
 		try {
+			include_once('simple_html_dom.php');
 			
-			
-			$tbltt = new TbltintucModel();
+			$tbltt = new CommonModel();
 			$dom=new DOMDocument('1.0','utf-8');//tao doi tuong dom
 			$dom->load($urlrss)    ;//muon lay rss tu trang nao thi ban khai bao day
 			$items = $dom->getElementsByTagName("item");//lay cac element co tag name la item va gan vao bien $items
@@ -265,21 +267,16 @@ class CommonHelper extends HtmlHelper{
 	}
 	//30/4/2014
 	function createTopRight(){
-		$tbltt = new TbltintucModel();
-		
+		$tbltt = new CommonModel();
+		$data=$tbltt->query("SELECT * FROM tbltintucs where id_theloai=1 ORDER BY ngaythang DESC LIMIT 0,5");
 		$topright="<div class='div-text'><ul id='tabs'><li><a href='#' name='tab1'>Tin mới nhất</a></li>";
 		$topright.="<li><a href='#' name='tab2'>Chính sách mới</a></li></ul>";
-		$topright.="<div id='contenttab'><div id='tab1' class='blockcontent-body jcarouse'>";
-		$data=$tbltt->query("SELECT * FROM tbltintucs ORDER BY ngaythang DESC LIMIT 0,5");
+		$topright.="<div id='contenttab'><div id='tab1' class='blockcontent-body'>";
 		foreach ($data as $dt){
-			$topright.="<ul><li><a href='#'>".$dt['tbltintucs']['tieude']."</a></li></ul>";
+			$tt=$dt['tbltintucs']['tieude'];
+			$topright.="<ul><li>".$this->link($tt,array('controller' => 'Tbltintucs','action' => 'view',$dt['tbltintucs']['id_tintuc']))."</li></ul>";
 		}
-		$topright.="</div><div id='tab2' class='blockcontent-body'>";
-		$data=$tbltt->query("SELECT * FROM tbltintucs where id_theloai=5 ORDER BY ngaythang DESC LIMIT 0,5");
-		foreach ($data as $dt){
-			$topright.="<ul><li><a href='#'>".$dt['tbltintucs']['tieude']."</a></li></ul>";
-		}
-		$topright.=" </div></div></div>";
+		$topright.="</div><div id='tab2' class='blockcontent-body'></div></div></div>";
 		return $topright;
 	}
 }

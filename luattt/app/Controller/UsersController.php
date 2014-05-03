@@ -1,5 +1,4 @@
 <?php
-//App::import('Helper', 'User');
 class UsersController extends AppController{
 	var $name="Users";
 	//var $_sessionUsername  = "Username";
