@@ -32,22 +32,24 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 	var $layout = null; // biến layout
-	var $helpers = array("Form","Html","Common","Gioithieu","Session","Contentnews","User");
-	var $component = array("Session");
+	var $helpers = array("Form","Html","Common","Gioithieu","Session","Contentnews","User","Js","Session");
+	var $components = array("Session","Auth","Paginator","DebugKit.Toolbar");
 	var $sessionUsername  = "Username";
+	var $sessionUserid = "Userid";
+	var $sessionEmail = "Email";
 	function beforeFilter()
 	{
-		/*Security::setHash("md5");
-		$this->Auth->userModel = 'User';
-		$this->Auth->fields = array('username' => 'username', 'password' => 'password');
+	//	Security::setHash("md5");
+	//	$this->Auth->userModel = 'User';
+	//	$this->Auth->fields = array('username' => 'username', 'password' => 'password');
 		//$this->Auth->loginAction = array('admin' => false,'controller' => 'users','action' => 'index');
-		$this->Auth->loginRedirect = array('admin' =>true,'controller' => 'users', 'action' => 'add');
-		$this->Auth->loginError = 'Username / password combination.  Please try again';
-		$this->Auth->authorize = 'controller';
-		$this->set("admin",$this->_isAdmin());
-		$this->set("logged_in",$this->_isLogin());
-		$this->set("users_userid",$this->_usersUserID());
-		$this->set("users_username",$this->_usersUsername());*/
+	//	$this->Auth->loginRedirect = array('admin' =>true,'controller' => 'users', 'action' => 'add');
+	//	$this->Auth->loginError = 'Username / password combination.  Please try again';
+	//	$this->Auth->authorize = 'controller';
+	//	$this->set("admin",$this->_isAdmin());
+	//	$this->set("logged_in",$this->_isLogin());
+	//	$this->set("users_userid",$this->_usersUserID());
+	//	$this->set("users_username",$this->_usersUsername());
 	
 		// Cấu hình layout
 		$this->_configLayout();

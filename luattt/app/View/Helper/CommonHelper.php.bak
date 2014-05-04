@@ -1,5 +1,5 @@
 <?php
-App::import("Model", "Tbltintuc");
+App::import("Model", "Common");
 
 class CommonHelper extends HtmlHelper{
 
@@ -15,25 +15,23 @@ class CommonHelper extends HtmlHelper{
 		return $data;
 	}
 	//
-	function create_heaeder($tittle){
-		
+	function create_heaeder($username){
+		$tt="Learn Law";
 		$data= $this->general();
 		$header="<html xmlns='http://www.w3.org/1999/xhtml'><head>";
 		$header.=$this->charset();
-		$header.="<title>". $tittle."</title>";
+		$header.="<title>".$tt."</title>";
 		$header.=$this->css(array("styles.css","lightbox.css","tabs.css"));
-		$header.= $this->script(array('jquery-1.7.2.min.js','validate.js','lightbox.js','jcarousellite_1.0.1c4.js','jquery.jgfeed','news.js'));
+		$header.= $this->script(array('jquery-1.7.2.min.js','validate.js','lightbox.js','jcarousellite_1.0.1c4.js','jquery.jgfeed','news.js','general.js'));
 		$header.=$this->css(array("themes/1/js-image-slider.css","generic.css"));
 		$header.= $this->script(array('themes/1/js-image-slider.js','slideShow.js'));
 			
 		$header.="<div id='bttop'>BACK TO TOP</div></head>";
-
 		$header.="<body>";
 		$header.="<div id='wrapper'><div id='header'>".$data['header']."</div><div class='cach'></div>";
-		$header.="<div id='menu-nav'>".$this->create_menu()."</div>";
-		$this->getRss();
-		return $header;
+		$header.="<div id='menu-nav'>".$this->create_menu($username)."</div>";
 		
+		return $header;
 	}
 	//
 	function create_footer(){
@@ -42,7 +40,7 @@ class CommonHelper extends HtmlHelper{
 		$footer.="</div></body></html>";
 	}
 	//
-	function create_menu(){
+	function create_menu($username){
 
 		$menu="<ul class='nav'><li class='trangchu'>".$this->link('Trang chủ',array('controller' => 'templates','action' => 'index','full_base' => true)
 		)."</li><li class='gioithieu'>";
@@ -58,44 +56,57 @@ class CommonHelper extends HtmlHelper{
 		$menu.="</ul></li><li class='tailieu'>".$this->link('Tài Liệu',array('controller' => 'tailieu','action' => '','full_base' => true))."</li>";
 		$menu.="<li class='hoptac'>".$this->link('Diễn đàn',array('controller' => 'diendan','action' => '','full_base' => true))."</li>";
 		$menu.="<li class='lienhe'>".$this->link('Thi online',array('controller' => 'diendan','action' => '','full_base' => true))."</li>";
+		
+		if(!isset($username)){
+			$menu.="<li id='' style='float:right'>".$this->link('Đăng ký',array('controller' => 'users','action' => 'register','full_base' => true))."</li>";
+			$menu.="<li id='login' style='float:right'><a href='#'>Đăng nhập</a></li>";
+			
+		}
+		else {
+			$menu.="<li style='float:right'>".$this->link('Thoát',array('controller' => 'users','action' => 'logout','full_base' => true))."</li>";
+			$menu.="<span class='titlelog'>Xin chào: ".$username." </span>";
+			}
+		$menu.=$this->login()."</ul>";		
 		return $menu;
 	}
 	function create_right(){
-		$time = new TbltintucModel();
+		$time = new CommonModel();
 		$data=$time->query("SELECT * FROM tbltintucs ORDER BY ngaythang DESC LIMIT 0,5");
 
-		$right="<div class='block' id='link' ><div class='block-title'>TIN MỚI NHẤT<div id='show' class='mo1'></div> <div id='show' class='dong1'></div>  </div>";
+		$right="<div class='block' id='link' ><div class='block-title'>Thông Báo<div id='show' class='mo1'></div> <div id='show' class='dong1'></div>  </div>";
 		$right.= "<div class='block-content' id='link11'>";
 		foreach ($data as $item){
-			$right.="<ul><li><a href='#'>". $item['tbltintucs']['tieude']."</a></ul></li>";
+			$tt=$item['tbltintucs']['tieude'];
+			$right.="<ul><li>".$this->link($tt,array('controller' => 'Tbltintucs','action' => 'view',$item['tbltintucs']['id_tintuc']))."</ul></li>";
 		}
 		$right.="</div></div>";
 		$data=$time->query("SELECT * FROM tbltintucs  ORDER BY solanxem DESC LIMIT 0,5");
-		$right.="<div class='block' id='link' ><div class='block-title'>TIN NỔI BẬT<div id='show' class='mo2'></div> <div id='show' class='dong2'></div></div>";
+		$right.="<div class='block' id='link' ><div class='block-title'>Tin Nổi Bật<div id='show' class='mo2'></div> <div id='show' class='dong2'></div></div>";
 		$right.="<div class='jcarouse' id='link12'><ul>";
 		foreach ($data as $item){
 			$right.="<li><div class='thumb'>";
 			$right.=$this->image("anhTintuc/".$item['tbltintucs']['ten_anh'], array('repeat alt' => $item['tbltintucs']['tieude'],'title'=>$item['tbltintucs']['tieude']));
 			//$right.="<img src='anhTintuc/".$item['tbltintucs']['ten_anh']."' repeat alt='".$item['tbltintucs']['tieude']."' title='".$item['tbltintucs']['tieude']."' />";
 			$right.="</div><div class='info'>";
-			$right.="<a href='#'>".$item['tbltintucs']['tieude']."</a></div><div class='clr'></div></li>";
+			$tt=$item['tbltintucs']['tieude'];
+			$right.=$this->link($tt,array('controller' => 'Tbltintucs','action' => 'view',$item['tbltintucs']['id_tintuc']))."</div><div class='clr'></div></li>";
 		}
 		$right.="</ul></div></div>";
 		/*$right.="<div class='block' id='link'>";
-		 $right.="<div class='block-title'>THĂM DÒ <div id='show' class='mo3'>-</div> <div id='show' class='dong3'>+</div></div>";
+		$right.="<div class='block-title'>THĂM DÒ <div id='show' class='mo3'>-</div> <div id='show' class='dong3'>+</div></div>";
 		$right.="<div class='block-content' id='link13'><div class='div-limited'>";
 		/*<?php
 		// error_reporting(0);
 		include('modules/giaodien/poll.module.php');
 		?>*/
 		//$right.="</div></div></div>";
-		$right.="<div class='block' id='link'><div class='block-title'>THỐNG KÊ<div id='show' class='mo4'></div> <div id='show' class='dong4'></div></div>";
+		$right.="<div class='block' id='link'><div class='block-title'>Thống Kê<div id='show' class='mo4'></div> <div id='show' class='dong4'></div></div>";
 		$right.="<div class='block-content' id=link14' style='height: 50px; padding: 1em;'>";
 		/*$data=$time->query("select * from thamdos order by qid desc");*/
 		$right.=$this->create_countvisiter();
 		$right.=$this->create_countonline();
-
-		$right.="</div></div>";
+		
+		$right.="</div></div><div id='backgroundPopup'></div>";
 		return $right;
 	}
 	//
@@ -107,7 +118,7 @@ class CommonHelper extends HtmlHelper{
 	}*/
 	//
 	function create_countonline(){
-		$time = new TbltintucModel();
+		$time = new CommonModel();
 		$countonline="</br>Đang truy cập :";
 		$tg=time();
 		$tgout=900;
@@ -120,7 +131,7 @@ class CommonHelper extends HtmlHelper{
 	}
 	//
 	function create_countvisiter(){
-		$time = new TbltintucModel();
+		$time = new CommonModel();
 		$countvisiter="</br>Số lượt truy cập: ";
 		$tg=time();
 		$tgout=900;
@@ -129,7 +140,7 @@ class CommonHelper extends HtmlHelper{
 		$data=$time->query("SELECT ip FROM useronlines where ip='".$_SERVER['REMOTE_ADDR']."'");
 		$log = "counter.txt";
 		if(count($data)==0){
-				
+			
 			$count = file_get_contents($log) +1;
 			$write = fopen($log,"w");
 			fwrite($write,$count);
@@ -142,7 +153,7 @@ class CommonHelper extends HtmlHelper{
 	}
 	//
 	function slideImage(){
-		$time = new TbltintucModel();
+		$time = new CommonModel();
 		$data=$time->query("SELECT * FROM tbltintucs WHERE hien_an = 1 LIMIT 0,7");
 		$silde="<div id='sliderFrame'><div id='slider'>";
 		foreach($data as $item){
@@ -152,12 +163,25 @@ class CommonHelper extends HtmlHelper{
 		$silde.="</div></div>";
 		return $silde;
 	}
+	//
+//login
+	function login(){
+		$login = "<div class='login' style='display:none'>";
+      $login.="<div class='title'><h1>Login</h1><a href='#' class='close'></a></div>";
+      $login.="<form method='post' action='/luattt/users/login'>";
+        $login.="<p><input type='text' id='username' name='username' value='' placeholder='Username'></p>";
+        $login.="<input type='password' id='password' name='password' value='' placeholder='Password'></p>";     
+        $login.="<p id='btnLogin' class='submit'><input type='submit' name='ok' value='Login'></p>";
+      $login.="</form></div>";
+      return $login;
+	}
+	//
 	function getRss(){
 		
 		try {
 			include_once('simple_html_dom.php');
 			
-			$tbltt = new TbltintucModel();
+			$tbltt = new CommonModel();
 			$dom=new DOMDocument('1.0','utf-8');//tao doi tuong dom
 			$dom->load('http://www.moj.gov.vn/_layouts/GenRss.aspx?List=60BA73DF-77BC-4E2B-A006-82B37A1C39C6')    ;//muon lay rss tu trang nao thi ban khai bao day
 			$items = $dom->getElementsByTagName("item");//lay cac element co tag name la item va gan vao bien $items
@@ -166,7 +190,7 @@ class CommonHelper extends HtmlHelper{
 			
 			foreach($items as $item)//lap
 			{
-				$i++;
+				
 				if($i==5)
 					break;
 				$titles=$item->getElementsByTagName('title');//lay cac element co tag name la title va gan vao bien $titles
@@ -183,27 +207,31 @@ class CommonHelper extends HtmlHelper{
 				$spanNgay=$html->find("span.date");
 				$divMota=$html->find("div.mota");
 				$divcontent=$html->find("div.news-content");
-				$content="<div>".$spanNgay[0]->outertext."".$divMota[0]->outertext."".$divcontent[0]->outertext."</div>";
+				$content="<div>".$divMota[0]->outertext."".$divcontent[0]->outertext."</div>";
 				//lu vao csdl
-				$data=$tbltt->query("SELECT * FROM tbltintucs WHERE 	tieude='".$element[0]->innertext."'");
+				$data=$tbltt->query("SELECT * FROM tbltintucs WHERE tieude='".$element[0]->innertext."'");
 					
 				if(count($data)==0){
-					$tbltt->query("insert into tbltintucs(tieude,noidung,id_theloai) values('".$element[0]->innertext."','".$content."',1)");
+					$tbltt->query("insert into tbltintucs(tieude,ngaythang,noidung,id_theloai) values('".$element[0]->innertext."','".date("YdmHis", time())."','".$content."',1)");
 				}
+				$i++;
 			}
 		} catch (Exception $e) {
-			echo "error";
+			echo $e;
 		}
 		
 	}
-	//duyhn-30/4/2014
+	//30/4/2014
 	function createTopRight(){
-		$tbltt = new TbltintucModel();
-		$data=$time->query("SELECT * FROM tbltintucs where id_theloai=1 ORDER BY ngaythang DESC LIMIT 0,5");
+		$tbltt = new CommonModel();
+		$data=$tbltt->query("SELECT * FROM tbltintucs where id_theloai=1 ORDER BY ngaythang DESC LIMIT 0,5");
 		$topright="<div class='div-text'><ul id='tabs'><li><a href='#' name='tab1'>Tin mới nhất</a></li>";
 		$topright.="<li><a href='#' name='tab2'>Chính sách mới</a></li></ul>";
 		$topright.="<div id='contenttab'><div id='tab1' class='blockcontent-body'>";
-		$topright.="<ul><li><a href='#'>".$data['tieude']."</a></li></ul>";
+		foreach ($data as $dt){
+			$tt=$dt['tbltintucs']['tieude'];
+			$topright.="<ul><li>".$this->link($tt,array('controller' => 'Tbltintucs','action' => 'view',$dt['tbltintucs']['id_tintuc']))."</li></ul>";
+		}
 		$topright.="</div><div id='tab2' class='blockcontent-body'></div></div></div>";
 		return $topright;
 	}

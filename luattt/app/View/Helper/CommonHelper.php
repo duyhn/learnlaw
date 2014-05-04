@@ -1,6 +1,6 @@
 <?php
 App::import("Model", "Common");
-
+include_once('simple_html_dom.php');
 class CommonHelper extends HtmlHelper{
 
 	function general(){
@@ -54,7 +54,7 @@ class CommonHelper extends HtmlHelper{
 		echo '<li><a href="?mod=ndTin&id_theloai=' . $row['id_theloai'] . '">' . $row['ten_theloai'] . '</a></li>';
 		}*/
 		$menu.="</ul></li><li class='tailieu'>".$this->link('Tài Liệu',array('controller' => 'tailieu','action' => '','full_base' => true))."</li>";
-		$menu.="<li class='hoptac'>".$this->link('Diễn đàn',array('controller' => 'diendan','action' => '','full_base' => true))."</li>";
+		$menu.="<li class='hoptac'>".$this->link('Diễn đàn',array('controller' => 'Forums','action' => 'index','full_base' => true))."</li>";
 		$menu.="<li class='lienhe'>".$this->link('Thi online',array('controller' => 'diendan','action' => '','full_base' => true))."</li>";
 		
 		if(!isset($username)){
@@ -168,7 +168,7 @@ class CommonHelper extends HtmlHelper{
 	function login(){
 		$login = "<div class='login' style='display:none'>";
       $login.="<div class='title'><h1>Login</h1><a href='#' class='close'></a></div>";
-      $login.="<form method='post' action='/luattt/users/login'>";
+      $login.="<form method='post' action='/luatvnam/users/login'>";
         $login.="<p><input type='text' id='username' name='username' value='' placeholder='Username'></p>";
         $login.="<input type='password' id='password' name='password' value='' placeholder='Password'></p>";     
         $login.="<p id='btnLogin' class='submit'><input type='submit' name='ok' value='Login'></p>";
@@ -176,7 +176,7 @@ class CommonHelper extends HtmlHelper{
       return $login;
 	}
 	//
-	function getRss(){
+	function getRss($urlrss,$idloai){
 		
 		try {
 			include_once('simple_html_dom.php');
@@ -221,12 +221,9 @@ class CommonHelper extends HtmlHelper{
 		
 	}
 	//
-	function getRssPhobien($urlrss,$idloai){
-	
-		try {
-			
-				
-			$tbltt = new TbltintucModel();
+	function getRssPhobien($urlrss,$idloai){	
+		try {			
+			$tbltt = new CommonModel();
 			$dom=new DOMDocument('1.0','utf-8');//tao doi tuong dom
 			$dom->load($urlrss)    ;//muon lay rss tu trang nao thi ban khai bao day
 			$items = $dom->getElementsByTagName("item");//lay cac element co tag name la item va gan vao bien $items
@@ -254,7 +251,7 @@ class CommonHelper extends HtmlHelper{
 				$divcontent=$html->find("div.box-content-news-detail");
 				$content="<div>".$p[0]->outertext."".$divcontent[0]->outertext."</div>";
 				//lu vao csdl
-				$data=$tbltt->query("SELECT * FROM tbltintucs WHERE 	tieude='".$element[0]->innertext."'");
+				$data=$tbltt->query("SELECT * FROM tbltintucs WHERE tieude='".$element[0]->innertext."'");
 					
 				if(count($data)==0){
 					$tbltt->query("insert into tbltintucs(tieude,noidung,ngaythang,id_theloai) values('".$element[0]->innertext."','".$content."','".date('y/m/d h:i:s',time())."',".$idloai.")");

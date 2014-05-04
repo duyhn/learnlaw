@@ -131,7 +131,7 @@ class TbltintucModel extends AppModel{
 	        $solanxem =  $data[0]['tbltintucs']['solanxem'];
 	        $kq = "UPDATE tbltintucs SET solanxem='".($solanxem + 1)."' WHERE id_tintuc='" . $id . "'";
     	$query=$nd->query($kq);
-		$output.="<div style='font-size:12px;float:right;padding:5px 30px 0 0;'>(" . $solanxem + 1 . " l�`n xem)</div>";
+		$output.="<div style='font-size:12px;float:right;padding:5px 30px 0 0;'>(" . $solanxem + 1 . " lần xem)</div>";
 		}
 	}
 	//select
