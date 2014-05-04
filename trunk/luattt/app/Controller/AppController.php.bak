@@ -32,9 +32,9 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 	var $layout = null; // biến layout
-	var $helpers = array("Html","Common","Gioithieu","Session");
-	//var $component = array("Session");
-	var $_sessionUsername  = "Username";
+	var $helpers = array("Form","Html","Common","Gioithieu","Session","Contentnews","Contentdetail");
+	var $component = array("Session");
+	var $sessionUsername  = "Username";
 	function beforeFilter()
 	{
 		/*Security::setHash("md5");
@@ -57,7 +57,7 @@ class AppController extends Controller {
 	function _configLayout(){
 		//echo $this->params['controller'];
 		 $tem=$this->params['controller'];
-		if(isset($this->params['controller'])){
+		/*if(isset($this->params['controller'])){
 			switch ($tem){
 				case "templates" :
 					$this->layout="template";
@@ -65,6 +65,9 @@ class AppController extends Controller {
 				case "gioithieu" :
 					$this->layout="gioithieu";
 					break;
+				case "users" :
+						$this->layout="usertemplate";
+						break;
 				default:
 					$this->layout="default";
 			}
@@ -72,11 +75,7 @@ class AppController extends Controller {
 		else{
 			$this->layout  = "default";
 			echo "vbbb";
-		}
+		}*/
 	
-	}
-	//
-	function getTintuc($theloai){
-		echo "welcome";
 	}
 }

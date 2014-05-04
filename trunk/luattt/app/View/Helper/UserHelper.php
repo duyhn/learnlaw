@@ -3,9 +3,9 @@
  	
  	function register(){
  		$register="<form action='/luattt/users/register' method='POST' id='registration_form'>";
- 		$register.="<fieldset><label for='register_name'>Họ tên:</label>";
+ 		$register.="<fieldset><label for='register_name'>H? t�n:</label>";
  		$register.="<input type='text' name='hoten' id='register_name' /></br>";
- 		$register.="<label for='register_uername'>tên đăng nhập:</label>";
+ 		$register.="<label for='register_uername'>t�n dang nh?p:</label>";
  		$register.="<input type='text' name='username' id='register_uername' /></br>";
  		$register.="<label for='register_email'>email:</label>";
  		$register.="<input type='text' name='email' id='register_email' /></br>";
