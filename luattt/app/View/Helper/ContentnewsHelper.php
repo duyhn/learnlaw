@@ -1,9 +1,8 @@
 <?php
 class ContentnewsHelper extends HtmlHelper{
-	
-	function hienthinoidung(){
+	function hienthinoidung($idtloai){
 		$nd= new CommonModel();
-		$idtloai=1;//xemlai
+		//$idtloai=1;//xemlai
 		$out="";
 		$data=$nd->query( "SELECT tieude,id_tintuc,ngaythang, solanxem,id_theloai FROM tbltintucs where id_theloai=".$idtloai." ORDER BY ngaythang");
         foreach ($data as $item) {
@@ -16,7 +15,7 @@ class ContentnewsHelper extends HtmlHelper{
             $out.="<div class='blockcontent-body'>";
             $out.="<ul><li>";
             $tt=$item['tbltintucs']['tieude'];
-            $out.=$this->link($tt,array('controller' => 'Tbltintucs','action' => 'view',$item['tbltintucs']['id_tintuc']))."<span style='padding:10px;'>($ngay)</span><p style='padding:10px;'>(số lần xem: $solanxem)</p>";
+            $out.=$this->link($tt,array('controller' => 'Tbltintucs','action' => 'view',$item['tbltintucs']['id_tintuc']))."<span style='padding:10px;'>($ngay)</span><p style='padding:10px;'>(số lần xem: $solanxem)</p>";
             $out.="</ul></li></div>";
         }
         return $out;
