@@ -15,7 +15,7 @@ class CommonHelper extends HtmlHelper{
 		return $data;
 	}
 	//
-	function create_heaeder($username){
+	function create_heaeder(){
 		$tt="Learn Law";
 		$data= $this->general();
 		$header="<html xmlns='http://www.w3.org/1999/xhtml'><head>";
@@ -26,10 +26,10 @@ class CommonHelper extends HtmlHelper{
 		$header.=$this->css(array("themes/1/js-image-slider.css","generic.css"));
 		$header.= $this->script(array('themes/1/js-image-slider.js','slideShow.js'));
 			
-		$header.="<div id='bttop'>BACK TO TOP</div></head>";
-		$header.="<body>";
-		$header.="<div id='wrapper'><div id='header'>".$data['header']."</div><div class='cach'></div>";
-		$header.="<div id='menu-nav'>".$this->create_menu($username)."</div>";
+		//$header.="<div id='bttop'>BACK TO TOP</div></head>";
+		//$header.="<body>";
+		//$header.="<div id='wrapper'><div id='header'>".$data['header']."</div><div class='cach'></div>";
+		//$header.="<div id='menu-nav'>".$this->create_menu($username)."</div>";
 		
 		return $header;
 	}
@@ -55,7 +55,7 @@ class CommonHelper extends HtmlHelper{
 		}*/
 		$menu.="</ul></li><li class='tailieu'>".$this->link('Tài Liệu',array('controller' => 'tailieu','action' => '','full_base' => true))."</li>";
 		$menu.="<li class='hoptac'>".$this->link('Diễn đàn',array('controller' => 'Forums','action' => 'index','full_base' => true))."</li>";
-		$menu.="<li class='lienhe'>".$this->link('Thi online',array('controller' => 'diendan','action' => '','full_base' => true))."</li>";
+		$menu.="<li class='lienhe'>".$this->link('Thi online',array('controller' => 'tests','action' => '','full_base' => true))."</li>";
 		
 		if(!isset($username)){
 			$menu.="<li id='' style='float:right'>".$this->link('Đăng ký',array('controller' => 'users','action' => 'register','full_base' => true))."</li>";
@@ -266,7 +266,7 @@ class CommonHelper extends HtmlHelper{
 	function createTopRight(){
 		$tbltt = new CommonModel();
 		$data=$tbltt->query("SELECT * FROM tbltintucs where id_theloai=1 ORDER BY ngaythang DESC LIMIT 0,5");
-		$topright="<div class='div-text'><ul id='tabs'><li><a href='#' name='tab1'>Tin mới nhất</a></li>";
+		$topright="<div class='div-text'><ul id='tabs'><li><a href='#' name='tab1'>Thông báo</a></li>";
 		$topright.="<li><a href='#' name='tab2'>Chính sách mới</a></li></ul>";
 		$topright.="<div id='contenttab'><div id='tab1' class='blockcontent-body'>";
 		foreach ($data as $dt){

@@ -116,7 +116,7 @@ class User extends AppModel{
     //--- HashPassword
     function hashPassword($data){
         if(isset($this->data['User']['password'])){
-            $this->data['User']['password'] = Security::hash($this->data['User']['pass'],NULL,TRUE);
+            $this->data['User']['password'] = Security::hash($this->data['User']['password'],NULL,TRUE);
             return $data;
         }
         return $data;

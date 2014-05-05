@@ -1,39 +1,41 @@
-<html>
-<body>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php
-//Load navigate
-echo $this->element("backend/navigate");
+$head=$this->Common->general();
+echo $this->Common->create_heaeder();
 
-//Hien thi du lieu
-if($data==NULL){
-    echo "<h2>Dada Empty</h2>";
-}
-else{
-    echo "<table>
-          <tr>
-            <td>User ID</td>
-            <td>Username</td>
-            <td>Email<td>
-            <td>Level<td>
-            <td><td>
-          </tr>";
-    foreach($data as $item){
-        echo "<tr>";
-        echo "<td>".$item['User']['id']."</td>";
-        echo "<td>".$item['User']['username']."</td>";
-        echo "<td>".$item['User']['email']."</td>";
-        if($item['User']['level']==1){
-            $level = "Administrator";
-        }else{
-            $level = "Assistant";
-        }
-        echo "<td>".$level."</td>";
-        echo "<td><a href='".$this->webroot."admin/users/edit/".$item['User']['id']."' >Edit</a></td>";
-        echo "<td><a href='".$this->webroot."admin/users/delete/".$item['User']['id']."' >Del</a></td>";
-        echo "</tr>";
-    } 
-}
 ?>
-</body>
-</html>
+<div id='bttop'>BACK TO TOP</div></head>
+<body>
+<div id='wrapper'><div id='header'><?php echo $head['header'];?></div><div class='cach'></div>
+<div id='menu-nav'> <?php echo $this->User->create_adminmenu($this->Session->read("Username")); ?> </div>
+       <div class="clear"></div>
+            <div id="banner-main">
+                <div class="div-images" >
+                    <?php echo $this->Common->slideImage(); ?>
+                </div>
+                <?php echo $this->Common->createTopRight()?>
+
+
+            </div>
+            <div class="clear"></div>
+            <div id="main">
+            
+                <div id="sidebar-right">
+                
+                <?php echo $this->Common->create_right(); ?>
+                    
+                </div>
+                <div class="content1">
+                    <div class="content">
+                    <?php echo $this->Session->read("userRole");?>
+                    </div>
+                </div>
+                <div class="clear"></div>
+            </div>
+            <div class="cach"></div>
+           <div id='footer'><?php  
+           		$data=$this->Common->general();
+           		echo $data['footer'];
+           		 ?></div>;
+	</div></body></html>
+        

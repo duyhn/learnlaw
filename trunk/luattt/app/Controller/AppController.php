@@ -33,10 +33,11 @@ App::uses('Controller', 'Controller');
 class AppController extends Controller {
 	var $layout = null; // biến layout
 	var $helpers = array("Form","Html","Common","Gioithieu","Session","Contentnews","User","Js","Session");
-	var $components = array("Session","Auth","Paginator","DebugKit.Toolbar");
+	var $components = array("Session","Auth","Paginator");
 	var $sessionUsername  = "Username";
 	var $sessionUserid = "Userid";
 	var $sessionEmail = "Email";
+	var $sessionUserRole="userRole";
 	function beforeFilter()
 	{
 	//	Security::setHash("md5");
