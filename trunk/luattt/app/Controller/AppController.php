@@ -54,6 +54,7 @@ class AppController extends Controller {
 	
 		// Cấu hình layout
 		$this->_configLayout();
+	
 	}
 	
 	// Hàm chọn layout thích hợp

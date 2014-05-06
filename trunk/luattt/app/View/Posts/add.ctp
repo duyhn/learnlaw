@@ -45,7 +45,8 @@
                     </div>
                   </div>
                   <?php echo $this->Form->hidden('topic_id',array('value'=>$topic['Topic']['id']))?>
-                  <?php echo $this->Form->hidden('user_id',array('value'=>$this->Session->read("Userid")[0]['Users']['user_id']))?>
+                  <?php $dt=$this->Session->read("Userid");
+                   echo $this->Form->hidden('user_id',array('value'=>$dt[0]['Users']['user_id']))?>
                   <?php echo $this->Form->hidden('forum_id',array('value'=>$forum['Forum']['id']))?>
                 <?php echo $this->Form->end();?>
             </div>
