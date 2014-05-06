@@ -18,7 +18,7 @@ class CommonHelper extends HtmlHelper{
 	function create_heaeder(){
 		$tt="Learn Law";
 		$data= $this->general();
-		$header="<html xmlns='http://www.w3.org/1999/xhtml'><head>";
+		$header="<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'> <html xmlns='http://www.w3.org/1999/xhtml'><head>";
 		$header.=$this->charset();
 		$header.="<title>".$tt."</title>";
 		$header.=$this->css(array("styles.css","lightbox.css","tabs.css"));
@@ -265,7 +265,7 @@ class CommonHelper extends HtmlHelper{
 	//30/4/2014
 	function createTopRight(){
 		$tbltt = new CommonModel();
-		$data=$tbltt->query("SELECT * FROM tbltintucs where id_theloai=1 ORDER BY ngaythang DESC LIMIT 0,5");
+		$data=$tbltt->query("SELECT * FROM tbltintucs where id_theloai=5 ORDER BY ngaythang DESC LIMIT 0,5");
 		$topright="<div class='div-text'><ul id='tabs'><li><a href='#' name='tab1'>Thông báo</a></li>";
 		$topright.="<li><a href='#' name='tab2'>Chính sách mới</a></li></ul>";
 		$topright.="<div id='contenttab'><div id='tab1' class='blockcontent-body'>";

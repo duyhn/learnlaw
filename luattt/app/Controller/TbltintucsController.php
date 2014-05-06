@@ -8,7 +8,10 @@ class TbltintucsController extends AppController{
 	public $uses = array('Tbltintuc');
 
 	//var $uses = array('Tbltintuc');
-    
+	function beforeFilter()
+	{
+		$this->Auth->allow('view');
+	}
 	function  index(){
 		$Tbltintucs = $this->Tbltintuc->find('all');
 		$this->set("Tbltintucs", $Tbltintucs);

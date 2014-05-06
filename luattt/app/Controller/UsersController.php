@@ -50,7 +50,11 @@ class UsersController extends AppController{
 
 				}
 				$this->set("data","aaaaaa");
-				return $this->redirect($this->Auth->redirect());
+				if(isset($_POST['reforums'])){
+					return $this->redirect(array('user' =>false,'controller' => 'Forums', 'action' => 'index'));
+				}			
+				else
+					return $this->redirect($this->Auth->redirect());
 
 			}
 			$this->Session->setFlash(__('Invalid username or password, try again'));
