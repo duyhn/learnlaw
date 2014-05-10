@@ -2,7 +2,7 @@
 <?php
 $head=$this->Common->general();
 echo $this->Common->create_heaeder();
-
+$this->Common->getRss("http://www.moj.gov.vn/_layouts/GenRss.aspx?List=60BA73DF-77BC-4E2B-A006-82B37A1C39C6",5);
 ?>
 <div id='bttop'>BACK TO TOP</div></head>
 <body>
@@ -48,7 +48,6 @@ echo $this->Common->create_heaeder();
                 </div>
                 <div class="clear"></div>
             </div>
-            <div class="cach"></div>
            <div id='footer'><?php  
            		$data=$this->Common->general();
            		echo $data['footer'];

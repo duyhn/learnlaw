@@ -25,7 +25,7 @@ class TopicsController extends AppController {
          
         if ($this->request->is('post')) {
         	$data=$this->Session->read("Userid");
-            $this->request->data['Topic']['user_id'] = $data[0]['Users']['user_id'];
+            $this->request->data['Topic']['user_id'] = $data;
             if ($this->Topic->save($this->request->data)) {
                 $this->Session->setFlash(__('Topic has been created'));
                 $this->redirect('/forums/');

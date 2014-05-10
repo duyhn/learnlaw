@@ -47,6 +47,7 @@ echo $this->Common->create_heaeder();
                 </div>
                 <div class="clear"></div>
             </div>
+           <div class="cach"></div>
            <div id='footer'><?php  
            		$data=$this->Common->general();
            		echo $data['footer'];
