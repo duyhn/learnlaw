@@ -7,7 +7,7 @@ class PostsController extends AppController {
         if ($this->request->is('post')) {
         	$data=$this->Session->read("Userid");
         	
-            $this->request->data['Post']['user_id'] =1;// $data[0]['Users']['user_id'];
+            $this->request->data['Post']['user_id'] =$data;
              
             if ($this->Post->save($this->request->data)) {
                 $this->Session->setFlash(__('Post has been created'));
