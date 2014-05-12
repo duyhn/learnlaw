@@ -56,6 +56,7 @@ class CommonHelper extends HtmlHelper{
 		$menu.="</ul></li><li class='tailieu'>".$this->link('Tài Liệu',array('controller' => 'tailieu','action' => '','full_base' => true))."</li>";
 		$menu.="<li class='hoptac'>".$this->link('Diễn đàn',array('controller' => 'Forums','action' => 'index','full_base' => true))."</li>";
 		$menu.="<li class='lienhe'>".$this->link('Thi online',array('controller' => 'tests','action' => '','full_base' => true))."</li>";
+		$menu.="<li class='lienhe'>".$this->link('Tư vấn online',array('controller' => 'Tuvan','action' => 'index','full_base' => true))."</li>";
 		
 		if(!isset($username)){
 			$menu.="<li id='' style='float:right'>".$this->link('Đăng ký',array('controller' => 'users','action' => 'register','full_base' => true))."</li>";
