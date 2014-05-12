@@ -1,8 +1,8 @@
 <?php
-	class role extends LuatAppModel{
+	class Role extends AppModel{
 	var $name="Role";
 	private $rolename;
-	
+	public $primaryKey = 'idRole';
 	function setRolename($rolename){
 		$this->rolename=$rolename;
 	}

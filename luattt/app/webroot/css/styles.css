@@ -935,6 +935,12 @@ a.button:active {
 	border-color: #444;
 }
 
+.time{
+	font-family:arial;
+	color:#ff0000;
+}
+
+
 /*Vy 7-5-2014*/
 .border {
 	float: left;
