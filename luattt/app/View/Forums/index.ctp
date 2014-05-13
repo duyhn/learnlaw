@@ -78,6 +78,12 @@
                         echo $this->element('paginator');
                     ?>
                  </div>
+                 <div class="tieudemain left bordertron">Thống kê diễn đàn</div>
+					<div class="border info left">
+						<p>Tổng số thành viên: <?php echo $data;?></p></p>
+						<p>Tổng số Chủ đề: <?php echo $countTopic;?></p> 
+						<p>Tổng số Bình luận: <?php echo $countPost;?></p> 
+					</div>
           </div>
           <div class="clear cach"></div>
            <div id='footer'><?php  

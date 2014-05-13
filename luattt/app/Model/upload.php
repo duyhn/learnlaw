@@ -1,5 +1,5 @@
 <?php
-class Upload extends LuatAppModel{
+class Upload extends AppModel{
 	var $name="Upload";
 	private $nameIm;
 	private $path;
@@ -9,6 +9,21 @@ class Upload extends LuatAppModel{
 	private $idloai;
 	private $dem;
 
+	/**
+ * belongsTo associations
+ *
+ * @var array
+ */
+    public $belongsTo = array(
+        'Tblloaitailieu' => array(
+            'className' => 'Tblloaitailieu',
+            'foreignKey' => 'idloai',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        )
+    );
+    
 	function setNameIm($nameIm){
 		$this->nameIm=$nameIm;
 	}
@@ -78,6 +93,12 @@ class Upload extends LuatAppModel{
 		}
 		return $this->dem;
 	}
-
+	
+	function findbyIdLoaiTL($id){
+	    $kq = "SELECT * FROM uploads WHERE idloai='" . $id . "'";
+		$data = $this->query($kq);		
+		//$this->set("data",$data); //gan gia tri vao bien data de hien thi gia tri tuong ung
+		return $data;
+	}
 }
 ?>

@@ -1,5 +1,5 @@
 <?php
-class Tbltheloai extends LuatAppModel{
+class Tbltheloai extends AppModel{
 	var $name="Tbltheloai";
 	private $tentheloai;
 	

@@ -26,7 +26,7 @@ echo $this->Common->create_heaeder();
                     
                 </div>
                 <div class="content1">
-                    <div class="content">
+                    <div class="content2">
                     <?php
 						$date = $data[0]['tbltintucs']['ngaythang'];
 	        			$d = getdate(strtotime($date));
@@ -35,12 +35,15 @@ echo $this->Common->create_heaeder();
 						<div class="tieude tenthongbao float"><?php echo $data[0]['tbltintucs']['tieude']; ?></div>
 						<div class="date float"><?php echo $inngay ;?>
 						<span class="author">Author: <?php echo $data[0]['tbltintucs']['tacgia'] ?></span></div>
-						<div class="clear"></div>
-						<div class='left'><?php  echo $data[0]['tbltintucs']['noidung']  ?></div>
+						<div class='left clear'><?php  echo $data[0]['tbltintucs']['noidung']  ?></div>
 						<div class='countview'>( <?php echo $data[0]['tbltintucs']["solanxem"] ?> lần xem)</div>
                     </div>
+                    <?php 
+                echo $this->Contentnews->tinlienquan($data[0]['tbltintucs']['id_theloai'],null,$data[0]['tbltintucs']['id_tintuc']);
+                ?>
                 </div>
-                <div class="clear"></div>
+                <div class="clear cach"></div>
+                
             </div>
            <div id='footer'><?php  
            		$data=$this->Common->general();
