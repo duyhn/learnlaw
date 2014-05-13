@@ -27,7 +27,7 @@ class TopicsController extends AppController {
         	$data=$this->Session->read("Userid");
             $this->request->data['Topic']['user_id'] = $data;
             if ($this->Topic->save($this->request->data)) {
-                $this->Session->setFlash(__('Topic has been created'));
+                $this->Session->setFlash(__('Chủ đề đã được tạo'));
                 $this->redirect('/forums/');
             }
         }

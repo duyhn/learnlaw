@@ -1,11 +1,5 @@
 <?php
-/**
- * @copyright   2006-2013, Miles Johnson - http://milesj.me
- * @license     https://github.com/milesj/admin/blob/master/license.md
- * @link        http://milesj.me/code/cakephp/admin
- */
-
-class UploadController extends AdminAppController {
+class UploadController extends AppController {
 
     /**
      * Upload a file and set transport and transform settings.
@@ -14,7 +8,7 @@ class UploadController extends AdminAppController {
         $data = $this->request->data;
 
         if ($this->request->is('post')) {
-            $data['FileUpload']['user_id'] = $this->Auth->user('id');
+            $data['Upload']['user_id'] = $this->Auth->user('id');
 
             try {
                 if ($this->Model->save($data, true)) {

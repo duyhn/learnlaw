@@ -6,7 +6,7 @@ class CommonHelper extends HtmlHelper{
 	function general(){
 		$footer="<span>Bản quyền (C) 2013 thuộc Võ Thị TƯờng Vy</span></br><span>Trường Đại học Bách Khoa - Đại học Đà Nẵng</span></br>";
 		$footer.="<span>Địa chỉ: 272 Thái Thị Bôi, Quận Thanh Khê, Đà Nẵng</span></br><span>Điện thoại: 0905743649</span>";
-		$header="<div id='logo'>".$this->image("images/logovn.png", array('alt' => 'CakePHP'))."</div><div class='today'>Today is :". date('d-m-Y')."</div> <div class='clear'></div>";
+		$header="<div id='logo'>".$this->image("image/logo2.png", array('alt' => 'lawVN'))."</div><div class='today'>Hôm nay :". date('d-m-Y')."</div> <div class='clear'></div>";
 		$data = array(
 				"header" => $header,
 				"footer" => $footer,
@@ -30,19 +30,20 @@ class CommonHelper extends HtmlHelper{
 		//$header.="<body>";
 		//$header.="<div id='wrapper'><div id='header'>".$data['header']."</div><div class='cach'></div>";
 		//$header.="<div id='menu-nav'>".$this->create_menu($username)."</div>";
-		
+
 		return $header;
 	}
 	//
 	function create_footer(){
 		$data= $this->general();
+
 		$footer="<div id='footer'>".$data['footer']."</div>";
 		$footer.="</div></body></html>";
 	}
 	//
 	function create_menu($username){
 
-		$menu="<ul class='nav'><li class='trangchu'>".$this->link('Trang chủ',array('controller' => 'templates','action' => 'index','full_base' => true)
+		$menu="<ul class='nav'><li class='trangchu'>".$this->link('Trang chủ',array('controller' => 'users','action' => 'index','full_base' => true)
 		)."</li><li class='gioithieu'>";
 		$menu.=$this->link('Giới thiệu',array('controller' => 'gioithieu','action' => '','full_base' => true));
 		$menu.="<ul><li>".$this->link('Giới thiệu',array('controller' => 'gioithieu','action' => '','full_base' => true))."</li>";
@@ -50,74 +51,65 @@ class CommonHelper extends HtmlHelper{
 		$menu.="</li><li class='bantinkhoa'>".$this->link('Tin tức-sự kiện',array('controller' => 'tintuc','action' => '','full_base' => true))."<ul>";
 		/*include_once('includes/connect-db.inc');
 		 $query = mysql_query("SELECT * FROM tbltheloai,tbltintuc WHERE tbltheloai.id_theloai=tbltintuc.id_theloai GROUP BY tbltintuc.id_theloai");
-		while ($row = mysql_fetch_array($query)) {
-		echo '<li><a href="?mod=ndTin&id_theloai=' . $row['id_theloai'] . '">' . $row['ten_theloai'] . '</a></li>';
-		}*/
-		$menu.="</ul></li><li class='tailieu'>".$this->link('Tài Liệu',array('controller' => 'tailieu','action' => '','full_base' => true))."</li>";
+		 while ($row = mysql_fetch_array($query)) {
+		 echo '<li><a href="?mod=ndTin&id_theloai=' . $row['id_theloai'] . '">' . $row['ten_theloai'] . '</a></li>';
+		 }*/
+		$menu.="</ul></li><li class='tailieu'>".$this->link('Download',array('controller' => 'Uploads','action' => 'index','full_base' => true))."</li>";
 		$menu.="<li class='hoptac'>".$this->link('Diễn đàn',array('controller' => 'Forums','action' => 'index','full_base' => true))."</li>";
 		$menu.="<li class='lienhe'>".$this->link('Thi online',array('controller' => 'tests','action' => '','full_base' => true))."</li>";
-		$menu.="<li class='lienhe'>".$this->link('Tư vấn online',array('controller' => 'Tuvan','action' => 'index','full_base' => true))."</li>";
-		
+
 		if(!isset($username)){
 			$menu.="<li id='' style='float:right'>".$this->link('Đăng ký',array('controller' => 'users','action' => 'register','full_base' => true))."</li>";
 			$menu.="<li id='login' style='float:right'><a href='#'>Đăng nhập</a></li>";
-			
+				
 		}
 		else {
 			$menu.="<li style='float:right'>".$this->link('Thoát',array('controller' => 'users','action' => 'logout','full_base' => true))."</li>";
-			$menu.="<span class='titlelog'>Xin chào: ".$username." </span>";
-			}
-		$menu.=$this->login()."</ul>";		
+			$menu.="<li class='titlelog' style='float:right'>Xin chào: ".$username." </li>";
+		}
+		$menu.=$this->login()."</ul>";
 		return $menu;
 	}
 	function create_right(){
 		$time = new CommonModel();
-		$data=$time->query("SELECT * FROM tbltintucs ORDER BY ngaythang DESC LIMIT 0,5");
+		$data=$time->query("SELECT id_tintuc,tieude, ten_anh FROM tbltintucs ORDER BY ngaythang DESC LIMIT 0,5");
 
-		$right="<div class='block' id='link' ><div class='block-title'>Thông Báo<div id='show' class='mo1'></div> <div id='show' class='dong1'></div>  </div>";
+		$right="<div class='block' id='link' ><div class='block-title'>Thông Báo<div id='show' class='mo1'></div> </div>";
 		$right.= "<div class='block-content' id='link11'>";
 		foreach ($data as $item){
 			$tt=$item['tbltintucs']['tieude'];
 			$right.="<ul><li>".$this->link($tt,array('controller' => 'Tbltintucs','action' => 'view',$item['tbltintucs']['id_tintuc']))."</ul></li>";
 		}
 		$right.="</div></div>";
-		$data=$time->query("SELECT * FROM tbltintucs  ORDER BY solanxem DESC LIMIT 0,5");
-		$right.="<div class='block' id='link' ><div class='block-title'>Tin Nổi Bật<div id='show' class='mo2'></div> <div id='show' class='dong2'></div></div>";
+		$data=$time->query("SELECT id_tintuc,tieude, ten_anh FROM tbltintucs  ORDER BY solanxem DESC LIMIT 0,5");
+		$right.="<div class='block' id='link' ><div class='block-title'>Tin Nổi Bật</div>";
 		$right.="<div class='jcarouse' id='link12'><ul>";
 		foreach ($data as $item){
 			$right.="<li><div class='thumb'>";
-			$right.=$this->image("anhTintuc/".$item['tbltintucs']['ten_anh'], array('repeat alt' => $item['tbltintucs']['tieude'],'title'=>$item['tbltintucs']['tieude']));
+			$right.=$this->image("anhTintuc/".$item['tbltintucs']['ten_anh'], array('repeat alt' =>"img".$item['tbltintucs']['id_tintuc'],'title'=>$this->noidungtt(10, $item['tbltintucs']['tieude'])));
 			//$right.="<img src='anhTintuc/".$item['tbltintucs']['ten_anh']."' repeat alt='".$item['tbltintucs']['tieude']."' title='".$item['tbltintucs']['tieude']."' />";
 			$right.="</div><div class='info'>";
-			$tt=$item['tbltintucs']['tieude'];
+			$tt=$this->noidungtt(12, $item['tbltintucs']['tieude']);
 			$right.=$this->link($tt,array('controller' => 'Tbltintucs','action' => 'view',$item['tbltintucs']['id_tintuc']))."</div><div class='clr'></div></li>";
 		}
 		$right.="</ul></div></div>";
 		/*$right.="<div class='block' id='link'>";
-		$right.="<div class='block-title'>THĂM DÒ <div id='show' class='mo3'>-</div> <div id='show' class='dong3'>+</div></div>";
-		$right.="<div class='block-content' id='link13'><div class='div-limited'>";
-		/*<?php
-		// error_reporting(0);
-		include('modules/giaodien/poll.module.php');
-		?>*/
+		 $right.="<div class='block-title'>THĂM DÒ <div id='show' class='mo3'>-</div> <div id='show' class='dong3'>+</div></div>";
+		 $right.="<div class='block-content' id='link13'><div class='div-limited'>";
+		 /*<?php
+		 // error_reporting(0);
+		 include('modules/giaodien/poll.module.php');
+		 ?>*/
 		//$right.="</div></div></div>";
-		$right.="<div class='block' id='link'><div class='block-title'>Thống Kê<div id='show' class='mo4'></div> <div id='show' class='dong4'></div></div>";
-		$right.="<div class='block-content' id=link14' style='height: 50px; padding: 1em;'>";
+		$right.="<div class='block' id='link'><div class='block-title'>Thống Kê</div>";
+		$right.="<div class='block-content' style='height: 50px; padding: 10px 0 10px 10px;'>";
 		/*$data=$time->query("select * from thamdos order by qid desc");*/
 		$right.=$this->create_countvisiter();
 		$right.=$this->create_countonline();
-		
+
 		$right.="</div></div><div id='backgroundPopup'></div>";
 		return $right;
 	}
-	//
-	/*function CreateTinhot(){
-		$time = new TbltintucModel();
-		$add=$time->query("SELECT * FROM tbltintucs ORDER BY ngaythang DESC LIMIT 0,5");
-
-		return $add;
-	}*/
-	//
 	function create_countonline(){
 		$time = new CommonModel();
 		$countonline="</br>Đang truy cập :";
@@ -133,7 +125,7 @@ class CommonHelper extends HtmlHelper{
 	//
 	function create_countvisiter(){
 		$time = new CommonModel();
-		$countvisiter="</br>Số lượt truy cập: ";
+		$countvisiter="Lượt truy cập: ";
 		$tg=time();
 		$tgout=900;
 		$tgnew=$tg - $tgout;
@@ -141,7 +133,7 @@ class CommonHelper extends HtmlHelper{
 		$data=$time->query("SELECT ip FROM useronlines where ip='".$_SERVER['REMOTE_ADDR']."'");
 		$log = "counter.txt";
 		if(count($data)==0){
-			
+				
 			$count = file_get_contents($log) +1;
 			$write = fopen($log,"w");
 			fwrite($write,$count);
@@ -155,45 +147,42 @@ class CommonHelper extends HtmlHelper{
 	//
 	function slideImage(){
 		$time = new CommonModel();
-		$data=$time->query("SELECT * FROM tbltintucs WHERE hien_an = 1 LIMIT 0,7");
-		$silde="<div id='sliderFrame'><div id='slider'>";
+		$data=$time->query("SELECT id_tintuc,ten_anh,tieude FROM tbltintucs WHERE hien_an = 1 LIMIT 0,7");
+		$slider="<div id='sliderFrame'><div id='slider'>";
 		foreach($data as $item){
-			$silde.=$this->image("anhTintuc/".$item['tbltintucs']['ten_anh'], array('repeat alt' => $item['tbltintucs']['tieude'],'title'=>$item['tbltintucs']['tieude']));
-			//$silde.="<img src='anhTintuc/". $item['tbltintucs']['ten_anh']."' repeat alt='".$item['tbltintucs']['tieude']."' title='".$item['tbltintucs']['tieude']."' />";
+			$slider.=$this->image("anhTintuc/".$item['tbltintucs']['ten_anh'], array('repeat alt' => $item['tbltintucs']['tieude'],'title'=>$item['tbltintucs']['id_tintuc']));
 		}
-		$silde.="</div></div>";
-		return $silde;
+		$slider.="</div></div>";
+		return $slider;
 	}
 	//
-//login
+	//login
 	function login(){
 		$login = "<div class='login' style='display:none'>";
-      $login.="<div class='title'><h1>Login</h1><a href='#' class='close'></a></div>";
-      $login.="<form method='post' action='/luatvnam/users/login'>";
-        $login.="<p><input type='text' id='username' name='username' value='' placeholder='Username'></p>";
-        $login.="<input type='password' id='password' name='password' value='' placeholder='Password'></p>";     
-        $login.="<p id='btnLogin' class='submit'><input type='submit' name='ok' value='Login'></p>";
-      $login.="</form></div>";
-      return $login;
+		$login.="<div class='title'><h1>Login</h1><a href='#' class='close'></a></div>";
+		$login.="<form method='post' action='/luatvnam/users/login'>";
+		$login.="<p><input type='text' id='username' name='username' value='' placeholder='Username'></p>";
+		$login.="<input type='password' id='password' name='password' value='' placeholder='Password'></p>";
+		$login.="<p id='btnLogin' class='submit'><input type='submit' name='ok' value='Login'></p>";
+		$login.="</form></div>";
+		return $login;
 	}
 	//
 	function getRss($urlrss,$idloai){
-		
 		try {
-			include_once('simple_html_dom.php');
-			
+			include_once('simple_html_dom.php');				
 			$tbltt = new CommonModel();
 			$dom=new DOMDocument('1.0','utf-8');//tao doi tuong dom
 			$dom->load($urlrss)    ;//muon lay rss tu trang nao thi ban khai bao day
 			$items = $dom->getElementsByTagName("item");//lay cac element co tag name la item va gan vao bien $items
 			$dom1=new DOMDocument('1.0','utf-8');
 			$i=0;
-			
+				
 			foreach($items as $item)//lap
 			{
 				$i++;
 				if($i==5)
-					break;
+				break;
 				$titles=$item->getElementsByTagName('title');//lay cac element co tag name la title va gan vao bien $titles
 				$title=$titles->item(0);//lay ra gia tri dau tuien trong array $titles
 					
@@ -210,7 +199,7 @@ class CommonHelper extends HtmlHelper{
 				$divcontent=$html->find("div.news-content");
 				$content="<div>".$divMota[0]->outertext."".$divcontent[0]->outertext."</div>";
 				//lu vao csdl
-				$data=$tbltt->query("SELECT * FROM tbltintucs WHERE 	tieude='".$element[0]->innertext."'");
+				$data=$tbltt->query("SELECT id_tintuc,tieude FROM tbltintucs WHERE tieude='".$element[0]->innertext."'");
 					
 				if(count($data)==0){
 					$tbltt->query("insert into tbltintucs(tieude,noidung,ngaythang,id_theloai) values('".$element[0]->innertext."','".$content."','".date('y/m/d h:i:s',time())."',".$idloai.")");
@@ -219,23 +208,23 @@ class CommonHelper extends HtmlHelper{
 		} catch (Exception $e) {
 			echo "error";
 		}
-		
+
 	}
 	//
-	function getRssPhobien($urlrss,$idloai){	
-		try {			
+	function getRssPhobien($urlrss,$idloai){
+		try {
 			$tbltt = new CommonModel();
 			$dom=new DOMDocument('1.0','utf-8');//tao doi tuong dom
 			$dom->load($urlrss)    ;//muon lay rss tu trang nao thi ban khai bao day
 			$items = $dom->getElementsByTagName("item");//lay cac element co tag name la item va gan vao bien $items
 			$dom1=new DOMDocument('1.0','utf-8');
 			$i=0;
-				
+
 			foreach($items as $item)//lap
 			{
 				$i++;
 				if($i==5)
-					break;
+				break;
 				$titles=$item->getElementsByTagName('title');//lay cac element co tag name la title va gan vao bien $titles
 				$title=$titles->item(0);//lay ra gia tri dau tuien trong array $titles
 					
@@ -252,7 +241,7 @@ class CommonHelper extends HtmlHelper{
 				$divcontent=$html->find("div.box-content-news-detail");
 				$content="<div>".$p[0]->outertext."".$divcontent[0]->outertext."</div>";
 				//lu vao csdl
-				$data=$tbltt->query("SELECT * FROM tbltintucs WHERE tieude='".$element[0]->innertext."'");
+				$data=$tbltt->query("SELECT id_tintuc,tieude FROM tbltintucs WHERE tieude='".$element[0]->innertext."'");
 					
 				if(count($data)==0){
 					$tbltt->query("insert into tbltintucs(tieude,noidung,ngaythang,id_theloai) values('".$element[0]->innertext."','".$content."','".date('y/m/d h:i:s',time())."',".$idloai.")");
@@ -261,12 +250,12 @@ class CommonHelper extends HtmlHelper{
 		} catch (Exception $e) {
 			echo "error";
 		}
-	
+
 	}
 	//30/4/2014
 	function createTopRight(){
 		$tbltt = new CommonModel();
-		$data=$tbltt->query("SELECT * FROM tbltintucs where id_theloai=5 ORDER BY ngaythang DESC LIMIT 0,5");
+		$data=$tbltt->query("SELECT id_tintuc,tieude FROM tbltintucs where id_theloai=5 ORDER BY ngaythang DESC LIMIT 0,5");
 		$topright="<div class='div-text'><ul id='tabs'><li><a href='#' name='tab1'>Thông báo</a></li>";
 		$topright.="<li><a href='#' name='tab2'>Chính sách mới</a></li></ul>";
 		$topright.="<div id='contenttab'><div id='tab1' class='blockcontent-body'>";
@@ -277,5 +266,20 @@ class CommonHelper extends HtmlHelper{
 		$topright.="</div><div id='tab2' class='blockcontent-body'></div></div></div>";
 		return $topright;
 	}
+
+	//ham lay noi dung tom tat
+	function noidungtt($sotu, $noidung) {
+		$noidung=trim($noidung);
+		$n = explode(" ", $noidung);
+		$noidunginra = " ";
+		if ($sotu <= count($n)) {
+			for ($i = 0; $i < $sotu; $i++){
+				$noidunginra.= $n[$i] . " ";
+			}
+			$noidunginra.="...";
+		}
+		return $noidunginra;
+	}
+
 }
 ?>

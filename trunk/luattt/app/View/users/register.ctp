@@ -27,8 +27,11 @@ echo $this->Common->create_heaeder();
                 </div>
                 <div class="content1">
                     <div class="content">
+                    <div class="title resizett">Đăng ký thành viên tại Website Pháp luật Việt Nam</div>
                     <?php echo $this->User->register()?>
-                    </div>
+                    
+                   
+                </div> 
                 </div>
                 <div class="clear"></div>
             </div>
@@ -36,6 +39,18 @@ echo $this->Common->create_heaeder();
            <div id='footer'><?php  
            		$data=$this->Common->general();
            		echo $data['footer'];
-           		 ?></div>;
-	</div></body></html>
+           		 ?></div>
+           		 <script>
+           		 function ennablebutton(){
+           		 var check=document.getElementById("isagree").checked;
+           		 	
+           		 		document.getElementById("submitdk").disabled=!check;
+           		 
+
+           		 	
+           		 }
+           		 </script>
+	</div>
+	
+	</body></html>
         

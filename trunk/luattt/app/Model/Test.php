@@ -15,9 +15,5 @@ class Test extends AppModel{
 		$data=$this->query("SELECT * FROM methods WHERE question_id=".$id);
 		return $data;
 	}
-	function getMethods($id){
-		$data=$this->query("SELECT * FROM methods WHERE id=".$id);
-		return $data;
-	}
 }
 ?>

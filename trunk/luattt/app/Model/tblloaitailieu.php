@@ -5,6 +5,27 @@ class Tblloaitailieu extends AppModel{
 	private $mota;
 	public $primaryKey = 'idloai';
 	
+	/**
+ * hasMany associations
+ *
+ * @var array
+ */
+    public $hasMany = array(
+        'Upload' => array(
+            'className' => 'Upload',
+            'foreignKey' => 'idloai',
+            'dependent' => false,
+            'conditions' => '',
+            'fields' => '',
+            'order' => '',
+            'limit' => '',
+            'offset' => '',
+            'exclusive' => '',
+            'finderQuery' => '',
+            'counterQuery' => ''
+        )
+    );
+    
 	function setTenloai($tenloai){
 		$this->tenloai=$tenloai;
 	}
