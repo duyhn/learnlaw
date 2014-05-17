@@ -6,40 +6,37 @@ echo $this->Common->create_heaeder();
 ?>
 <div id='bttop'>BACK TO TOP</div></head>
 <body>
-<div id='wrapper'><div id='header'><?php echo $head['header'];?></div><div class='cach'></div>
-<div id='menu-nav'> <?php echo $this->User->create_adminmenu($this->Session->read("Username")); ?> </div>
-       <div class="clear"></div>
-            <div id="banner-main">
-                <div class="div-images" >
-                    <?php echo $this->Common->slideImage(); ?>
+<div id='wrapper1'><div id='header'><?php echo $head['header'];?></div><div class='cach'></div>
+<div id='menu-nav1'> <?php echo $this->User->create_adminmenu($this->Session->read("Username")); ?> </div>
+          <div id="main">
+				<div id="containad"><?php echo $this->User->menudoc();?>
+				<div class="containrightad">
+					<div class="tieude tenthongbao transHoa">Quản lý người dùng</div>
+						<div class="clear cach"></div>
+	                    <?php 
+		                    $user=(isset($user)?$user:null); 
+		                    echo $this->User->create_formManageUser($role,$user);	                    	
+		                   	echo $this->User->create_listUer($data);  
+                    	?>
+	                  <div id="paging" class="right">
+		                <?php echo   $this->Common->link('Trước',array('controller' => 'admin','action' => 'admin_managedUser','full_base' => true,$iduser,($page>1?$page-1:1),$pageend),array('class'=>'button' ));
+		                ?>
+		                <?php	if($pagebgin>1)
+		                		echo "...";
+		                	for($i=$pagebgin;$i<=$pageend;$i++){
+		                		echo $this->Common->link($i,array('controller' => 'admin','action' => 'admin_managedUser','full_base' => true,$iduser,$i,$pageend));
+		                	}
+		                	if($pageend<$numberrecord)
+		                		echo "...";
+		                 	echo $this->Common->link('Sau',array('controller' => 'admin','action' => 'admin_managedUser','full_base' => true,$iduser,($page<$numberrecord?$page+1:$numberrecord),$pageend),array('class'=>'button' ));
+		                ?>
+                	</div>   
                 </div>
-                <?php echo $this->Common->createTopRight()?>
-
-
+				</div>
             </div>
-            <div class="clear"></div>
-            <div id="main">
-            
-                <div id="sidebar-right">
-                
-                <?php echo $this->Common->create_right(); ?>
-                    
-                </div>
-                
-                    <div class="content">
-                    <?php 
-                    $user=(isset($user)?$user:null); 
-                    echo $this->User->create_formManageUser($role,$user);
-                    	echo $this->User->create_listUer($data);
-                    	
-                    ?>
-                    </div>
-                
-                <div class="clear"></div>
-            </div>
-            <div class="cach"></div>
+            <div class="clear cach"></div>
            <div id='footer'><?php  
            		echo $head['footer'];
-           		 ?></div>;
+           		 ?></div>
 	</div></body></html>
         

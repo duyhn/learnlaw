@@ -2,7 +2,7 @@
 <?php
 $head=$this->Common->general();
 echo $this->Common->create_heaeder();
-
+echo $this->Common->script("tuvanonline.js");
 ?>
 <div id='bttop'>BACK TO TOP</div></head>
 <body>
@@ -27,21 +27,28 @@ echo $this->Common->create_heaeder();
                 </div>
                 <div class="content1">
                     <div class="content1">
-                   <div class="title">PHỔ BIẾN KIẾN THỨC PHÁP LUẬT</div>
+                   <div class="title">Biểu mẫu đặt câu hỏi</div>
                 	<div class="content">
-                    
-                    	<?php //$this->Common->getRssPhobien("http://www.moj.gov.vn/_layouts/GenRss.aspx?List=976539B6-94DB-48F3-9186-3F6F47C3DA1A",8);
-                    	echo $this->Contentnews->hienthinoidung(8);?>
-
+                	
+                    <?php 
+                    if(isset($message)){
+                    	?><script> alert(<?php echo $message; ?>);</script>;<?php
+                    }
+                    echo $this->User->create_formConsultings($typeconsulting,$idTypeconsulting);?>
                 	</div>
                 </div>
                 
                 <div class="content1">
-                   <div class="title">TIN TỨC-SỰ KIỆN</div>
+                   <div class="title">Các câu hỏi nổi bật</div>
                 	<div class="content">
                     
-                    	<?php //$this->Common->getRss("http://www.moj.gov.vn/_layouts/GenRss.aspx?List=9BB9ECE7-A84C-4671-A699-2EC8D1F7FE9D",7);
-                    	echo $this->Contentnews->hienthinoidung(7);?>
+                    	<?php 
+                    	
+                    	
+                    	$conlustings=(isset($Consultings)?$Consultings:null);
+                    	echo $this->User->create_listConsultings($conlustings);
+                    	//$this->Common->getRss("http://www.moj.gov.vn/_layouts/GenRss.aspx?List=9BB9ECE7-A84C-4671-A699-2EC8D1F7FE9D",7);
+                    	//print_r($this->Common->getCauhoi("http://tuvan.tinmoi.vn/rss/hoi-dap-phap-luat.rss"));?>
 
                 	</div>
                 </div>

@@ -1,7 +1,7 @@
 <?php
  class UserHelper extends HtmlHelper{
  	
- 	function register(){
+ function register(){
  		$register="<form action='/luatvnam/users/register' method='POST' id='registration_form'>";
  		$register.="<div class='formcon'><div class='label'>Họ tên </div>";
  		$register.="<div class='input'><input type='text' name='hoten' id='register_name' /></div></div>";
@@ -65,7 +65,6 @@
 						</div>
                 	</div>	
  		";
- 		
  		$register.="<div class='left clear disbutton'><input type='submit' id='submitdk'  class='buttonre' disabled=true value='Đăng ký' name='ok'/>
  		<input type='reset' id=''  class='buttonre' disabled=true value='Nhập lại' name='reset'/>
  		</div>";
@@ -73,16 +72,380 @@
  		return $register;
  	}
  	//
- 	function create_adminmenu($username){
- 	
- 		$menu="<ul class='nav'><li class='trangchu'>".$this->link('Trang chủ',array('controller' => '','action' => '','full_base' => true)
- 		)."</li><li class='gioithieu'>";
- 		$menu.=$this->link('Quản lý người dùng',array('controller' => '','action' => '','full_base' => true));
- 		$menu.="<li>".$this->link('Quản lý tài liệu',array('controller' => '','action' => '','full_base' => true))."</li>";
- 		$menu.="<li>".$this->link('Quản lý thi',array('controller' => '','action' => '','full_base' => true))."</li></ul>";
- 			$menu.="<li style='float:right'>".$this->link('Thoát',array('controller' => 'users','action' => 'logout','full_base' => true))."</li><";
- 			$menu.="<span class='titlelog'>Xin chào: ".$username." </span>";
- 		return $menu;
+ 	public function pagination($controller,$action,$idtype,$page,$pagebgin,$pageend,$numberrecord){
+ 		$pagin="";
+ 		$pagin.=$this->link('Trước',array('controller' => $controller,'action' => $action,'full_base' => true,$idtype,($page>1?$page-1:1),$pageend),array('class'=>'button' ));
+ 		if($pagebgin>1)
+ 			 $pagin.="...";
+ 		for($i=$pagebgin;$i<$pageend;$i++){
+ 			$pagin.=$this->link($i,array('controller' => $controller,'action' => $action,'full_base' => true,$idtype,$i,$pageend))."|";
+ 		}
+ 		if($pageend<$numberrecord)
+ 			$pagin.= "...";
+ 		$pagin.=$this->link('Sau',array('controller' => $controller,'action' =>  $action,'full_base' => true,$idtype,($page<$numberrecord?$page+1:$numberrecord),$pageend),array('class'=>'button' ));
+ 		return $pagin;
  	}
- }
+	//
+	function create_adminmenu($username){
+
+		$menu="<ul class='nav'><li class='trangchu'>".$this->link('Trang chủ',array('controller' => '','action' => '','full_base' => true)
+		)."</li><li class='gioithieu'>";
+		$menu.=$this->link('Quản lý người dùng',array('controller' => 'admin','action' => 'managedUser'));
+		$menu.="<li>".$this->link('Quản lý tài liệu',array('controller' => '','action' => '','full_base' => true))."</li>";
+		$menu.="<li>".$this->link('Quản lý thi',array('controller' => 'admin','action' => 'manageTest','full_base' => true))."</li>";
+		$menu.="<li>".$this->link('Quản lý câu hỏi',array('controller' => 'admin','action' => 'manageQuestion','full_base' => true))."</li>";
+		$menu.="<li>".$this->link('Quản lý tư vấn',array('controller' => 'admin','action' => 'manageConsulting','full_base' => true))."</li>";
+		$menu.="<li>".$this->link('Quản lý thông báo',array('controller' => 'admin','action' => 'manageNews','full_base' => true))."</li>";
+
+		$menu.="<li style='float:right'>".$this->link('Thoát',array('controller' => 'users','action' => 'logout','full_base' => true))."</li>";
+		$menu.="<li style='float:right'><a>Xin chào: ".$username." </a></li> </ul>";
+ 		return $menu;
+	}
+	//
+	function create_formManageUser($role,$user,$user_id=null){
+		$name="";
+		$email="";
+		$roleid=0;
+		$usname="";
+		$action="/luatvnam/admin/admin/createuser";
+		if(isset($user) && $user!=null){
+			$name=$user['User']['hoten'];
+			$email=$user['User']['email'];
+			$roleid=$user['User']['idRole'];
+			$usname=$user['User']['username'];
+			$action="/luatvnam/admin/admin/updateusser";;
+		}
+		$register="<table><form action='".$action."' method='POST' id='registration_form' name='User'>";
+		$register.="<tr><td><label for='register_name'>Họ tên</label></td>";
+		$register.="<td><input type='text' name='hoten' value='".$name."' id='register_name' /><td></tr>";
+		$register.="<tr><td><label for='register_uername'>Tên đăng nhập</label></td>";
+		$register.="<td><input type='text' name='username' value='".$usname."' id='register_uername' /></td>";
+		$register.="<tr><Td><label for='register_email'>Email</label></td>";
+		$register.="<td><input type='text' name='email' value='".$email."' id='register_email' /></td></tr>";
+		$register.="<tr><td><label for='register_role'>Quyền</label></td>";
+		$register.="<td><select name='idRole'>";
+		foreach ($role as $item){
+			$selected="";
+			if($item['Role']['idRole']==$roleid){
+				$selected="selected";
+			}
+			$register.="<option value=".$item['Role']['idRole']." ".$selected.">".$item['Role']['rolename']."</option>";
+		}
+		$register.="</select><td>";
+		$register.="<tr><td><label for='register_active'>Trạng thái</label></td>";
+		$register.="<td><input type='checkbox' name='ative' id='register_active' /></td></tr>";
+		$register.="</table>";
+		$register.="<div class='left clear cachbtleft cachbt'>
+						<input class='button2 sizebutton2' id='' type='submit' value='Lưu' name='ok'/>
+						<input class='button2' id='' type='button' value='Tìm kiếm' name='search'/>
+					</div></form>";
+		return $register;
+	}
+	function create_listUer($data){
+		$register="<table cellspacing='0' class='clear sizeAd'>
+					<thead class='tbtailieu'>
+					<th class='tdstt'>STT</th><th>Họ và tên</th>
+					<th>Tên đăng nhập</th>
+					<th>Email</th>
+					<th class='sizeAction'>Tác vụ</th></tr></thead><tbody>";
+		$i=1;
+		foreach ($data as $item){
+			$class="even";
+			if(($i%2)!=0){
+				$class="odd";
+			}
+			$register.="<tr id='trupload' class=". $class ."><td>".$i."</td><td>".$item['User']['hoten']."</td><td>".$item['User']['username']."</td><td>";
+			$register.=$item['User']['email']."</td>";
+			$register.="<td>".$this->link('Xem',array('controller' => '','action' => '','full_base' => true)).$this->link('Sửa',array('controller' => 'admin','action' => 'formUpdateUser','full_base' => true,$item['User']['user_id']));
+			$register.=$this->link('Xóa',array('controller' => 'admin','action' => 'deleUser','full_base' => true,$item['User']['user_id']))."</td></tr>";
+			$i++;
+		}
+		$register.="</tbody></table>
+		<span class='icadd cach'></span> ".$this->link('Tạo mới',array('controller' => 'admin','action' => 'managedUser','full_base' => true));
+	
+		return $register;
+	}
+
+	function create_listQuestion($data){
+		$register="<table cellspacing='0' class='clear sizeAd'>
+					<thead class='tbtailieu'>
+					<tr><th class='tdstt'>STT</th><th>Câu hỏi</th><th class='sizeAction'>Tác vụ</th></tr>
+					</thead><tbody>";
+		$i=1;
+
+		foreach ($data as $item){
+		$class="even";
+		if(($i%2)!=0){
+			$class="odd";
+		}
+			$register.="<tr id='trupload' class=". $class ."><td>".$i."</td><td>".$item['Question']['title']."</td>";
+			$register.="<td>".$this->link('Xem',array('controller' => '','action' => '','full_base' => true)).$this->link('Sửa',array('controller' => 'admin','action' => 'editQuestion','full_base' => true,$item['Question']['id']));
+			$register.=$this->link('Xóa',array('controller' => 'admin','action' => 'deleteQuestion','full_base' => true,$item['Question']['id']))."</td></tr>";
+			$i++;
+		}
+		$register.="</td></tr></tbody></table>
+		<div class='left cach'><span class='icadd'></span> ".$this->link('Tạo mới',array('controller' => 'admin','action' => 'manageQuestion','full_base' => true))."</div>";
+			
+		return $register;
+	}
+
+	function create_formManageQuestion($type,$question,$method,$idtype=null){
+		$tile="";
+
+		$action="/luatvnam/admin/admin/createQuestion";
+		if(isset($question) && $question!=null){
+			$tile=$question['Question']['title'];
+			$action="/luatvnam/admin/admin/updateQuestion/".$question['Question']['id'];
+		}
+		$register="<form action='".$action."' method='POST' id='formQuestion' name='Question'>";
+		$register.="<table id='tbform'><tr><td><label for='register_name'>Thể loại</label></td>";
+		$register.="<td><select name='id_type' id='idtype' onchange='changeidtypeQuestion()'>";
+		foreach ($type as $item){
+			$selected="";
+			if($item['Typequestion']['id']==$idtype){
+				$selected="selected";
+			}
+			$register.="<option value=".$item['Typequestion']['id']." " . $selected.">".$item['Typequestion']['title']."</option>";
+		}
+		$register.="</select><td></tr>";
+		$register.="<tr><td><label for='register_name'>Nội dung câu hỏi</label></td>";
+		$register.="<td><textarea rows='4' cols='50' name='title' id='register_title' >".$tile."</textarea><td></tr>";
+
+		if($method!=null && isset($method)){
+			$register.="<tr><td><label>Các Phương án trả lời</label></td><tr>";
+			$i=1;
+			foreach ($method as $item){
+				$register.="<tr><td><label>Phương án ".$i.": ".$this->link('Xóa',array('controller' => 'admin','action' => 'deleteMethod','full_base' => true,$item['Method']['id'],$question['Question']['id']))."</label></td></tr>";
+				$i++;
+				$register.="<input type=hidden name='idmethod[]' value=".$item['Method']['id'].">";
+				$register.="<tr><td><label for='register_name'>Nội dung câu trả lời</label></td>";
+				$register.="<td><textarea rows='4' cols='50' name='content[]' >".$item['Method']['content']."</textarea><td></tr>";
+				$register.="<tr><td><label for='register_name'>Đúng/sai:</label></td><td><select name='corect[]'>";
+				$selected0="";
+				$selected1="";
+				if($item['Method']['corect']==0){
+					$selected0="selected";
+				}
+				if($item['Method']['corect']==1){
+					$selected1="selected";
+				}
+				$register.="<option value=0 ".$selected0.">sai</option>";
+				$register.="<option value=1 ".$selected1.">Đúng</option>";
+			}
+			$register.="</select><td></tr></table>";
+		}
+		$register.="<table><tr><td><label><a onclick='addmethod()'><span class='icadd'></span>Thêm phương án trả lời</a></label></td></tr>";
+		$register.="</table>";
+		$register.="<div class='left clear cachbtleft cachbt'>
+						<input class='button2 sizebutton2' id='' type='submit' value='Lưu' name='ok'/>
+						<input class='button2' id='' type='button' value='Tìm kiếm' name='search'/>
+					</div>
+					</form>";
+		return $register;
+	}
+
+	//
+	function create_formConsultings($typeConsultings=null,$idTypeconsulting=null){
+		$tile="";
+
+		$action="/luatvnam/Tuvan/createConsultings";
+		$register="<form action='".$action."' method='POST' id='Consulting' name='Consulting'>";
+		$register.="<table id='tbform'><tr><td><label for='register_name'>Thể loại</label></td>";
+		$register.="<td><select name='typeconsulting_id' id='typeconsulting_id' onchange='changeidTypeConsultings()'>";
+		foreach ($typeConsultings as $item){
+			$selected="";
+			if($item['Typeconsulting']['id']==$idTypeconsulting){
+				$selected="selected";
+			}
+			$register.="<option value=".$item['Typeconsulting']['id']." " . $selected.">".$item['Typeconsulting']['name']."</option>";
+		}
+		$register.="</select><td></tr>";
+		$register.="<tr><td><label for='register_name'>Họ tên</label></td>";
+		$register.="<td><input type='text' name='name' id='register_email' /><td></tr>";
+		$register.="<tr><td><label for='register_name'>email</label></td>";
+		$register.="<td><input type='text' name='email' id='register_email' /><td></tr>";
+		$register.="<tr><td><label for='register_name'>Tiêu đề</label></td>";
+		$register.="<td><input type='text' name='title' id='register_title' /><td></tr>";
+
+		$register.="<tr><td><label for='register_name'>Nội dung câu hỏi</label></td>";
+		$register.="<td><textarea rows='4' cols='50' name='content' id='register_title' >".$tile."</textarea><td></tr>";
+		$register.="</table>";
+		$register.="<div class='left clear cachbtleft cachbt'>
+						<input class='button2 sizebutton2' id='' type='submit' value='Lưu' name='ok'/>
+						<input class='button2' id='' type='button' value='Tìm kiếm' name='search'/>
+					</div>
+					</form>";
+		return $register;
+	}
+	//
+	function create_listConsultings($data=null){
+		$register="<p>Không tìm thấy danh sách câu hỏi</p>";
+		print_r($data);
+		$consulting=$data[0]['Consulting'];
+		if(isset($consulting) && $consulting!=null && count($consulting)>0){
+			$register="";
+			foreach ($consulting as $item){
+				$register.="<p>".$this->link($item['title'],array('controller' => 'Tuvan','action' => 'detail','full_base' => true,$item['id']))."</p>";
+			}
+		}
+		return $register;
+	}
+	//
+	function create_formAdminConsultings($typeConsultings=null,$idTypeconsulting=null,$conlusting=null){
+		$tile="";
+		$idcons=0;
+		if(isset($conlusting) && $conlusting!=null){
+			$tile=$conlusting[0]['Consulting']['title'];
+			$idcons=$conlusting[0]['Consulting']['id'];
+		}
+		$action="/luatvnam/admin/admin/createResultconsultings";
+		$register="<form action='".$action."' method='POST' id='Resultconsulting' name='Resultconsulting'>";
+		$register.="<table id='tbform'><tr><td><label for='register_name'>Thể loại</label></td>";
+		$register.="<td><select name='typeconsulting_id' id='typeconsulting_id' class='sizeinput' onchange='changeidTypeConsultings()'>";
+		foreach ($typeConsultings as $item){
+			$selected="";
+			if($item['Typeconsulting']['id']==$idTypeconsulting){
+				$selected="selected";
+			}
+			$register.="<option value=".$item['Typeconsulting']['id']." " . $selected.">".$item['Typeconsulting']['name']."</option>";
+		}
+		$register.="</select><td></tr>";
+		$register.="<tr><td><label for='register_name'>Tiêu đề</label></td>";
+		$register.="<td><input type='text' name='title' id='register_title' value='".$tile."' readonly/><td></tr>";
+		$register.="<input type='hidden' name='consulting_id'  value='".$idcons."' />";
+		$register.="<tr><td><label for='register_name'>Nội dung câu trả lời</label></td>";
+		$register.="<td><textarea rows='4' cols='50' name='content' id='content' ></textarea><td></tr>";
+		$register.="<script type='text/javascript'>CKEDITOR.replace( content); </script>";
+		$register.="<tr><td></td></tr>";
+		$register.="</table>";
+		$register.="<div class='left clear cachbtleft cachbt'>
+						<input class='button2 sizebutton2' id='' type='submit' value='Lưu' name='ok'/>
+						<input class='button2' id='' type='button' value='Tìm kiếm' name='search'/>
+					</div></form>";
+		return $register;
+	}
+	//
+	function create_listConsulteds($data,$boolean){//bolean=0 or 1
+		$out="";
+		foreach ($data as $item){
+				if($item['anser']==$boolean){
+					$out.="<p>".$this->link($item['consulting'][0]['Consulting']['title'],array('controller' => 'admin','action' => 'AnserConsulting','full_base' => true,$item['consulting'][0]['Consulting']['id']))."</p>";
+			}
+		}
+		return $out;
+	}
+	
+	public function createFormNews($News=null,$idtypeNews=null,$ListtypeNew=null,$page=null,$end=null){
+		$tile="";
+		$idnews=0;
+		$noidung="";
+		$action="/luatvnam/admin/admin/createNews";
+		if(isset($News) && $News!=null){
+			$tile=$News['Tbltintuc']['tieude'];
+			$idnews=$News['Tbltintuc']['id_tintuc'];
+			$noidung=$News['Tbltintuc']['noidung'];
+			$action="/luatvnam/admin/admin/updateNews";
+		}
+		
+		
+		$register="<form action='".$action."' method='POST' id='news' name='News'>";
+		$register.="<table id='tbform'><tr><td><label for='register_name'>Thể loại</label></td>";
+		if(isset($page) || isset($end)){
+			$register.="<input type='hidden' name='page'  value='".$page."' />";
+			$register.="<input type='hidden' name='end'  value='".$end."' />";
+		}
+		$register.="<td><select name='id_theloai' id='id_theloai' onchange='changeidTypeNews()'>";
+		
+		foreach ($ListtypeNew as $item){
+			$selected="";
+			if($item['Tbltheloai']['id_theloai']==$idtypeNews){
+				$selected="selected";
+			}
+			$register.="<option value=".$item['Tbltheloai']['id_theloai']." " . $selected.">".$item['Tbltheloai']['ten_theloai']."</option>";
+		}
+		$register.="</select><td></tr>";
+		$register.="<tr><td><label for='register_name'>Tiêu đề</label></td>";
+		$register.="<td><input type='text' name='tieude' id='register_title' value='".$tile."' /><td></tr>";
+		$register.="<input type='hidden' name='id_tintuc'  value='".$idnews."' />";
+		$register.="<tr><td><label for='register_name'>Nội dung</label></td>";
+		$register.="<td><textarea rows='4' cols='50' name='noidung' id='noidung' >".$noidung."</textarea><td></tr>";
+		$register.="<script type='text/javascript'>CKEDITOR.replace( noidung); </script>";	
+		$register.="</table>";
+		$register.="<div class='left clear cachbtleft cachbt'>
+						<input class='button2 sizebutton2' id='' type='submit' value='Lưu' name='ok'/>
+						<input class='button2' id='' type='button' value='Tìm kiếm' name='search'/>
+					</div></form>";
+		return $register;
+	}
+	public function createListNews($typeNews=null,$page,$end){
+		$register="<table><thead><tr><th>stt</th><th>Tin tức</th><th class='sizeAction'>Tác vụ</th></tr></thead><tbody>";
+		$i=1;
+		$data=$typeNews[0]['Tbltintuc'];
+		foreach ($data as $item){
+			$register.="<tr><td>".$i."</td><td>".$item['tieude']."</td>";
+			$register.="<td>".$this->link('Xem',array('controller' => '','action' => '','full_base' => true)).$this->link('Sửa',array('controller' => 'admin','action' => 'editNews','full_base' => true,$item['id_tintuc'],$page,$end));
+			$register.=$this->link('Xóa',array('controller' => 'admin','action' => 'deleteNews','full_base' => true,$item['id_tintuc'],$page,$end))."</td></tr>";
+			$i++;
+		}
+		$register.="<tr><td></td><td>".$this->link('Tạo mới',array('controller' => 'admin','action' => 'admin_manageNews','full_base' => true))."</td></tr></tbody></table";
+			
+		return $register;
+	}
+	/*Menu admin*/
+ 	function menudoc(){
+		$doc= $this->script(array('menu_jquery.js'));
+		$doc.="<div id='cssmenu'>
+				<ul>
+				   <li class='active'><a href='index.html'><span>Home</span></a></li>
+				   <li class='has-sub'><a href='#'><span>Quản lý người dùng</span></a>
+				      <ul>
+				         <li class='has-sub'><a href='#'><span>Product 1</span></a>
+				            <ul>
+				               <li><a href='#'><span>Sub Item</span></a></li>
+				               <li class='last'><a href='#'><span>Sub Item</span></a></li>
+				            </ul>
+				         </li>
+				         <li class='has-sub'><a href='#'><span>Product 2</span></a>
+				            <ul>
+				               <li><a href='#'><span>Sub Item</span></a></li>
+				               <li class='last'><a href='#'><span>Sub Item</span></a></li>
+				            </ul>
+				         </li>
+				      </ul>
+				   </li>
+				   <li>".$this->link('Quản lý tài liệu',array('controller' => 'Uploads','action' => 'upload','full_base' => true))."</a></li>
+				   <li class='last'><a href='#'><span>Contact</span></a></li>
+				</ul>
+				</div>";
+		return $doc;
+	}
+	/*Menu user 17-5-2014*/
+ 	function menudocUser(){
+		$doc= $this->script(array('menu_jquery.js'));
+		$doc.="<div id='cssmenu'>
+				<ul>
+				   <li class='active'><a href='index.html'><span>Home</span></a></li>
+				   <li class='has-sub'><a href='#'><span>Quản lý người dùng</span></a>
+				      <ul>
+				         <li class='has-sub'><a href='#'><span>Product 1</span></a>
+				            <ul>
+				               <li><a href='#'><span>Sub Item</span></a></li>
+				               <li class='last'><a href='#'><span>Sub Item</span></a></li>
+				            </ul>
+				         </li>
+				         <li class='has-sub'><a href='#'><span>Product 2</span></a>
+				            <ul>
+				               <li><a href='#'><span>Sub Item</span></a></li>
+				               <li class='last'><a href='#'><span>Sub Item</span></a></li>
+				            </ul>
+				         </li>
+				      </ul>
+				   </li>
+				   <li>".$this->link('Thông tin cá nhân',array('controller' => '','action' => '','full_base' => true))."</a></li>
+				   <li class='last'><a href='#'><span>Contact</span></a></li>
+				</ul>
+				</div>";
+		return $doc;
+	}
+}					
 ?>

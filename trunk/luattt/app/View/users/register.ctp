@@ -28,6 +28,7 @@ echo $this->Common->create_heaeder();
                 <div class="content1">
                     <div class="content">
                     <div class="title resizett">Đăng ký thành viên tại Website Pháp luật Việt Nam</div>
+
                     <?php echo $this->User->register()?>
                     
                    
