@@ -86,6 +86,48 @@ class User extends AppModel{
 		return true;
 	}
 	//
+	//
+	function validateUser(){
+		$this->validate = array(
+				"username"=>array(
+						"rule1" =>array(
+								"rule" => "notEmpty",
+								"message" => "Username can not empty",
+						),
+						"rule2" => array(
+								"rule" => "/^[a-z0-9_.]{4,}$/i",
+								"message" => "Username must be alpha & integer",
+						),
+						"rule3" =>array(
+								"rule" => "checkUsername", // call function check Username
+								"message" => "Username has been registered",
+						),
+				),
+				
+				"pass"=>array(
+						"rule" => "notEmpty",
+						"message" => "Password can not empty",
+						"on" => "create"
+				),
+				"email"=>array(
+						"rule" => "email",
+						"message" => "Email is not avalible",
+				),
+		);
+		if($this->validates($this->validate))
+			return TRUE;
+		else
+			return FALSE;
+	}
+
+	//--------- Compare Pass
+	function ComparePass(){
+		if($this->data['User']['pass']!=$this->data['User']['re_pass']){
+			return FALSE;
+		}
+		else{
+			return TRUE;
+		}
 	}
 	
 	
@@ -126,5 +168,5 @@ class User extends AppModel{
         $this->hashPassword(NULL,TRUE);
         return TRUE;
     } 
-
+}
 ?>

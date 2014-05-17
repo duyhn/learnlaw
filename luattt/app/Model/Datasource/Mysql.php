@@ -43,7 +43,7 @@ class Mysql extends DboSource {
 			'persistent' => true,
 			'host' => 'localhost',
 			'login' => 'root',
-			'password' => '',
+			'password' => 'sa123',
 			'database' => 'luatvn',
 			'port' => '3306'
 	);

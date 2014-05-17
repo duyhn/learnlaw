@@ -1,5 +1,5 @@
 <?php
-class TbltintucModel extends AppModel{
+class Tbltintuc extends AppModel{
 	var $name="Tbltintuc";
 	private $tieude;
 	private $noidung;

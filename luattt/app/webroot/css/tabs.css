@@ -6,6 +6,7 @@
   margin: 0;
   padding: 0;
   list-style: none;
+  font: 12px/1.5em Arial,Helvetica,sans-serif;
 }
 
 #tabs li{
@@ -75,7 +76,7 @@
   /* box-shadow: 1px 2px 5px #000;*/
    color: #3D3E3D;  
    list-style: none;
-   padding-top: 10px;
+   padding-top: 5px;
 }
 .blockcontent-body ul,
 .blockcontent-body li, 
@@ -85,7 +86,6 @@
 .blockcontent-body a:hover
 {
    color: #3D3E3D;
-   font-size: 13px;
    margin: 5px 5px 5px 0;
 }
 .blockcontent-body a, .blockcontent-body a:link

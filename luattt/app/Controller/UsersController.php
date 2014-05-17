@@ -6,7 +6,10 @@ class UsersController extends AppController{
 
 	function  index(){
 		$this->set('title_for_layout', 'Learn laws');
-		//$this->Auth->allow('profile');
+		if($this->Session->read($this->sessionUserid)==1){
+			$this->Auth->loginRedirect = array('admin' =>true,'controller' => 'users', 'action' => 'index');
+			return $this->redirect($this->Auth->redirect());
+		}
 	}
 	//3-5
 
@@ -43,7 +46,6 @@ class UsersController extends AppController{
 				$this->Session->write($this->sessionUserid,$data[0]['User']['user_id']);
 				$this->Session->write($this->sessionUserRole,$data[0]['User']['idRole']);
 				if($data[0]['User']['idRole'] == 1){
-					$this->set("data","fsdfsd");
 					$this->Auth->loginRedirect = array('admin' =>true,'controller' => 'users', 'action' => 'index');
 				}else{
 					$this->Auth->loginRedirect = array('admin' =>false,'controller' => 'users', 'action' => 'index');

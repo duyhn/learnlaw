@@ -29,4 +29,8 @@
 		    });
 		});*/
   });
- 
+ function changeidTypeNews(){
+	 var s = document.getElementById('id_theloai');
+		var item1 = s.options[s.selectedIndex].value;
+		window.location.href="/luatvnam/admin/admin/manageNews/"+item1;
+ }

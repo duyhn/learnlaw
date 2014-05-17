@@ -1,9 +1,7 @@
+#Mon May 12 18:51:02 ICT 2014
 eclipse.preferences.version=1
 encoding//app/Controller/AppController.php=UTF-8
-encoding//app/Controller/GioithieuController.php=UTF-8
 encoding//app/Controller/UsersController.php=UTF-8
 encoding//app/View/Helper/CommonHelper.php=UTF-8
-encoding//app/View/Layouts/gioithieu.ctp=UTF-8
 encoding//app/View/Layouts/template.ctp=UTF-8
-encoding//app/View/gioithieu/index.ctp=UTF-8
-encoding//app/webroot/js/slideShow.js=UTF-8
+encoding//app/View/Uploads/view.ctp=UTF-8

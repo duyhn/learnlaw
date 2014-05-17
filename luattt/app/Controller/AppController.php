@@ -37,6 +37,9 @@ class AppController extends Controller {
 	var $sessionUsername  = "Username";
 	var $sessionUserid = "Userid";
 	var $sessionEmail = "Email";
+	var $numberpage=5;
+	var $numberRecord=2;
+	var $numberpageStep=3;
 	var $sessionUserRole="userRole";
 	function beforeFilter()
 	{
