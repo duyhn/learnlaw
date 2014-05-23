@@ -1,21 +1,4 @@
-// JavaScript Document
-//==Login
-$(document).ready(function() {
-    $("#btnLogin").click(function() {
-        if ($("#username").val() == "") {
-            alert("Username must not empty!");
-            $("#username").focus();
-            return false;
-        }
-        if ($("#password").val() == "") {
-            alert("Paswword must not empty!");
-            $("#password").focus();
-            return false;
-        }
 
-        return true;
-    });
-});
 
 //-------------UPDATE TIN----------------------
 //su kien cho nut submit form updateTin

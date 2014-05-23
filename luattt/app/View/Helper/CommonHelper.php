@@ -22,9 +22,9 @@ class CommonHelper extends HtmlHelper{
 		$header.=$this->charset();
 		$header.="<title>".$tt."</title>";
 		$header.=$this->css(array("styles.css","lightbox.css","tabs.css"));
-		$header.= $this->script(array('jquery-1.7.2.min.js','validate.js','lightbox.js','jcarousellite_1.0.1c4.js','jquery.jgfeed','news.js','general.js'));
+		$header.= $this->script(array('jquery-1.7.2.min.js','validate.js','lightbox.js','jcarousellite_1.0.1c4.js','jquery.jgfeed','news.js','general.js','highlightNav.js'));
 		$header.=$this->css(array("themes/1/js-image-slider.css","generic.css"));
-		$header.= $this->script(array('themes/1/js-image-slider.js','slideShow.js','menu_jquery.js'));
+		$header.= $this->script(array('themes/1/js-image-slider.js','slideShow.js'));
 		
 			
 		//$header.="<div id='bttop'>BACK TO TOP</div></head>";
@@ -44,20 +44,18 @@ class CommonHelper extends HtmlHelper{
 	//
 	function create_menu($username){
 
-		$menu="<ul class='nav'><li class='trangchu'>".$this->link('Trang chủ',array('controller' => 'users','action' => 'index','full_base' => true)
-		)."</li><li class='gioithieu'>";
-		$menu.=$this->link('Giới thiệu',array('controller' => 'gioithieu','action' => '','full_base' => true));
-		$menu.="<ul><li>".$this->link('Giới thiệu',array('controller' => 'gioithieu','action' => '','full_base' => true))."</li>";
-		$menu.="<li>".$this->link('Giới thiệu',array('controller' => 'gioithieu','action' => '','full_base' => true))."</li></ul>";
-		$menu.="</li><li class='bantinkhoa'>".$this->link('Tin tức-sự kiện',array('controller' => 'tintuc','action' => '','full_base' => true))."<ul>";
+		$menu="<ul class='nav'><li class='highlight'>".$this->link('Trang chủ',array('controller' => 'users','action' => 'index','full_base' => true)
+		)."</li><li class=''>";
+		$menu.=$this->link('Giới thiệu',array('controller' => 'gioithieu','action' => '','full_base' => true));		
+		$menu.="</li><li class=''>".$this->link('Tin tức-sự kiện',array('controller' => 'tintuc','action' => '','full_base' => true))."<ul>";
 		/*include_once('includes/connect-db.inc');
 		 $query = mysql_query("SELECT * FROM tbltheloai,tbltintuc WHERE tbltheloai.id_theloai=tbltintuc.id_theloai GROUP BY tbltintuc.id_theloai");
 		 while ($row = mysql_fetch_array($query)) {
 		 echo '<li><a href="?mod=ndTin&id_theloai=' . $row['id_theloai'] . '">' . $row['ten_theloai'] . '</a></li>';
 		 }*/
-		$menu.="</ul></li><li class='tailieu'>".$this->link('Download',array('controller' => 'Uploads','action' => 'index','full_base' => true))."</li>";
-		$menu.="<li class='hoptac'>".$this->link('Diễn đàn',array('controller' => 'Forums','action' => 'index','full_base' => true))."</li>";
-		$menu.="<li class='lienhe'>".$this->link('Thi online',array('controller' => 'tests','action' => '','full_base' => true))."</li>";
+		$menu.="</ul></li><li class=''>".$this->link('Download',array('controller' => 'Uploads','action' => 'index','full_base' => true))."</li>";
+		$menu.="<li class=''>".$this->link('Diễn đàn',array('controller' => 'Forums','action' => 'index','full_base' => true))."</li>";
+		$menu.="<li class=''>".$this->link('Thi online',array('controller' => 'tests','action' => '','full_base' => true))."</li>";
 
 		if(!isset($username)){
 			$menu.="<li id='' style='float:right'>".$this->link('Đăng ký',array('controller' => 'users','action' => 'register','full_base' => true))."</li>";
@@ -66,7 +64,7 @@ class CommonHelper extends HtmlHelper{
 		}
 		else {
 			$menu.="<li style='float:right'>".$this->link('Thoát',array('controller' => 'users','action' => 'logout','full_base' => true))."</li>";
-			$menu.="<li style='float:right'>".$this->link('Cá nhân',array('controller' => 'users','action' => 'profile','full_base' => true))."</li>";
+			$menu.="<li style='float:right'>".$this->link('Cá nhân',array('controller' => 'users','action' => 'profile','full_base' => true,$username))."</li>";
 			$menu.="<span class='titlelog'>Xin chào: ".$username." </span>";
 		
 		}

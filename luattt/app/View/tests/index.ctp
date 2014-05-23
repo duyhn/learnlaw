@@ -28,25 +28,27 @@ $gerne=$this->Common->general();
                     
                 </div>
                 <div class="content1">
-                 <div class="title">DANH MỤC BÀI THI</div>
-                    <div class="content">
+                 <div class="title"><?php echo $this->Html->link(__('Trang chủ'),'/users',array('class'=>'title'));?>> DANH MỤC BÀI THI</div>
+                    <div class="content2">
+                    
                     <?php
                     	$html="";
+                    	$i=1;
                     	if(isset($data)){
                     		foreach($data as $item){
-                    		$html.="<p>".$this->Common->link($item['typequestions']['title'],array('controller' => 'tests','action' => 'testOnline',$item['typequestions']['id'],1))."</p>";
+                    			$html.= "<p> <span class='tdstt'>".$i.".</span>";
+                    			$html.=$this->Common->link($item['typequestions']['title'],array('controller' => 'tests','action' => 'testOnline',$item['typequestions']['id'],1))."</p>";
+                    			$i++;
                     		}
                     	}
                     	echo $html;
                     ?>
                     </div>
                 </div>
-                <div class="clear"></div>
             </div>
-            <div class="cach"></div>
-           <div id='footer'><?php  
+           <div id='footer' class='clear'><?php  
            		$data=$this->Common->general();
            		echo $data['footer'];
-           		 ?></div>;
+           		 ?></div>
 	</div></body></html>
         

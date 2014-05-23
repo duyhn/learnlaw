@@ -19,8 +19,8 @@ class TbltintucsController extends AppController{
 	}
 	function view($id)
         {
-        	$tb=new TbltintucModel();
-          	$data= $tb->findTinbyId($id);
+        //	$tb=new TbltintucModel();
+          	$data= $this->Tbltintuc->findTinbyId($id);
           	$this->set('data', $data);  
         }
 

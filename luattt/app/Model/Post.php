@@ -2,7 +2,7 @@
 App::uses('AppModel', 'Model');
  
 class Post extends AppModel {
- 
+	var $name="Post";
     public $validate = array(
         'topic_id' => array(
             'numeric' => array(

@@ -3,6 +3,7 @@
 class UsersController extends AppController{
 	var $name="Users";
 	var $_sessionUid = "Userid";
+	public $uses = array('User');
 
 	function  index(){
 		$this->set('title_for_layout', 'Learn laws');
@@ -13,13 +14,12 @@ class UsersController extends AppController{
 	}
 	//3-5
 
-	public function profile($user_id = null) {
-		 
-		// return $this->User->find(all);
-		// $tb=new User();
-		// $sql="SELECT * FROM Users WHERE user_id=".$user_id;
-		// $data= $tb->query($sql);
-		//$this->set('data', $data);
+	public function profile($id) {
+		$this->Auth->allow();	
+		//$_sessionUid = "Userid";	 
+		//return $this->User->find(all);
+		$data=$this->User->find('first',array('conditions' => array('User.username' => $id)));
+		$this->set("data",$data);
 	}
 	 
 	function beforeFilter(){
@@ -51,15 +51,22 @@ class UsersController extends AppController{
 					$this->Auth->loginRedirect = array('admin' =>false,'controller' => 'users', 'action' => 'index');
 
 				}
-				$this->set("data","aaaaaa");
+				//xet dang nhap trong form login rieng
 				if(isset($_POST['reforums'])){
-					return $this->redirect(array('user' =>false,'controller' => 'Forums', 'action' => 'index'));
-				}			
-				else
-					return $this->redirect($this->Auth->redirect());
-
+//					return $this->redirect(array('user' =>false,'controller' => 'Forums', 'action' => 'index'));
+//				}			
+//				else
+//					return $this->redirect($this->Auth->redirect());
+					if($data[0]['User']['idRole'] == 1){
+						$this->Auth->loginRedirect = array('admin' =>true,'controller' => 'users', 'action' => 'index');
+					}else{
+						$this->Auth->loginRedirect = array('admin' =>false,'controller' => 'Forums', 'action' => 'index');
+	
+					}
+				}
+				return $this->redirect($this->Auth->redirect());//chuyen huong trang
 			}
-			$this->Session->setFlash(__('Invalid username or password, try again'));
+			$this->Session->setFlash(__('Username or Password không chính xác, mời nhập lại!'));
 		}
 	}
 	
@@ -79,9 +86,11 @@ class UsersController extends AppController{
 	//
 	function register(){
 		if(isset($_POST['ok'])){
-
+			$this->request->data['idRole']=2;
+			$this->request->data['status']=1;
 			$this->User->save($this->request->data);
-			$this->render("index");
+			$this->render("profile");
+			
 		}
 		else{
 			$this->render("register");
@@ -149,5 +158,12 @@ class UsersController extends AppController{
 	public function admin_logout() {
 		$this->logout();
 	}
-
+	public function changepass($id) {
+		$this->request->data['newpass'] = Security::hash($this->request->data['newpass'],NULL,TRUE);
+		$this->User->updateAll(array('User.password' =>"'".$this->request->data('newpass')."'"),
+				 array('User.user_id' => $id));
+		$data=$this->User->find('first',array('conditions' => array('User.user_id' => $id)));
+	$this->set("data",$data);
+				 $this->render("profile");
+	}
 }

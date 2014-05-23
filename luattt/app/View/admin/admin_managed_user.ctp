@@ -4,7 +4,7 @@ $head=$this->Common->general();
 echo $this->Common->create_heaeder();
 
 ?>
-<div id='bttop'>BACK TO TOP</div></head>
+</head>
 <body>
 <div id='wrapper1'><div id='header'><?php echo $head['header'];?></div><div class='cach'></div>
 <div id='menu-nav1'> <?php echo $this->User->create_adminmenu($this->Session->read("Username")); ?> </div>

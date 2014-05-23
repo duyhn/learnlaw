@@ -40,9 +40,10 @@ ul.pagination > li:last-child  {
 </style>
  
 <ul class="pagination pagination-sm">
-    <?php
-        echo $this->Paginator->prev('&larr; ' . __('previous'), array('tag' => 'li', 'escape' => false), null, array('tag' => 'li', 'class' => 'disabled', 'escape' => false));
-        echo $this->Paginator->numbers(array('separator' => '', 'tag' => 'li', 'currentClass' => 'active'));
-        echo $this->Paginator->next(__('next') . ' &rarr;', array('tag' => 'li', 'escape' => false), null, array('tag' => 'li', 'class' => 'disabled', 'escape' => false));
-    ?>
+   <?php
+    echo $this->Paginator->prev('« Previous ', null, null, array('class' => 'disabled')); //Shows the next and previous links
+    echo " | ".$this->Paginator->numbers()." | "; //Shows the page numbers
+    echo $this->Paginator->next(' Next »', null, null, array('class' => 'disabled')); //Shows the next and previous links
+    echo " Page ".$this->Paginator->counter(); // prints X of Y, where X is current page and Y is number of pages
+?> 
 </ul>

@@ -2,7 +2,7 @@
 App::uses('AppModel', 'Model');
  
 class Topic extends AppModel {
- 
+	var $name="Topic";
     public $validate = array(
         'name' => array(
             'notEmpty' => array(

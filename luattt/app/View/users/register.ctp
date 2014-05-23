@@ -2,6 +2,7 @@
 <?php
 $head=$this->Common->general();
 echo $this->Common->create_heaeder();
+echo $this->Common->script("user.js");
 
 ?>
 <div id='bttop'>BACK TO TOP</div></head>
@@ -41,16 +42,7 @@ echo $this->Common->create_heaeder();
            		$data=$this->Common->general();
            		echo $data['footer'];
            		 ?></div>
-           		 <script>
-           		 function ennablebutton(){
-           		 var check=document.getElementById("isagree").checked;
-           		 	
-           		 		document.getElementById("submitdk").disabled=!check;
-           		 
-
-           		 	
-           		 }
-           		 </script>
+           		
 	</div>
 	
 	</body></html>

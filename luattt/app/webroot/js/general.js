@@ -49,18 +49,5 @@
 			popupStatus = 0;  // and set value to 0
 		}
 	}
-	 $("#btnLogin").click(function() {
-	        if ($("#username").val() == "") {
-	            alert("Username must not empty!");
-	            $("#username").focus();
-	            return false;
-	        }
-	        if ($("#password").val() == "") {
-	            alert("Paswword must not empty!");
-	            $("#password").focus();
-	            return false;
-	        }
-
-	        return true;
-	    });  
+	
  });
