@@ -31,9 +31,10 @@
 			  <div class="col-lg-4">
 			      <p style="font-weight:bold;">
 			        <?php
-			        echo $this->Paginator->counter(
+			        /*echo $this->Paginator->counter(
 			                'Hiển thị {:start} - {:end} / {:count}'
-			        );
+			        );*/
+			        echo "Hiển thị:".$page."/".$numberrecord;
 			        ?>
 			      </p>
 			  </div>
@@ -53,7 +54,9 @@
 		            </thead>
 		             
 		            <tbody>
-		                <?php foreach ($topics as $topic): ?>
+		                <?php 
+		               
+		                foreach ($topics as $topic): ?>
 		                <tr>
 		                    <td class="tdImg">
 		                    	<?php echo $this->Html->image('image/topic3.png') ?>
@@ -87,9 +90,9 @@
 		                        $post = $topic['Post'][0];
 		                        echo $this->Time->timeAgoInWords($post['created']);
 		                        echo '<p><small>bởi</small>&nbsp;';
-		                        echo $this->Html->link($post['User']['username'],array('controller'=>'users',
+		                        echo $this->Html->link($topic['User']['username'],array('controller'=>'users',
 		                                                                                        'action'=>'profile',
-		                                                                                        $post['User']['user_id'])).' </p>';
+		                                                                                        $topic['User']['user_id'])).' </p>';
 		                             
 		                       }
 		                       ?>
@@ -98,9 +101,12 @@
 		                <?php endforeach;?>
 		            </tbody>
 		        </table>
-	        <div class="pull-right">
+	        <div id="paging" class="right">
 	            <?php
-	                echo $this->element('paginator');
+	            //pagination($controller,$action,$idtype,$page,$pagebgin,$pageend,$numberrecord)
+	            
+	            echo $this->User->pagination("topics","index",$forum['Forum']['id'],$page,$pagebgin,$pageend,$numberrecord);
+	                //echo $this->element('paginator');
 	            ?>
 	         </div>
 

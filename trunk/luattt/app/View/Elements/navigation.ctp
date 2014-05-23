@@ -1,5 +1,5 @@
-<div>
-banner
+<div class="tdImg">
+<?php echo $this->Html->image('/img/image/logo2.png', array('alt' => 'lawVN')) ?>
 </div>
 <div id='menu-nav'> 
           <ul class='nav'>
@@ -12,10 +12,10 @@ banner
               <a href="#">Chào <?php echo $this->Session->read('Auth.User.username');?> <b class="caret"></b></a>
               <ul class="subnav">
                  <li class="subdrop">
-                    <?php echo $this->Html->link(__('Profile'),array('controller'=>'users','action'=>'profile'))?>
+                    <?php echo $this->Html->link(__('Cá nhân'),array('controller'=>'users','action'=>'profile'))?>
                  </li>
                  <li>
-                    <?php echo $this->Html->link(__('Logout'),array('controller'=>'users','action'=>'logout'))?>
+                    <?php echo $this->Html->link(__('Thoát'),array('controller'=>'users','action'=>'logout'))?>
                  </li>
               </ul>
             </li>

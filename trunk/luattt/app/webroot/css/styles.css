@@ -19,7 +19,7 @@ h1,h2,h3,h4,h5,h6 {
 	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
 	color: #006;
 }
-
+input[type=text],input[type=password]{width:350px;}
 .clear {
 	clear: both;
 }
@@ -235,15 +235,18 @@ ul,ol,dl {
 #main .content1 .content2 {
 	padding: 10px;
 }
-
+#main .content1{	min-height:565px;}
 #main .content1 .title {
 	width: 670px;
 	background-image: linear-gradient(to bottom, #65A9D7, #1e62a3);
 	padding: 7px 15px;
 	color: #F0FFFF;
 	font-weight:bold;
+	text-transform: uppercase;
+	text-shadow:1px 1px #003366;
 }
-
+a.title{padding: 7px 5px!important;}
+a.title:hover{color:#ffa842!important;}
 /*#main .display{
     float: left;
     width: 665px;
@@ -356,9 +359,9 @@ ul,ol,dl {
 
 }
 .more div{padding-bottom:5px;}
-.more .iconleft{background-image: url(../img/image/arrow_forward_icon.gif);
-width:21px;height:15px;
-margin:1px 3px 0 0;
+.more .iconleft{background-image: url(../img/icon/more.gif);
+width:20px;height:10px;
+margin:4px 3px 0 0;
 padding:0!important;
 }
 .icontin{background-image: url(../img/image/icontin.png);
@@ -922,10 +925,10 @@ ul.nav1 li.current {
 	padding: 5px 0 10px 0;
 }
 
-/*bt paging*/
+/*paging*/
 #paging{margin:10px 0;}
 #paging a{border:1px solid #93c6c6;padding:3px 7px;margin:0 2px}
-#paging a:hover, #paging a:hover:active{
+#paging a:hover, #paging a:ACTIVE{
 	border-color: #999;
 	-moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
 	-webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -1078,7 +1081,7 @@ fieldset{padding:10px;}
 
 .containtopic table tbody tr {
 	border-bottom: 1px solid #d5d5d5;
-	background: linear-gradient(to bottom, #ffffff 50%, #ddd 100%);
+	background: linear-gradient(to bottom, #ffffff, #eee 100%);
 	height: 40px;
 }
 
@@ -1138,7 +1141,7 @@ hr{padding:3px;margin:3px;}
 .tieude1 a{font:bold 12px #006699;}
 /*User Register*/
 .containregis{float:left;}
-.label{float:left;width:120px;}
+.label{float:left;width:130px;font-weight:bold;}
 .input{float:left;width:400px;}
 /*Button*/
 /*Form Button 2*/
@@ -1169,6 +1172,7 @@ hr{padding:3px;margin:3px;}
 	margin-left: 5px;
 	margin-top: 3px;
 	text-decoration: none;
+	font-weight:bold;
 }
 .button2:hover {
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #0061a7
@@ -1181,12 +1185,14 @@ hr{padding:3px;margin:3px;}
 	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0061a7',
 		endColorstr='#007dc1', GradientType=0);
 	background-color: #0061a7;
+	font-weight:bold;
 }
+.button2 a{color:#FFF;font-weight:bold;width:100%;text-align:center;float:left}
 .button2size{width: 100px;}
 .formcon{float:left;width:600px;margin: 0 0 5px 0;}
 #registration_form{float:left;margin:20px 0 20px 50px;}
 .disbutton{margin:10px 0 0 200px;}
-.note{font:normal 11px Arial;color:#848484;padding:3px 0;width:400px;}
+.note{font:normal 11.5px Arial;color:#848484;padding:3px 0;width:400px;}
 .resizett{width:96%!important;}
 
 .rules{
@@ -1224,7 +1230,7 @@ p{padding:0;margin:0;}
 #trupload {height:25px;}
 #trupload:hover {background-image:linear-gradient(to bottom,#F0FFFF, #99ccff);}
 #trupload td{padding: 5px;}
-.tdstt{width:30px;text-align: center;}
+.tdstt{width:30px;text-align: center;float:left}
 .td1{width:60px;text-align: center;}
 .td2{width:100px;}
 .odd {
@@ -1573,16 +1579,35 @@ ul#titleli > li{
 #containad input[type=password],
 #containad input[type=textarea]
 	 {width:700px;height:25px;}
-#containad textarea {width:700px;height:150px;}
+#containad textarea {width:700px;height:50px;font:normal 12px arial;}
 #containad label{font-weight:bold;}
 .transHoa{text-transform: uppercase;}
 
 /*icon*/
-.icadd, .icedit, .icdelete{width:16px;height:16px;float:left;}
+.icview, .icadd, .icedit, .icdelete{width:16px;height:16px;float:left;margin:2px;}
 .icadd{background-image:url(../img/icon/list_add.png) }
 .icedit{background-image:url(../img/icon/list_edit.png)}
-.icdelete{background-image:url(../img/icon/list_delete.png}
-/*paging*/
-
+.icdelete{background-image:url(../img/icon/list_delete.png)}
+.icview{background-image:url(../img/icon/list.png)}
+.icadd:hover, .icedit:hover, .icdelete:hover{
+	border-color: #999;
+	-moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);}
+/*Profile*/
+.contain_pro{float:left;margin:20px 0 20px 100px;}
+.contain_pro .label{width:150px;}
+.contain_pro .containregis{margin:5px 0;}
+.contain_pro input[text],input[pass]{width:250px;}
+.cachbtn{margin-left:150px;}
+/*change pass*/
+.contain_pro_changepass{float:left;margin:20px 0 20px 100px; display: none;}
+.contain_pro_changepass .label{width:150px;}
+.contain_pro_changepass .containregis{margin:5px 0;}
+.contain_pro_changepass input[text],input[pass]{width:250px;}
+.contain_pro_changepass {margin-left:100px;}
+/*highlight menu*/
+.highlight{ background: #eee;color: #134264;}
+.highlight a{ color: #134264!important; cursor:default;}
 
 

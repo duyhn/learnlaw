@@ -57,6 +57,7 @@ function submittest(){
 function addmethod(){
 	var a=document.getElementsByName("content[]");
 	if(a.length<5){
+		$('#tbform').append();
 		$('#tbform').append("<tr><td><label>Nội dung câu trả lời</label></td><td><textarea rows='4' cols='50' name='content[]' ></textarea><td></tr>");
 		$('#tbform').append("<tr><td><label>Đúng/sai</label></td><td><select name='corect[]'><option value=0>sai</option><option value=1>Đúng</option></select><td></tr>");
 	}

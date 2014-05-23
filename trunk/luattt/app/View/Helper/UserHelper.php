@@ -66,32 +66,39 @@
                 	</div>	
  		";
  		$register.="<div class='left clear disbutton'><input type='submit' id='submitdk'  class='buttonre' disabled=true value='Đăng ký' name='ok'/>
- 		<input type='reset' id=''  class='buttonre' disabled=true value='Nhập lại' name='reset'/>
+ 		<input type='reset' id=''  class='buttonre' value='Nhập lại' name='reset'/>
  		</div>";
  		$register.="</form>";
  		return $register;
  	}
  	//
- 	public function pagination($controller,$action,$idtype,$page,$pagebgin,$pageend,$numberrecord){
+ 	public function pagination($controller,$action,$idtype=null,$page,$pagebgin,$pageend,$numberrecord){
+ 		
  		$pagin="";
- 		$pagin.=$this->link('Trước',array('controller' => $controller,'action' => $action,'full_base' => true,$idtype,($page>1?$page-1:1),$pageend),array('class'=>'button' ));
+ 		if($page>1){
+ 			$pagin.=$this->link('Trước',array('controller' => $controller,'action' => $action,'full_base' => true,$idtype,($page>1?$page-1:1),$pageend),array('class'=>'button' ));
+ 		}
  		if($pagebgin>1)
  			 $pagin.="...";
  		for($i=$pagebgin;$i<$pageend;$i++){
- 			$pagin.=$this->link($i,array('controller' => $controller,'action' => $action,'full_base' => true,$idtype,$i,$pageend))."|";
+ 			$class="";
+ 			if($page==$i){
+ 				$class="curent";
+ 			}
+ 			$pagin.=$this->link($i,array('controller' => $controller,'action' => $action,'full_base' => true,$idtype,$i,$pageend),array('class'=>$class));
  		}
  		if($pageend<$numberrecord)
  			$pagin.= "...";
- 		$pagin.=$this->link('Sau',array('controller' => $controller,'action' =>  $action,'full_base' => true,$idtype,($page<$numberrecord?$page+1:$numberrecord),$pageend),array('class'=>'button' ));
+ 		if($page<$pageend)
+ 			$pagin.=$this->link('Sau',array('controller' => $controller,'action' =>  $action,'full_base' => true,$idtype,($page<$numberrecord?$page+1:$numberrecord),$pageend),array('class'=>'button' ));
  		return $pagin;
  	}
 	//
 	function create_adminmenu($username){
-
 		$menu="<ul class='nav'><li class='trangchu'>".$this->link('Trang chủ',array('controller' => '','action' => '','full_base' => true)
 		)."</li><li class='gioithieu'>";
 		$menu.=$this->link('Quản lý người dùng',array('controller' => 'admin','action' => 'managedUser'));
-		$menu.="<li>".$this->link('Quản lý tài liệu',array('controller' => '','action' => '','full_base' => true))."</li>";
+		$menu.="<li>".$this->link('Quản lý tài liệu',array('controller' => 'admin','action' => 'manageUpload','full_base' => true))."</li>";
 		$menu.="<li>".$this->link('Quản lý thi',array('controller' => 'admin','action' => 'manageTest','full_base' => true))."</li>";
 		$menu.="<li>".$this->link('Quản lý câu hỏi',array('controller' => 'admin','action' => 'manageQuestion','full_base' => true))."</li>";
 		$menu.="<li>".$this->link('Quản lý tư vấn',array('controller' => 'admin','action' => 'manageConsulting','full_base' => true))."</li>";
@@ -101,7 +108,84 @@
 		$menu.="<li style='float:right'><a>Xin chào: ".$username." </a></li> </ul>";
  		return $menu;
 	}
-	//
+ /*Menu admin*/
+ 	function menudoc(){
+ 		$doc= $this->script(array('jquery-1.7.2.min.js','menu_jquery.js'));
+		$doc.="<div id='cssmenu'>
+				<ul>
+				   <li class='active'><a href='index.html'><span>Home</span></a></li>
+				   <li class='has-sub'><a href='#'><span>Thành viên</span></a>
+				      <ul>
+				         <li class='has-sub'><a href='#'><span>Product 1</span></a>
+				           
+				         </li>
+				         <li class='has-sub'><a href='#'><span>Product 2</span></a>
+				            <ul>
+				               <li><a href='#'><span>Sub Item</span></a></li>
+				               <li class='last'><a href='#'><span>Sub Item</span></a></li>
+				            </ul>
+				         </li>
+				      </ul>
+				   </li>
+				   <li>".$this->link('Tài liệu',array('controller' => 'admin','action' => 'manageUpload','full_base' => true))."</a></li>
+					<li>".$this->link('Thông báo',array('controller' => 'admin','action' => 'manageInfo','full_base' => true))."</a></li>
+				    <li>".$this->link('Tin tức',array('controller' => 'admin','action' => 'manageNews','full_base' => true))."</a></li>
+					<li class='has-sub'><a href='#'><span>Thi trực tuyến</span></a>
+				    	<ul>
+				  			<li>".$this->link('Lĩnh vực câu hỏi',array('controller' => 'admin','action' => 'manageTest','full_base' => true))."</a></li>
+				           	<li>".$this->link('Ngân hàng câu hỏi',array('controller' => 'admin','action' => 'manageQuestion','full_base' => true))."</a></li>
+				           	<li>".$this->link('Kết quả thi',array('controller' => '','action' => '','full_base' => true))."</li>
+				   		</ul>
+				   	</li>
+				   	<li>".$this->link('Tư vấn',array('controller' => 'admin','action' => 'manageConsulting','full_base' => true))."</a></li>				  
+				    <li class='has-sub'>".$this->link('Diễn đàn',array('controller' => 'admin','action' => 'manageForum','full_base' => true))."</a>
+				     	<ul>
+				  			<li>".$this->link('Diễn đàn con',array('controller' => 'admin','action' => 'manageForumChild','full_base' => true))."</a></li>
+				           	<li>".$this->link('Chủ đề',array('controller' => 'admin','action' => 'manageToppic','full_base' => true))."</a></li>
+				           	<li>".$this->link('Bình luận',array('controller' => 'admin','action' => 'manageComment','full_base' => true))."</li>
+				   		</ul>
+				   	</li>
+				    <li class='last'><a href='#'><span>Contact</span></a></li>
+				</ul>
+				</div>";
+		return $doc;
+	}
+	/*Menu user 17-5-2014*/
+ 	function menudocUser(){
+		$doc= $this->script(array('jquery-1.7.2.min.js','menu_jquery.js'));
+		$doc.="<div id='cssmenu'>
+				<ul>
+				   <li><a href='index.html'><span>Home</span></a></li>
+				   <li class='has-sub'><a href='#'><span>Thông tin của bạn</span></a>
+				      <ul>
+				      	 <li>".$this->link('Thông tin cá nhân',array('controller' => '','action' => '','full_base' => true))."</li>        
+				         </li>
+				         <li><a onclick='changepass()'>Sửa mật khẩu</a></li>
+				         <li>".$this->link('Sửa thông tin cá nhân',array('controller' => '','action' => '','full_base' => true))."</li>        
+				         </li>
+				      </ul>
+				   </li>
+				   <li class='has-sub'>".$this->link('Chủ đề của bạn',array('controller' => '','action' => '','full_base' => true))."
+				    	<ul>
+				  			<li>".$this->link('Tạo chủ đề',array('controller' => '','action' => '','full_base' => true))."</li>
+				           <li>".$this->link('Sửa chủ đề',array('controller' => '','action' => '','full_base' => true))."</li>
+				   		</ul>
+				   </li>
+				   <li class='has-sub'>".$this->link('Bình luận của bạn',array('controller' => '','action' => '','full_base' => true))."
+				    	<ul>
+				  			<li>".$this->link('Xem bình luận',array('controller' => '','action' => '','full_base' => true))."</li>
+				           <li>".$this->link('Sửa bình luận',array('controller' => '','action' => '','full_base' => true))."</li>
+				   		</ul>
+				   </li>
+				   <li>".$this->link('Bình luận của bạn',array('controller' => '','action' => '','full_base' => true))."</a></li>
+				   <li class='last'><a href='#'><span>Contact</span></a></li>
+				</ul>
+				</div>";
+		return $doc;
+	}
+	
+	/*User
+	 * */
 	function create_formManageUser($role,$user,$user_id=null){
 		$name="";
 		$email="";
@@ -169,7 +253,10 @@
 	function create_listQuestion($data){
 		$register="<table cellspacing='0' class='clear sizeAd'>
 					<thead class='tbtailieu'>
-					<tr><th class='tdstt'>STT</th><th>Câu hỏi</th><th class='sizeAction'>Tác vụ</th></tr>
+					<tr><th class='tdstt'>STT</th>
+					<th >Chọn</th>
+					<th>Câu hỏi</th>
+					<th class='sizeAction'>Tác vụ</th></tr>
 					</thead><tbody>";
 		$i=1;
 
@@ -178,9 +265,10 @@
 		if(($i%2)!=0){
 			$class="odd";
 		}
-			$register.="<tr id='trupload' class=". $class ."><td>".$i."</td><td>".$item['Question']['title']."</td>";
-			$register.="<td>".$this->link('Xem',array('controller' => '','action' => '','full_base' => true)).$this->link('Sửa',array('controller' => 'admin','action' => 'editQuestion','full_base' => true,$item['Question']['id']));
-			$register.=$this->link('Xóa',array('controller' => 'admin','action' => 'deleteQuestion','full_base' => true,$item['Question']['id']))."</td></tr>";
+			$register.="<tr id='trupload' class=". $class ."><td>".$i."</td><td><input type='checkbox' name='chon[]'/></td><td>".$item['Question']['title']."</td>";
+			$register.="<td class='sizeAction'>".$this->link(' ',array('controller' => 'admin','action' => 'viewQuestion','full_base' => true,$item['Question']['id']),array('class'=>'icview','title'=>'xem'));
+			$register.=$this->link(' ',array('controller' => 'admin','action' => 'editQuestion','full_base' => true,$item['Question']['id']),array('class'=>'icedit','title'=>'sửa'));
+			$register.=$this->link(' ',array('controller' => 'admin','action' => 'deleteQuestion','full_base' => true,$item['Question']['id']),array('class'=>'icdelete','title'=>'xóa'))."</td></tr>";
 			$i++;
 		}
 		$register.="</td></tr></tbody></table>
@@ -334,8 +422,11 @@
 		}
 		return $out;
 	}
+ 
 	
-	public function createFormNews($News=null,$idtypeNews=null,$ListtypeNew=null,$page=null,$end=null){
+	/* Tin tuc Rss
+	 * */
+	public function create_FormNews($News=null,$idtypeNews=null,$ListtypeNew=null,$page=null,$end=null){
 		$tile="";
 		$idnews=0;
 		$noidung="";
@@ -346,8 +437,7 @@
 			$noidung=$News['Tbltintuc']['noidung'];
 			$action="/luatvnam/admin/admin/updateNews";
 		}
-		
-		
+
 		$register="<form action='".$action."' method='POST' id='news' name='News'>";
 		$register.="<table id='tbform'><tr><td><label for='register_name'>Thể loại</label></td>";
 		if(isset($page) || isset($end)){
@@ -364,88 +454,42 @@
 			$register.="<option value=".$item['Tbltheloai']['id_theloai']." " . $selected.">".$item['Tbltheloai']['ten_theloai']."</option>";
 		}
 		$register.="</select><td></tr>";
-		$register.="<tr><td><label for='register_name'>Tiêu đề</label></td>";
-		$register.="<td><input type='text' name='tieude' id='register_title' value='".$tile."' /><td></tr>";
-		$register.="<input type='hidden' name='id_tintuc'  value='".$idnews."' />";
-		$register.="<tr><td><label for='register_name'>Nội dung</label></td>";
-		$register.="<td><textarea rows='4' cols='50' name='noidung' id='noidung' >".$noidung."</textarea><td></tr>";
+		$register.="<tr><td><label for='tieude'>Tiêu đề</label></td>";
+		$register.="<td><input type='text' name='tieude' id='tieude_news' value='".$tile."' /><td></tr>";
+		$register.="<input type='hidden' name='id_tintuc' id='id_news' value='".$idnews."' />";
+		$register.="<tr><td><label for='noidungnews'>Nội dung</label></td>";
+		$register.="<td><textarea rows='4' cols='50' name='noidung' id='noidung_news' >".$noidung."</textarea><td></tr>";
 		$register.="<script type='text/javascript'>CKEDITOR.replace( noidung); </script>";	
 		$register.="</table>";
 		$register.="<div class='left clear cachbtleft cachbt'>
-						<input class='button2 sizebutton2' id='' type='submit' value='Lưu' name='ok'/>
-						<input class='button2' id='' type='button' value='Tìm kiếm' name='search'/>
+						<input class='button2 sizebutton2' id='submit_news' type='submit' value='Lưu' name='ok'/>
+						<input type='reset' id=''  class='button2 sizebutton2' value='Hủy' name='reset'/>
+						<input class='button2' id='search_news' type='button' value='Tìm kiếm' name='search'/>
 					</div></form>";
 		return $register;
 	}
-	public function createListNews($typeNews=null,$page,$end){
-		$register="<table><thead><tr><th>stt</th><th>Tin tức</th><th class='sizeAction'>Tác vụ</th></tr></thead><tbody>";
+	public function createListNews($typeNews=null,$page=null,$end=null){
+		$register="<table cellspacing='0' class='clear sizeAd'>
+					<thead class='tbtailieu'>
+					<tr><th class='tdstt'>STT</th>
+					<th>Tin tức</th>
+					<th class='sizeAction'>Tác vụ</th></tr></thead><tbody>";
 		$i=1;
-		$data=$typeNews[0]['Tbltintuc'];
-		foreach ($data as $item){
-			$register.="<tr><td>".$i."</td><td>".$item['tieude']."</td>";
-			$register.="<td>".$this->link('Xem',array('controller' => '','action' => '','full_base' => true)).$this->link('Sửa',array('controller' => 'admin','action' => 'editNews','full_base' => true,$item['id_tintuc'],$page,$end));
-			$register.=$this->link('Xóa',array('controller' => 'admin','action' => 'deleteNews','full_base' => true,$item['id_tintuc'],$page,$end))."</td></tr>";
+		//$data=$typeNews['Tbltintuc'];
+		foreach ($typeNews as $item){
+			$register.="<tr><td>".$i."</td><td>".$item['Tbltintuc']['tieude']."</td>";
+		//	$register.="<td>".$this->link('Xem',array('controller' => '','action' => '','full_base' => true)).$this->link('Sửa',array('controller' => 'admin','action' => 'editNews','full_base' => true,$item['Tbltintuc']['id_tintuc'],$page,$end));
+		//	$register.=$this->link('Xóa',array('controller' => 'admin','action' => 'deleteNews','full_base' => true,$item['Tbltintuc']['id_tintuc'],$page,$end))."</td></tr></td></tr>";			
+			$register.="<td class='sizeAction'>".$this->link(' ',array('controller' => 'admin','action' => 'viewNews','full_base' => true,$item['Tbltintuc']['id_tintuc']),array('class'=>'icview','title'=>'xem'));
+			$register.=$this->link(' ',array('controller' => 'admin','action' => 'editNews','full_base' => true,$item['Tbltintuc']['id_tintuc']),array('class'=>'icedit','title'=>'sửa'));
+			$register.=$this->link(' ',array('controller' => 'admin','action' => 'deleteNews','full_base' => true,$item['Tbltintuc']['id_tintuc']),array('class'=>'icdelete','title'=>'xóa'))."</td></tr>";
 			$i++;
 		}
-		$register.="<tr><td></td><td>".$this->link('Tạo mới',array('controller' => 'admin','action' => 'admin_manageNews','full_base' => true))."</td></tr></tbody></table";
+		$register.="</tbody></table>";
+		$register.="<span class='icadd cach'></span> ".$this->link('Tạo mới',array('controller' => 'admin','action' => 'admin_manageNews','full_base' => true));
 			
 		return $register;
 	}
-	/*Menu admin*/
- 	function menudoc(){
-		$doc= $this->script(array('menu_jquery.js'));
-		$doc.="<div id='cssmenu'>
-				<ul>
-				   <li class='active'><a href='index.html'><span>Home</span></a></li>
-				   <li class='has-sub'><a href='#'><span>Quản lý người dùng</span></a>
-				      <ul>
-				         <li class='has-sub'><a href='#'><span>Product 1</span></a>
-				            <ul>
-				               <li><a href='#'><span>Sub Item</span></a></li>
-				               <li class='last'><a href='#'><span>Sub Item</span></a></li>
-				            </ul>
-				         </li>
-				         <li class='has-sub'><a href='#'><span>Product 2</span></a>
-				            <ul>
-				               <li><a href='#'><span>Sub Item</span></a></li>
-				               <li class='last'><a href='#'><span>Sub Item</span></a></li>
-				            </ul>
-				         </li>
-				      </ul>
-				   </li>
-				   <li>".$this->link('Quản lý tài liệu',array('controller' => 'Uploads','action' => 'upload','full_base' => true))."</a></li>
-				   <li class='last'><a href='#'><span>Contact</span></a></li>
-				</ul>
-				</div>";
-		return $doc;
-	}
-	/*Menu user 17-5-2014*/
- 	function menudocUser(){
-		$doc= $this->script(array('menu_jquery.js'));
-		$doc.="<div id='cssmenu'>
-				<ul>
-				   <li class='active'><a href='index.html'><span>Home</span></a></li>
-				   <li class='has-sub'><a href='#'><span>Quản lý người dùng</span></a>
-				      <ul>
-				         <li class='has-sub'><a href='#'><span>Product 1</span></a>
-				            <ul>
-				               <li><a href='#'><span>Sub Item</span></a></li>
-				               <li class='last'><a href='#'><span>Sub Item</span></a></li>
-				            </ul>
-				         </li>
-				         <li class='has-sub'><a href='#'><span>Product 2</span></a>
-				            <ul>
-				               <li><a href='#'><span>Sub Item</span></a></li>
-				               <li class='last'><a href='#'><span>Sub Item</span></a></li>
-				            </ul>
-				         </li>
-				      </ul>
-				   </li>
-				   <li>".$this->link('Thông tin cá nhân',array('controller' => '','action' => '','full_base' => true))."</a></li>
-				   <li class='last'><a href='#'><span>Contact</span></a></li>
-				</ul>
-				</div>";
-		return $doc;
-	}
+	
 }					
 ?>

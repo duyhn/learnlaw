@@ -32,15 +32,16 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 	var $layout = null; // biến layout
-	var $helpers = array("Form","Html","Common","Gioithieu","Session","Contentnews","User","Js","Session");
+	var $helpers = array("Form","Html","Common","Gioithieu","Session","Contentnews","User","Js","Session","Paginator");
 	var $components = array("Session","Auth","Paginator");
 	var $sessionUsername  = "Username";
 	var $sessionUserid = "Userid";
 	var $sessionEmail = "Email";
 	var $numberpage=5;
-	var $numberRecord=2;
+	var $numberRecord=5;
 	var $numberpageStep=3;
 	var $sessionUserRole="userRole";
+
 	function beforeFilter()
 	{
 	//	Security::setHash("md5");
@@ -85,4 +86,5 @@ class AppController extends Controller {
 		}*/
 	
 	}
+	
 }

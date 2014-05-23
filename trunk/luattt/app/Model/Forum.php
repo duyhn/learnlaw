@@ -2,7 +2,7 @@
 App::uses('AppModel', 'Model');
  
 class Forum extends AppModel {
- 
+	var $name="Forum";
     public $validate = array(
         'name' => array(
             'notEmpty' => array(

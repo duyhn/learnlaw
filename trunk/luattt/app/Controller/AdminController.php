@@ -1,8 +1,7 @@
 <?php
 class AdminController extends  AppController{
 	var $name="Admin";
-	public $uses = array('User','Role','Question','Typequestion','Method','Typeconsulting','Consulting','Resultconsulting','Tbltintuc','Tbltheloai');
-
+	public $uses = array('User','Role','Question','Typequestion','Method','Typeconsulting','Consulting','Resultconsulting','Tbltintuc','Tbltheloai','Upload','Tblloaitailieu','Forum');
 	public function index() {
 		$data=$this->User->find('all');
 		$this->set("data",$data);
@@ -56,7 +55,7 @@ class AdminController extends  AppController{
 			$this->set("data",$this->User->find('all',array('limit' => $this->numberRecord, 'offset'=>$page-1)));
 			$numberrecord=$this->User->find('count');
 		}
-		$numberrecord=(round($numberrecord/$this->numberRecord)>0?($numberrecord%$this->numberRecord>0? round($numberrecord/$this->numberRecord)+1:round($numberrecord/$this->numberRecord)):1);
+		//$numberrecord=(round($numberrecord/$this->numberRecord)>0?($numberrecord%$this->numberRecord>0? round($numberrecord/$this->numberRecord)+1:round($numberrecord/$this->numberRecord)):1);
 		
 		$data=$this->User->find('all');
 		$role=$this->Role->find('all');
@@ -66,8 +65,8 @@ class AdminController extends  AppController{
 		$this->pagination($page, $numberrecord,$end);
 	}
 	//end manage user
-	public function admin_manageTest() {
-		
+	public function admin_manageTest($idtype=null,$page=null,$end=null) {
+		$this->populateEditFormQuesion($idtype,$page,$end);
 	}
 	public function admin_manageQuestion($idtype=null,$page=null,$end=null) {
 		
@@ -155,7 +154,7 @@ class AdminController extends  AppController{
 			$this->set("data",$this->Question->find('all',array('limit' => $this->numberRecord, 'offset'=>$page-1)));
 			$numberrecord=$this->Question->find('count');
 		}
-		$numberrecord=(round($numberrecord/$this->numberRecord)>0?($numberrecord%$this->numberRecord>0? round($numberrecord/$this->numberRecord)+1:round($numberrecord/$this->numberRecord)):1);
+		
 		
 		
 		$this->set("idtype",$idtype);
@@ -164,6 +163,8 @@ class AdminController extends  AppController{
 	}
 	//Phan trang
 	public function pagination($page,$numberrecord,$end){
+		$numberrecord=(round($numberrecord/$this->numberRecord)>0?($numberrecord%$this->numberRecord>0? round($numberrecord/$this->numberRecord)+1:round($numberrecord/$this->numberRecord)):1);
+		
 		$end=($end<$numberrecord?$end:$numberrecord);
 		$pageend=$page+$this->numberpageStep;
 		$pageend=($pageend<=$end?($page-$this->numberpageStep>($end-$this->numberpage)?$end:($page-$this->numberpageStep>1?$end-$this->numberpageStep+1:$this->numberpage)):($pageend<$numberrecord?$pageend:$numberrecord));
@@ -211,8 +212,9 @@ class AdminController extends  AppController{
 		$this->set("consultings",$this->getConsulted(1));
 	}
 	//end manage Consulting
+	
 	//begin manage news
-	public function admin_manageNews($idtype=NULL,$page=null,$end=null) {
+	public function admin_manageNews($idtype=null,$page=null,$end=null) {
 		$this->populateformNotice($idtype,$page,$end);
 	}
 	public function admin_createNews() {
@@ -227,10 +229,12 @@ class AdminController extends  AppController{
 		$page=(isset($page)&&$page!=null?$page:1);
 		$end=(isset($end)&&$end!=null?$end:$this->numberpage);
 		$idtype=(isset($idtype)&& $idtype!=null?$idtype:6);
-		$typeNews=$this->Tbltheloai->find("all",array('conditions' => array('Tbltheloai.id_theloai' => $idtype)));
-		$numberrecord=count($typeNews[0]);
+		$typeNews=$this->Tbltintuc->find('all',array('conditions' => array('Tbltintuc.id_theloai' => $idtype),'limit' => $this->numberRecord, 'offset'=>$page-1));
+		$listNews=$this->Tbltintuc->find("all",array('conditions' => array('Tbltintuc.id_theloai' => $idtype)));
+		$numberrecord=count($listNews);
 		$this->set("ListtypeNew",$this->Tbltheloai->find("all"));
 		$this->set("typeNews",$typeNews);
+		$this->set("idtype",$idtype);
 		$this->pagination($page, $numberrecord,$end);
 	}
 	public function admin_editNews($idnews,$page=null,$end=null) {
@@ -258,15 +262,19 @@ class AdminController extends  AppController{
 	/* Quan ly upload tai lieu
 	 * 17-5-2014
 	 * */
-	function admin_manageUpload($idloai=null){		
+	function admin_manageUpload1($idloai=null,$page=null,$end=null){		
         $tblloaitailieu = $this->Upload->Tblloaitailieu->read(null,$idloai);
         $this->set('tblloaitailieu',$tblloaitailieu);
-		$files = $this->Tblloaitailieu->find("all");
-		$this->set("files",$files);
+		/*$files = $this->Tblloaitailieu->find("all");
+		$this->set("files",$files);*/
+		$this->populateEditFormUpload($idloai,$page,$end);
 	}
-	function admin_upload(){
-		$this->set("files",$this->Upload->find('all'));
-		$this->set("typefile",$this->Tblloaitailieu->find('all'));
+
+	public function admin_manageUpload($idloai=null,$page=null,$end=null) {	
+		$tbloai=$this->Tblloaitailieu->find('first',array('order' => array('tblloaitailieu.idloai DESC')));
+		$idloai=((isset($idloai)&& $idloai!=null)?$idloai:$tbloai['Tblloaitailieu']['idloai']);
+		
+		
 		if($this->request->is('post')){
 			$destination = realpath('../../app/webroot/img/uploads/') . '/';
 			$size = $_FILES['file']['size'];
@@ -278,7 +286,7 @@ class AdminController extends  AppController{
 			$idloai =$_POST['idloai'];
 			$tmp_name = $_FILES['file']['tmp_name'];
 			// $date = date("YmdHis", time());
-			if($size>(1024*5)){
+			if($size<(1024*1024*1000)){
 			 	if (!file_exists($path)) {
                    move_uploaded_file($tmp_name,$destination.$name);
 				$this->Upload->query("INSERT INTO uploads(name, path, type, size, date, modified,idloai) VALUES('".$name."', '".$destination."', '".$type."',".$size.",".$date.",".$modified.",".$idloai.")");
@@ -291,10 +299,26 @@ class AdminController extends  AppController{
 			}
 			else{
 			//	$msg = '<div class="thongbao">Kích thước file ' . $name . ' quá quy định!</div>';
-				$this->set("msg","<div class='thongbao'>Kích thước file ' . $name . ' quá quy định!</div>");
+				$this->set("msg","<div class='thongbao'>Kích thước file ' . $name .$size . ' quá quy định!</div>");
 			//	echo $msg;
 			}
+			
 		}
+		$this->populateEditFormUpload($idloai,$page,$end);
 	}
+	public function populateEditFormUpload($idloai=NULL,$page=null,$end=null){
+		
+		$this->set("typefile",$this->Tblloaitailieu->find('all'));
+		$page=(($page==null || !isset($page))?1:$page);
+		$end=(($end==null)||!isset($end)?$this->numberpage:$end);
+		$idtype=(($idloai==null || !isset($idloai))?1:$idloai);
+		
+		$files=$this->Upload->find('all',array('conditions'=>array('Upload.idloai'=>$idloai), 'limit' => $this->numberRecord, 'offset'=>$page-1));
+		$this->set("files",$files);
+		$this->set("idloai",$idloai);
+		$numberrecord=$this->Upload->find('count',array('conditions'=>array('Upload.idloai'=>$idloai)));
+		$this->pagination($page, $numberrecord,$end);
+	}
+	
 }
 ?>

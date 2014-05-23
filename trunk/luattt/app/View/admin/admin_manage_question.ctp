@@ -5,7 +5,7 @@ echo $this->Common->create_heaeder();
 echo $this->Common->script("testsOnline.js");
 
 ?>
-<div id='bttop'>BACK TO TOP</div></head>
+</head>
 <body>
 <div id='wrapper1'><div id='header'><?php echo $head['header'];?></div><div class='cach'></div>
 <div id='menu-nav1'> <?php echo $this->User->create_adminmenu($this->Session->read("Username")); ?> </div>
@@ -28,11 +28,17 @@ echo $this->Common->script("testsOnline.js");
 		                <?php	if($pagebgin>1)
 		                		echo "...";
 		                	for($i=$pagebgin;$i<=$pageend;$i++){
-		                		echo $this->Common->link($i,array('controller' => 'admin','action' => 'admin_manageQuestion','full_base' => true,$idtype,$i,$pageend));
+		                		$class="";
+		                		if($page==$i){
+		                			$class="curent";
+		                		}
+		                		echo $this->Common->link($i,array('controller' => 'admin','action' => 'admin_manageQuestion','full_base' => true,$idtype,$i,$pageend),array('class'=>$class));
 		                	}
 		                	if($pageend<$numberrecord)
 		                		echo "...";
-		                 	echo $this->Common->link('Sau',array('controller' => 'admin','action' => 'admin_manageQuestion','full_base' => true,$idtype,($page<$numberrecord?$page+1:$numberrecord),$pageend),array('class'=>'button' ));
+		                	if($page<$numberrecord){
+		                 		echo $this->Common->link('Sau',array('controller' => 'admin','action' => 'admin_manageQuestion','full_base' => true,$idtype,($page<$numberrecord?$page+1:$numberrecord),$pageend),array('class'=>'button' ));
+		                 	}
 		                ?>
                 	</div>
                 </div>

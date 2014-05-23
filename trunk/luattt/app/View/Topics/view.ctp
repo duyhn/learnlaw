@@ -95,9 +95,13 @@
             </tbody>
  
         </table>
-        <div class="pull-right">
+        <div id="paging" class="right">
+        
             <?php
-                echo $this->element('paginator');
+            	//print_r($topic);
+            	//pagination($controller,$action,$idtype,$page,$pagebgin,$pageend,$numberrecord)
+            	echo $this->User->pagination("topics","view",$topic['Topic']['id'],$page,$pagebgin,$pageend,$numberrecord);
+               // echo $this->element('paginator');
             ?>
         </div>
         <div class="clearfix"></div>

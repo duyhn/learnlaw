@@ -14,7 +14,9 @@
 	<div class="border info">
 		<p>Chào mừng bạn đến với Diễn đàn Pháp luật Việt Nam.</p>
 		<p>Nếu đây là lần đầu bạn tham gia diễn đàn, trước tiên hãy xem qua quy định diễn đàn.
-		Để có thể tham gia thảo luận trên diễn đàn bạn phải đăng ký làm thành viên. Click vào đây để đăng ký thành viên diễn đàn.
+		Để có thể tham gia thảo luận trên diễn đàn bạn phải đăng ký làm thành viên. 
+		<p><?php echo $this->Html->link(__('Click vào đây để đăng ký thành viên diễn đàn.'),array('controller'=>'users','action'=>'register'))?>
+		</p>
 		</p> 
 	</div>
 
@@ -31,7 +33,9 @@
                     </thead>
                      
                     <tbody>
-                        <?php foreach ($forums as $forum): ?>
+                        <?php 
+                       
+                        foreach ($forums as $forum): ?>
                         <tr>
                             <td class="tdImg">
                             	<?php echo $this->Html->image('image/chat-icon.png') ?>
@@ -55,16 +59,16 @@
                                <?php
                                if(count($forum['Post'])>0) {
                                 $post = $forum['Post'][0];
-                                echo $this->Html->link($post['Topic']['name'],array('controller'=>'topics',
+                                echo $this->Html->link($forum['Topic'][0]['name'],array('controller'=>'topics',
                                                                                             'action'=>'view',
-                                                                                            $post['Topic']['id']));
+                                                                                            $forum['Topic'][0]['id']));
                                 echo '&nbsp;';
                                 echo $this->Time->timeAgoInWords($post['created']);
                                 echo '&nbsp;<small>by</small>&nbsp;';
                                 echo '&nbsp;';
-                                echo $this->Html->link($post['User']['username'],array('controller'=>'users',
+                                echo $this->Html->link($post[0][0]['User']['username'],array('controller'=>'users',
                                                                                                 'action'=>'profile',
-                                                                                                $post['User']['user_id']));
+                                                                                                $post[0][0]['User']['user_id']));
                                }
                                ?>
                                  
@@ -75,7 +79,9 @@
                 </table>
                 <div class="right">
                     <?php
-                        echo $this->element('paginator');
+                    echo $this->User->pagination("Forums","",null,$page,$pagebgin,$pageend,$numberrecord);
+             
+                       // echo $this->element('paginator');
                     ?>
                  </div>
                  <div class="tieudemain left bordertron">Thống kê diễn đàn</div>

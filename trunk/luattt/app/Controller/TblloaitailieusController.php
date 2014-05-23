@@ -40,7 +40,7 @@ class TblloaitailieusController extends AppController{
                 $data['Tblloaitailieu']['tenloai'] = $this->Tblloaitailieu->tenloai;*/
             }
             //Fillter description
-            if(isset($this->passedArgs['Tblloaitailieu.mota'])) {
+     /*       if(isset($this->passedArgs['Tblloaitailieu.mota'])) {
                 $keywords = $this->passedArgs['Tblloaitailieu.mota'];
                 $conditions[] = array(
                     "OR" => array(
@@ -50,13 +50,14 @@ class TblloaitailieusController extends AppController{
                 );
                 $data['Tblloaitailieu']['mota'] = $keywords; 
             }
-            
+      */      
             //Limit and Order By
+
             $this->paginate= array(
-                'limit' => 4,
+                'limit' => 3,
                 'order' => array('tenloai' => 'desc'),
             );
-            
+        
             $this->data = $data;//giu lai gia tri tim kiem tren form tim kiem
             $this->set("posts",$this->paginate("Tblloaitailieu",$conditions));
         }
