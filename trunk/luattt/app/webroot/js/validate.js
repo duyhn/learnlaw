@@ -1,3 +1,4 @@
+
 // JavaScript Document
 //==Login
 $(document).ready(function(){
@@ -15,6 +16,7 @@ $(document).ready(function(){
 	        
 	        return true;
 	 });  
+
 
 	 $("#submitdk").click(function() {
 			if ($("#register_name").val() == "") {

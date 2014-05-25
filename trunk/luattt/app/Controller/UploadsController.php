@@ -22,11 +22,11 @@ class UploadsController extends AppController {
 		$files = $this->Tblloaitailieu->find("all");
 		$this->set("files",$files);
 	}
-	function view($id=null){
+	function view($id=null,$page=null,$end=null){
 		$tblloaitailieu = $this->Upload->Tblloaitailieu->read(null,$id);
         $this->set('tblloaitailieu',$tblloaitailieu);
-		$data = $this->Upload->findbyIdLoaiTL($id);
-		$this->set('datas', $data);  
+		
+		$this->populateEditfileUpload($id,$page,$end); 
 	}
 	
 	function upload(){
@@ -99,6 +99,17 @@ class UploadsController extends AppController {
 	}
 	function delete(){
 		
+	}
+	function populateEditfileUpload($idloai=NULL,$page=null,$end=null){
+		$this->set("typefile",$this->Tblloaitailieu->find('all'));
+		$page=(($page==null || !isset($page))?1:$page);
+		$end=(($end==null)||!isset($end)?$this->numberpage:$end);
+		$idtype=(($idloai==null || !isset($idloai))?1:$idloai);
+		$data=$this->Upload->find('all',array('conditions'=>array('Upload.idloai'=>$idloai), 'limit' => $this->numberRecord, 'offset'=>$page-1));
+		$this->set("datas",$data);
+		$this->set("idloai",$idloai);
+		$numberrecord=$this->Upload->find('count',array('conditions'=>array('Upload.idloai'=>$idloai)));
+		$this->pagination($page, $numberrecord,$end);
 	}
 }
 ?>

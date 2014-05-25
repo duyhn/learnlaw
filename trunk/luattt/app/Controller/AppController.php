@@ -86,5 +86,20 @@ class AppController extends Controller {
 		}*/
 	
 	}
+	//Phan trang
+	public function pagination($page,$numberrecord,$end){
+		$numberrecord=(round($numberrecord/$this->numberRecord)>0?($numberrecord%$this->numberRecord>0? round($numberrecord/$this->numberRecord)+1:round($numberrecord/$this->numberRecord)):1);
+	
+		$end=($end<$numberrecord?$end:$numberrecord);
+		$pageend=$page+$this->numberpageStep;
+		$pageend=($pageend<=$end?($page-$this->numberpageStep>($end-$this->numberpage)?$end:($page-$this->numberpageStep>1?$end-$this->numberpageStep+1:$this->numberpage)):($pageend<$numberrecord?$pageend:$numberrecord));
+		$pagebgin=$pageend-$this->numberpage+1;
+		$pagebgin=($pagebgin>1?$pagebgin:1);
+		$this->set("pageend",$pageend);
+		$this->set("pagebgin",$pagebgin);
+		$this->set("page",$page);
+		$this->set("numberrecord",$numberrecord);
+	
+	}
 	
 }
