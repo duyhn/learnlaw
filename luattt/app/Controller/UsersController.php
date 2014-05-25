@@ -66,7 +66,9 @@ class UsersController extends AppController{
 				}
 				return $this->redirect($this->Auth->redirect());//chuyen huong trang
 			}
+
 			$this->Session->setFlash(__('Username or Password không chính xác, mời nhập lại!'));
+
 		}
 	}
 	

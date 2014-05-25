@@ -50,17 +50,24 @@ echo $this->Common->create_heaeder();
 			}
 			?>			
 			<tr id="trupload" class="<?php echo $class ?>">
-				<td><?php echo $data['uploads']['id']; ?></td>
-				<td><?php echo $data['uploads']['name']; ?></td>
-				<td class="td1"><?php echo $data['uploads']['dem']; ?></td>
-				<td class="td1"><?php echo $this->Html->link('Tải về',array('controller' => 'Uploads','action' => 'download','full_base' => true,$data['uploads']['id']));?></td>
+				<td><?php echo $data['Upload']['id']; ?></td>
+				<td><?php echo $data['Upload']['name']; ?></td>
+				<td class="td1"><?php echo $data['Upload']['dem']; ?></td>
+				<td class="td1"><?php echo $this->Html->link('Tải về',array('controller' => 'Uploads','action' => 'download','full_base' => true,$data['Upload']['id']));?></td>
 			</tr>
 			<?php $i++; endforeach; ?>
 		</table>
-		echo $this->Paginator->sort('user_id');
+	<div id="paging" class="right">
+ <?php 
+		echo $this->User->pagination("Uploads","view",$idloai,$page,$pagebgin,$pageend,$numberrecord);
+		?>
+ </div>
 		</div>
+		
 	</div>
+	
 <div class="clear"></div>
+ 
 </div>
 <div id='footer'><?php  
 $data=$this->Common->general();
