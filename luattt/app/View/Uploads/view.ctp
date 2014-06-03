@@ -3,7 +3,7 @@
 <?php
 $head=$this->Common->general();
 echo $this->Common->create_heaeder();
-
+echo $this->Common->script(array("pdfobject.js,files.js"));
 ?>
 <div id='bttop'>BACK TO TOP</div>
 </head>
@@ -53,21 +53,23 @@ echo $this->Common->create_heaeder();
 				<td><?php echo $data['Upload']['id']; ?></td>
 				<td><?php echo $data['Upload']['name']; ?></td>
 				<td class="td1"><?php echo $data['Upload']['dem']; ?></td>
-				<td class="td1"><?php echo $this->Html->link('Tải về',array('controller' => 'Uploads','action' => 'download','full_base' => true,$data['Upload']['id']));?></td>
+				<td class="td1"><?php echo $this->Html->link('Tải về',array('controller' => 'Uploads','action' => 'download','full_base' => true,$data['Upload']['id']));
+				
+				?><a onclick="viewpdf()">Xem</a></td>
 			</tr>
 			<?php $i++; endforeach; ?>
 		</table>
 	<div id="paging" class="right">
  <?php 
-		echo $this->User->pagination("Uploads","view",$idloai,$page,$pagebgin,$pageend,$numberrecord);
+		echo $this->User->pagination("Uploads","view",$idloai,null,$page,$pagebgin,$pageend,$numberrecord);
 		?>
  </div>
 		</div>
 		
 	</div>
-	
+</object>
 <div class="clear"></div>
- 
+ <div id="readpdf"></div>
 </div>
 <div id='footer'><?php  
 $data=$this->Common->general();

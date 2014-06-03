@@ -51,10 +51,10 @@ class AdminController extends  AppController{
 		$end=(($end==null)||!isset($end)?$this->numberpage:$end);
 		$idtype=(($iduser==null || !isset($iduser))?1:$iduser);
 		
-		$this->set("data",$this->User->find('all',array('conditions'=>array('User.user_id'=>$iduser), 'limit' => $this->numberRecord, 'offset'=>$page-1)));
+		$this->set("data",$this->User->find('all',array('conditions'=>array('User.user_id'=>$iduser), 'limit' => $this->numberRecord, 'offset'=>($page-1)*$this->numberRecord)));
 		$numberrecord=$this->User->find('count',array('conditions'=>array('User.user_id'=>$iduser)));
 		if($iduser==1 || $iduser==null){
-			$this->set("data",$this->User->find('all',array('limit' => $this->numberRecord, 'offset'=>$page-1)));
+			$this->set("data",$this->User->find('all',array('limit' => $this->numberRecord, 'offset'=>($page-1)*$this->numberRecord)));
 			$numberrecord=$this->User->find('count');
 		}
 		//$numberrecord=(round($numberrecord/$this->numberRecord)>0?($numberrecord%$this->numberRecord>0? round($numberrecord/$this->numberRecord)+1:round($numberrecord/$this->numberRecord)):1);
@@ -71,10 +71,11 @@ class AdminController extends  AppController{
 	public function admin_manageTest($idtype=null,$page=null,$end=null) {
 		$this->populateEditFormQuesion($idtype,$page,$end);
 	}
-	public function admin_manageQuestion($idtype=null,$page=null,$end=null) {
+	public function admin_manageQuestion($idtype=null,$quesion=null,$page=null,$end=null) {
+		if(isset($quesion)&& $quesion!=0)
+			$this->set("method",$this->Method->find('all',array('conditions' => array('Method.question_id' => $quesion))));
 		
-		
-		$this->populateEditFormQuesion($idtype,$page,$end);
+		$this->populateEditFormQuesion($idtype,$quesion,$page,$end);
 	}
 	
 	//manage Question
@@ -98,14 +99,15 @@ class AdminController extends  AppController{
 			
 		}
 		//array_push($quetion,$data
-		$this->populateEditFormQuesion();
+		$this->populateEditFormQuesion($data['id_type'],null,$data['page'],$data['end']);
 		$this->render('admin_manageQuestion');
 	}
 	
-	public function admin_editQuestion($id) {
-		$this->set("question",$this->Question->find('first',array('conditions' => array('Question.id' => $id))));
+	public function admin_editQuestion($id,$page=null,$end=null) {
+		$question=$this->Question->find('first',array('conditions' => array('Question.id' => $id)));
+		$this->set("question",$question);
 		$this->set("method",$this->Method->find('all',array('conditions' => array('Method.question_id' => $id))));
-		$this->populateEditFormQuesion();
+		$this->populateEditFormQuesion($question['Question']['id_type'],$id,$page,$end);
 		$this->render('admin_manageQuestion');
 	}
 	public function admin_updateQuestion($idqs) {
@@ -127,39 +129,37 @@ class AdminController extends  AppController{
 			}
 			
 		//array_push($quetion,$data
-		$this->populateEditFormQuesion();
+		$this->populateEditFormQuesion($data['id_type'],$idqs,$data['page'],$data['end']);
 		$this->render('admin_manageQuestion');
 		
 	}
-	public function admin_deleteQuestion($idqs) {
-		if($this->request->is('get')){
-			$this->Method->deleteAll(array('Method.question_id'=>$idqs));
-			$this->Question->deleteAll(array('Question.id'=>$idqs));
-		}
-		$this->populateEditFormQuesion();
+	public function admin_deleteQuestion($idtype,$idqs,$page=null,$end=null) {
+		$this->Method->deleteAll(array('Method.question_id'=>$idqs));
+		$this->Question->deleteAll(array('Question.id'=>$idqs));
+		$this->set("msg","'Xóa thành công!'");
+		$this->populateEditFormQuesion($idtype,$idqs,$page,$end);
 		$this->render('admin_manageQuestion');
 	}
-	public function admin_deleteMethod($id,$idqs) {
+	public function admin_deleteMethod($id,$idqs,$page,$end) {
 		if($this->request->is('get')){
 			$this->Method->deleteAll(array('Method.id'=>$id));
 		}
-		$this->admin_editQuestion($idqs);
+		
+		$this->admin_editQuestion($idqs,$page,$end);
 	}
-	public function populateEditFormQuesion($idtype=NULL,$page=null,$end=null){
+	public function populateEditFormQuesion($idtype=NULL,$question=null,$page=null,$end=null){
 		
 		$page=(($page==null || !isset($page))?1:$page);
 		$end=(($end==null)||!isset($end)?$this->numberpage:$end);
 		$idtype=(($idtype==null || !isset($idtype))?1:$idtype);
 		
-		$this->set("data",$this->Question->find('all',array('conditions'=>array('Question.id_type'=>$idtype), 'limit' => $this->numberRecord, 'offset'=>$page-1)));
+		$this->set("data",$this->Question->find('all',array('conditions'=>array('Question.id_type'=>$idtype), 'limit' => $this->numberRecord, 'offset'=>($page-1)*$this->numberRecord)));
 		$numberrecord=$this->Question->find('count',array('conditions'=>array('Question.id_type'=>$idtype)));
 		if($idtype==1 || $idtype==null){
-			$this->set("data",$this->Question->find('all',array('limit' => $this->numberRecord, 'offset'=>$page-1)));
+			$this->set("data",$this->Question->find('all',array('limit' => $this->numberRecord, 'offset'=>($page-1)*$this->numberRecord)));
 			$numberrecord=$this->Question->find('count');
 		}
-		
-		
-		
+		$this->set("question",$this->Question->find('first',array('conditions' => array('Question.id' => $question))));
 		$this->set("idtype",$idtype);
 		$this->set("type",$this->Typequestion->find('all'));
 		$this->pagination($page, $numberrecord,$end);
@@ -168,46 +168,113 @@ class AdminController extends  AppController{
 	//end manage Question
 	//manage Consulting
 	public function admin_manageConsulting($idtype=NULL,$page=null,$end=null) {
-		$this->populateEditFormConsulting($idtype,$page,$end);
-	}
-	public function getConsulted($idTypeconsulting){
-		$data=$this->Typeconsulting->find('all',array('conditions' => array('Typeconsulting.id' => $idTypeconsulting)));
-		$results=array();
-		$consulting=$data[0]['Consulting'];
-		foreach ($consulting as $item){
-			$result=$this->Consulting->find('all',array('conditions' => array('Consulting.id' => $item['id'])));
-			$boolean=0;//chÆ°a tráº£ lá»�i
-			if(count($result[0]['Resultconsulting']>0) && $result[0]['Resultconsulting']!=null){
-				$boolean=1;
-			}
-			array_push($results,array('consulting'=>$result,'anser'=>$boolean));
+		
+		$arrid=$this->Resultconsulting->find("all",array('fields'=>array('Resultconsulting.consulting_id')));
+		$arr=array();
+		foreach ($arrid as $item){
+			array_push($arr,$item['Resultconsulting']['consulting_id']);
 		}
-		return $results;
+		$data=$this->Consulting->find("all",array('conditions'=>array('NOT'=>array('id'=>$arr))));
+		$this->set("Consluting",$data);
+		$this->populateEditFormConsulting($idtype,$page,$end,count($data));
+	}
+	public function admin_manageConsulted($idtype=NULL,$page=null,$end=null){
+		
+		$data=$this->Resultconsulting->find("all");
+		$this->populateEditFormConsulting($idtype,$page,$end,count($data));
+		
 	}
 	public function admin_AnserConsulting($id) {
 		
-		$this->set("consul",$this->Consulting->find('all',array('conditions' => array('Consulting.id' => $id))));
+		$this->set("consul",$this->Consulting->find('first',array('conditions' => array('Consulting.id' => $id))));
 		$this->populateEditFormConsulting();
 		$this->render('admin_manageConsulting');
 	}
-	public function admin_createResultconsultings() {
+	public function admin_editConsulting($id,$action,$page=null,$end=null){
+		
+		$consl=$this->Consulting->find('first',array('conditions' => array('Consulting.id' => $id)));
+		$this->set("consul",$consl);
+		$data=$this->Resultconsulting->find("all");
+		if($action=="admin_manageConsulting"){
+			$arrid=$this->Resultconsulting->find("all",array('fields'=>array('Resultconsulting.consulting_id')));
+			$arr=array();
+			foreach ($arrid as $item){
+				array_push($arr,$item['Resultconsulting']['consulting_id']);
+			}
+			$data=$this->Consulting->find("all",array('conditions'=>array('NOT'=>array('id'=>$arr))));
+			$this->set("Consluting",$data);
+		}
+		$this->populateEditFormConsulting($consl['Consulting']['typeconsulting_id'],$page,$end,count($data));
+		$this->render($action);
+	}
+	public function admin_createResultconsultings($action) {
 		$this->request->data['user_id']=$this->Session->read($this->sessionUserid);
+		$conslu=$this->Consulting->find("all",array('conditions' => array('Consulting.title' => $this->request->data['title'])));
+		if(count($conslu)==0){
+			$con=array();
+			$con['typeconsulting_id']=$this->request->data['typeconsulting_id'];
+			$con['title']=$this->request->data['title'];
+			$con['contents']=$this->request->data['concontents'];
+			$con['auther']=$this->Session->read($this->sessionUsername);
+			$this->Consulting->saveAll($con);
+			$conslu=$this->Consulting->find("first",array('conditions' => array('Consulting.title' => $this->request->data['title'])));
+			$this->request->data['consulting_id']=$conslu['Consulting']['id'];
+		}
 		$this->Resultconsulting->save($this->request->data);
-		$this->populateEditFormConsulting();
-		$this->render('admin_manageConsulting');
+		$data=$this->Resultconsulting->find("all");
+		if($action=="admin_manageConsulting"){
+			$arrid=$this->Resultconsulting->find("all",array('fields'=>array('Resultconsulting.consulting_id')));
+			$arr=array();
+			foreach ($arrid as $item){
+				array_push($arr,$item['Resultconsulting']['consulting_id']);
+			}
+			$data=$this->Consulting->find("all",array('conditions'=>array('NOT'=>array('id'=>$arr))));
+			$this->set("Consluting",$data);
+		}
+		$this->populateEditFormConsulting($this->request->data['typeconsulting_id'],null,null,count($data));
+		$this->render($action);
 	}
-	public function populateEditFormConsulting($idtype=null,$page=null,$end=null){
+	public function admin_updateConsulted($action){
+		$data=$this->request->data;
+		$this->Consulting->query("update consultings set title='".$data['title']."', contents='".$data['concontents']."',consulting_date=".date("YmdHis", time())." where id=".$data['consulting_id']);
+		$this->Resultconsulting->query("update Resultconsultings set title='".$data['title']."', contents='".$data['contents']."',result_date=".date("YmdHis", time())." where consulting_id=".$data['consulting_id']);
+		$data=$this->Resultconsulting->find("all");
+		$this->populateEditFormConsulting($this->request->data['typeconsulting_id'],null,null,count($data));
+		$this->render($action);
+	}
+	public function populateEditFormConsulting($idtype=null,$page=null,$end=null,$numberrecord=null){
+		
+		
 		$idcon=$this->Typeconsulting->find('first');
 		$idtype=((isset($idtype) && $idtype!=null)?$idtype:$idcon['Typeconsulting']['id']);
 		$page=(($page==null || !isset($page))?1:$page);
 		$end=(($end==null)||!isset($end)?$this->numberpage:$end);
 		$this->set("idtype",$idtype);
 		$this->set("typeconsultings",$this->Typeconsulting->find("all"));
-		$data=$this->getConsulted($idtype);
-		$numberrecord=count($data);
-		$this->set("consultings",$data);
+		
+		$consulted=$this->Resultconsulting->find("all",array('limit' => $this->numberRecord, 'offset'=>($page-1)*$this->numberRecord));
+		$this->set("consulted",$consulted);
+		
 		$this->pagination($page, $numberrecord, $end);
 		
+	}
+	public function admin_deleteConsulting($id,$page=null,$end=null){
+		$conslu=$this->Consulting->find("first",array('conditions' => array('Consulting.id' => $id)));
+		$this->Resultconsulting->deleteAll(array('Resultconsulting.consulting_id'=>$id));
+		$this->Consulting->deleteAll(array('Consulting.id'=>$id));
+		$this->set("msg","'Xóa thành công!'");
+		$data=$this->Resultconsulting->find("all");
+		if($this->request->data['view']=="admin_manageConsulting"){
+			$arrid=$this->Resultconsulting->find("all",array('fields'=>array('Resultconsulting.consulting_id')));
+			$arr=array();
+			foreach ($arrid as $item){
+				array_push($arr,$item['Resultconsulting']['consulting_id']);
+			}
+			$data=$this->Consulting->find("all",array('conditions'=>array('NOT'=>array('id'=>$arr))));
+			$this->set("Consluting",$data);
+		}
+		$this->populateEditFormConsulting($conslu['Consulting']['typeconsulting_id'],$page,$end,count($data));
+		$this->render($this->request->data['view']);
 	}
 	//end manage Consulting
 	//begin manage news
@@ -226,7 +293,7 @@ class AdminController extends  AppController{
 		$page=(isset($page)&&$page!=null?$page:1);
 		$end=(isset($end)&&$end!=null?$end:$this->numberpage);
 		$idtype=(isset($idtype)&& $idtype!=null?$idtype:6);
-		$typeNews=$this->Tbltintuc->find('all',array('conditions' => array('Tbltintuc.id_theloai' => $idtype),'limit' => $this->numberRecord, 'offset'=>$page-1));
+		$typeNews=$this->Tbltintuc->find('all',array('conditions' => array('Tbltintuc.id_theloai' => $idtype),'limit' => $this->numberRecord, 'offset'=>($page-1)*$this->numberRecord));
 		$listNews=$this->Tbltintuc->find("all",array('conditions' => array('Tbltintuc.id_theloai' => $idtype)));
 		$numberrecord=count($listNews);
 		$this->set("ListtypeNew",$this->Tbltheloai->find("all"));
@@ -307,7 +374,7 @@ class AdminController extends  AppController{
 		$end=(($end==null)||!isset($end)?$this->numberpage:$end);
 		$idtype=(($idloai==null || !isset($idloai))?1:$idloai);
 		
-		$files=$this->Upload->find('all',array('conditions'=>array('Upload.idloai'=>$idloai), 'limit' => $this->numberRecord, 'offset'=>$page-1));
+		$files=$this->Upload->find('all',array('conditions'=>array('Upload.idloai'=>$idloai), 'limit' => $this->numberRecord, 'offset'=>($page-1)*$this->numberRecord));
 		$this->set("files",$files);
 		$this->set("idloai",$idloai);
 		$numberrecord=$this->Upload->find('count',array('conditions'=>array('Upload.idloai'=>$idloai)));
@@ -320,7 +387,7 @@ class AdminController extends  AppController{
 	public function populateForum($page=null,$end){
 		$page=(($page==null || !isset($page))?1:$page);
 		$end=(($end==null)||!isset($end)?$this->numberpage:$end);
-		$forum=$this->Forum->find('all',array('limit' => $this->numberRecord, 'offset'=>$page-1));
+		$forum=$this->Forum->find('all',array('limit' => $this->numberRecord, 'offset'=>($page-1)*$this->numberRecord));
 		$this->set("forums",$forum);
 		$numberrecord=$this->Forum->find('count');
 		$this->pagination($page, $numberrecord,$end);
@@ -356,7 +423,7 @@ class AdminController extends  AppController{
 	public function populateTopic($idforum=null,$page=null,$end=null){
 		$page=(($page==null || !isset($page))?1:$page);
 		$end=(($end==null)||!isset($end)?$this->numberpage:$end);
-		$Topics=$this->Topic->find('all',array('conditions'=>array('Topic.forum_id'=>$idforum),'limit' => $this->numberRecord, 'offset'=>$page-1));
+		$Topics=$this->Topic->find('all',array('conditions'=>array('Topic.forum_id'=>$idforum),'limit' => $this->numberRecord, 'offset'=>($page-1)*$this->numberRecord));
 		$this->set("Topics",$Topics);
 		$numberrecord=$this->Topic->find('count',array('conditions'=>array('Topic.forum_id'=>$idforum)));
 		$this->set("forums",$this->Forum->find("all"));
@@ -397,7 +464,7 @@ public function populateComment($idforum=null,$idTopic=null,$page=null,$end=null
 		$this->set("idtopic",$idTopic);
 		$page=(($page==null || !isset($page))?1:$page);
 		$end=(($end==null)||!isset($end)?$this->numberpage:$end);
-		$Potss=$this->Post->find('all',array('conditions'=>array('Post.topic_id'=>$idTopic),'limit' => $this->numberRecord, 'offset'=>$page-1));
+		$Potss=$this->Post->find('all',array('conditions'=>array('Post.topic_id'=>$idTopic),'limit' => $this->numberRecord, 'offset'=>($page-1)*$this->numberRecord));
 		$this->set("Posts",$Potss);
 		$numberrecord=$this->Post->find('count',array('conditions'=>array('Post.topic_id'=>$idTopic)));
 		$this->set("forums",$this->Forum->find("all"));
@@ -431,7 +498,13 @@ public function populateComment($idforum=null,$idTopic=null,$page=null,$end=null
 		$this->populateComment($post['Post']['forum_id'],$post['Post']['topic_id'],$page,$end);
 		$this->render('admin_manageComment');
 	}
-
+//
+	public function searchQuetion(){
+		$data=$this->request->data;
+		$result=$this->Question->find("all",array('conditions'=>array('Question.id'=>$data)));
+		$this->set("result",$result);
+	}
+//
 
 }
 ?>

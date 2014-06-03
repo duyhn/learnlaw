@@ -28,7 +28,7 @@ echo $this->Common->script("ckeditor/ckeditor.js");
                     <div class="clear"></div>
                     <div id="paging" class="right">
 		                <?php 
-		                echo $this->User->pagination("admin","manageNews",$idtype,$page,$pagebgin,$pageend,$numberrecord);
+		                echo $this->User->pagination("admin","manageNews",$idtype,$News,$page,$pagebgin,$pageend,$numberrecord);
 		                ?>
                 	</div>
                 </div>

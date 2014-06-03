@@ -30,17 +30,11 @@ $gerne=$this->Common->general();
                 <div class="content1">
                  <div class="title"><?php echo $this->Html->link(__('Trang chủ'),'/users',array('class'=>'title'));?>> DANH MỤC BÀI THI</div>
                     <div class="content2">
-                    
+                    <p>Xin chào:<?php echo $this->Session->read("Username");?> Bạn có xác nhận thi hay không?</p>
                     <?php
                     	$html="";
-                    	$i=1;
-                    	if(isset($data)){
-                    		foreach($data as $item){
-                    			$html.= "<p> <span class='tdstt'>".$i.".</span>";
-                    			$html.=$this->Common->link($item['typequestions']['title'],array('controller' => 'tests','action' => 'confirmTest',$item['typequestions']['id'],1))."</p>";
-                    			$i++;
-                    		}
-                    	}
+                    	$html.="<span class='button2 sizebutton2'>".$this->Common->link("Có", array('controller' => 'tests','action'=> 'testOnline', $idtypequestion,1), array( 'class' => 'button'))."</span>";
+                    	$html.="<span class='button2 sizebutton2'>".$this->Common->link("Không", array('controller' => 'tests','action'=> 'index'), array( 'class' => 'button'))."</span>";
                     	echo $html;
                     ?>
                     </div>

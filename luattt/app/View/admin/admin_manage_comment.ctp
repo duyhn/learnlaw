@@ -34,7 +34,7 @@ echo $this->Common->script(array("forum.js"));
                     <div class="clear"></div>
                     <div id="paging" class="right">
 		                <?php 
-		                echo $this->User->pagination("admin","manageComment",$idtopic,$page,$pagebgin,$pageend,$numberrecord);
+		                echo $this->User->pagination("admin","manageComment",$idtopic,null,$page,$pagebgin,$pageend,$numberrecord);
 		                ?>
                 	</div>
                 </div>

@@ -67,4 +67,4 @@ echo $this->Common->script(array("user.js"));
            		echo $data['footer']
            		 ?></div>
 	</div></body></html>
-        
+

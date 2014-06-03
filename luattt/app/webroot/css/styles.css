@@ -235,7 +235,7 @@ ul,ol,dl {
 #main .content1 .content2 {
 	padding: 10px;
 }
-#main .content1{	min-height:565px;}
+
 #main .content1 .title {
 	width: 670px;
 	background-image: linear-gradient(to bottom, #65A9D7, #1e62a3);
@@ -1121,7 +1121,7 @@ table tbody td{
 }
 .contentToppic .nd{font:normal 13px Arial; line-height: 18px;}
 .breadcrumb{float:left;width: 450px;}
-hr{padding:3px;margin:3px;}
+hr{margin:3px;}
 .tdImg{width:50px;}
 .tieudemain{
 	width: 100%;
@@ -1610,4 +1610,13 @@ ul#titleli > li{
 .highlight{ background: #eee;color: #134264;}
 .highlight a{ color: #134264!important; cursor:default;}
 
-
+.increct{
+	background-color:red;
+}
+.corect{
+	background-color:green;
+}
+.consulting{
+	border-color: #999;
+	border-bottom: 1px solid #B0C4DE;
+}

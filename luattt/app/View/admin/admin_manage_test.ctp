@@ -22,17 +22,10 @@ echo $this->Common->script("testsOnline.js");
                     ?>
                     <div class="clear"></div>
                     <div id="paging" class="right">
-		                <?php echo   $this->Common->link('Trước',array('controller' => 'admin','action' => 'admin_manageQuestion','full_base' => true,$idtype,($page>1?$page-1:1),$pageend),array('class'=>'button' ));
-		                ?>
-		                <?php	if($pagebgin>1)
-		                		echo "...";
-		                	for($i=$pagebgin;$i<=$pageend;$i++){
-		                		echo $this->Common->link($i,array('controller' => 'admin','action' => 'admin_manageQuestion','full_base' => true,$idtype,$i,$pageend));
-		                	}
-		                	if($pageend<$numberrecord)
-		                		echo "...";
-		                 	echo $this->Common->link('Sau',array('controller' => 'admin','action' => 'admin_manageQuestion','full_base' => true,$idtype,($page<$numberrecord?$page+1:$numberrecord),$pageend),array('class'=>'button' ));
-		                ?>
+		                <?php 
+		                echo $page;
+		                echo $this->User->pagination('admin','admin_manageQuestion',$idtype,null,$page,$pagebgin,$pageend,$numberrecord);
+		                 ?>
                 	</div>
                 </div>
             </div>

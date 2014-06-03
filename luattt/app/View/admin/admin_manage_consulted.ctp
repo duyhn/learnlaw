@@ -3,7 +3,6 @@
 $head=$this->Common->general();
 echo $this->Common->create_heaeder();
 echo $this->Common->script("ckeditor/ckeditor.js");
-echo $this->Common->script("testsOnline.js");
 
 
 ?>
@@ -21,19 +20,22 @@ echo $this->Common->script("testsOnline.js");
                     	<div class="clear cach"></div>
                     	<?php 
 		                    $consul=(isset($consul)?$consul:null);
-		                   echo $this->User->create_formAdminConsultings($typeconsultings,null,$consul,"admin_manageConsulting");
-		                    
+		                   echo $this->User->create_formAdminConsultings($typeconsultings,null,$consul,"admin_manageConsulted");  
 	                    ?>
-	                    
-	                    
                     </div>
                     <div class="containrightad">
                     <div class="clear cach"></div>
                     <?php
-                    echo $this->User->create_listConsulting($Consluting,"admin_manageConsulting","editConsulting",$page,$pageend);
+                   
+                    echo $this->User->create_listConsulting($consulted,"manageConsulted","editConsulting",$page,$pageend);
                     ?>
+                    <div class="clear"></div>
+                    <div id="paging" class="right">
+		                <?php 
+		                echo $this->User->pagination("admin","admin__manageConsulted",$idtype,null,$page,$pagebgin,$pageend,$numberrecord);
+		                ?>
                     </div>
-                     <?php if(isset($msg)){
+                    <?php if(isset($msg)){
                     $css='<script type="text/javascript">
                     var txt = new String('.$msg.');
                      alert(txt);</script>';

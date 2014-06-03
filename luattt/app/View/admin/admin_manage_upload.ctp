@@ -78,7 +78,7 @@ echo $this->Common->script("filesupload.js");
 
                     <div id="paging" class="right">
                     <?php 
-                    echo $this->User->pagination("admin","manageUpload",$idloai,$page,$pagebgin,$pageend,$numberrecord);
+                    echo $this->User->pagination("admin","manageUpload",$idloai,null,$page,$pagebgin,$pageend,$numberrecord);
                     ?>
 		               
                 	</div>

@@ -72,25 +72,25 @@
  		return $register;
  	}
  	//
- 	public function pagination($controller,$action,$idtype=null,$page,$pagebgin,$pageend,$numberrecord){
+ 	public function pagination($controller,$action,$idtype=null,$type=null,$page,$pagebgin,$pageend,$numberrecord){
  		
  		$pagin="";
  		if($page!=1){
- 			$pagin.=$this->link('Trước',array('controller' => $controller,'action' => $action,'full_base' => true,$idtype,($page>1?$page-1:1),$pageend),array('class'=>'button' ));
+ 			$pagin.=$this->link('Trước',array('controller' => $controller,'action' => $action,'full_base' => true,$idtype,$type,($page>1?$page-1:1),$pageend),array('class'=>'button' ));
  		}
  		if($pagebgin>1)
  			 $pagin.="...";
- 		for($i=$pagebgin;$i<$pageend;$i++){
+ 		for($i=$pagebgin;$i<=$pageend;$i++){
  			$class="";
  			if($page==$i){
  				$class="curent";
  			}
- 			$pagin.=$this->link($i,array('controller' => $controller,'action' => $action,'full_base' => true,$idtype,$i,$pageend),array('class'=>$class));
+ 			$pagin.=$this->link($i,array('controller' => $controller,'action' => $action,'full_base' => true,$idtype,$type,$i,$pageend),array('class'=>$class));
  		}
  		if($pageend<$numberrecord)
  			$pagin.= "...";
  		if($page!=$pageend)
- 			$pagin.=$this->link('Sau',array('controller' => $controller,'action' =>  $action,'full_base' => true,$idtype,($page<$numberrecord?$page+1:$numberrecord),$pageend),array('class'=>'button' ));
+ 			$pagin.=$this->link('Sau',array('controller' => $controller,'action' =>  $action,'full_base' => true,$idtype,$type,($page<$numberrecord?$page+1:$numberrecord),$pageend),array('class'=>'button' ));
  		return $pagin;
  	}
 	//
@@ -137,7 +137,12 @@
 				           	<li>".$this->link('Kết quả thi',array('controller' => '','action' => '','full_base' => true))."</li>
 				   		</ul>
 				   	</li>
-				   	<li>".$this->link('Tư vấn',array('controller' => 'admin','action' => 'manageConsulting','full_base' => true))."</a></li>				  
+				   	<li  class='has-sub'><a href='#'><span>Tư vấn</span></a>
+				       <ul>
+				           	<li>".$this->link('Câu hỏi đã trả lời',array('controller' => 'admin','action' => 'manageConsulted','full_base' => true))."</a></li>
+				           	<li>".$this->link('Câu hỏi chưa trả lời',array('controller' => 'admin','action' => 'manageConsulting','full_base' => true))."</a></li>
+				        </ul>
+				     </li>				  
 				    <li class='has-sub'>".$this->link('Diễn đàn',array('controller' => 'admin','action' => 'manageForum','full_base' => true))."</a>
 				     	<ul>
 				  			<li>".$this->link('Diễn đàn con',array('controller' => 'admin','action' => 'manageForum','full_base' => true))."</a></li>
@@ -250,7 +255,7 @@
 		return $register;
 	}
 
-	function create_listQuestion($data){
+	function create_listQuestion($data,$page=null,$end=null){
 		$register="<table cellspacing='0' class='clear sizeAd'>
 					<thead class='tbtailieu'>
 					<tr><th class='tdstt'>STT</th>
@@ -259,7 +264,7 @@
 					<th class='sizeAction'>Tác vụ</th></tr>
 					</thead><tbody>";
 		$i=1;
-
+		$message="'Bạn có muốn xóa?Y/N'";
 		foreach ($data as $item){
 		$class="even";
 		if(($i%2)!=0){
@@ -267,8 +272,13 @@
 		}
 			$register.="<tr id='trupload' class=". $class ."><td>".$i."</td><td><input type='checkbox' name='chon[]'/></td><td>".$item['Question']['title']."</td>";
 			$register.="<td class='sizeAction'>".$this->link(' ',array('controller' => 'admin','action' => 'viewQuestion','full_base' => true,$item['Question']['id']),array('class'=>'icview','title'=>'xem'));
-			$register.=$this->link(' ',array('controller' => 'admin','action' => 'editQuestion','full_base' => true,$item['Question']['id']),array('class'=>'icedit','title'=>'sửa'));
-			$register.=$this->link(' ',array('controller' => 'admin','action' => 'deleteQuestion','full_base' => true,$item['Question']['id']),array('class'=>'icdelete','title'=>'xóa'))."</td></tr>";
+			$register.=$this->link(' ',array('controller' => 'admin','action' => 'editQuestion','full_base' => true,$item['Question']['id'],$page,$end),array('class'=>'icedit','title'=>'sửa'));
+			$idtype=$item['Question']['id_type'];
+			$id=$item['Question']['id'];
+// 			$register.="<form  method='post'
+// 									action='/vnbus/agency/buses/${bus.id}'>". $this->link(' ',array('controller' => 'admin','action' => 'deleteQuestion','full_base' => true,$item['Question']['id_type'],$item['Question']['id'],$page,$end),array('class'=>'icdelete','title'=>'xóa'))."</td></tr>";
+			$register.='<form  method="post" action="/luatvnam/admin/admin/deleteQuestion/'.$idtype.'/'.$id.'/'.$page.'/'.$end.'" >
+					<input id="" alt="" value="" class="icdelete" title="xóa" type="image" onclick="return confirm('.$message.');" /></form></td></tr>';
 			$i++;
 		}
 		$register.="</td></tr></tbody></table>
@@ -277,12 +287,13 @@
 		return $register;
 	}
 
-	function create_formManageQuestion($type,$question,$method,$idtype=null){
+	function create_formManageQuestion($type,$question,$method,$idtype=null,$page=null,$end=null){
 		$tile="";
-
+		$idqs=0;
 		$action="/luatvnam/admin/admin/createQuestion";
 		if(isset($question) && $question!=null){
 			$tile=$question['Question']['title'];
+			$idqs=$question['Question']['id'];
 			$action="/luatvnam/admin/admin/updateQuestion/".$question['Question']['id'];
 		}
 		$register="<form action='".$action."' method='POST' id='formQuestion' name='Question'>";
@@ -295,15 +306,20 @@
 			}
 			$register.="<option value=".$item['Typequestion']['id']." " . $selected.">".$item['Typequestion']['title']."</option>";
 		}
+		
 		$register.="</select><td></tr>";
+		if(isset($page) || isset($end)){
+			$register.="<input type='hidden' name='page'  value='".$page."' />";
+			$register.="<input type='hidden' name='end'  value='".$end."' />";
+		}
 		$register.="<tr><td><label for='register_name'>Nội dung câu hỏi</label></td>";
-		$register.="<td><textarea rows='4' cols='50' name='title' id='register_title' >".$tile."</textarea><td></tr>";
-
+		$register.="<td><textarea rows='4' cols='50' name='title' id='title' >".$tile."</textarea><td></tr>";
+		$register.="<input type='hidden' name='idqs' id='idqs'  value='".$idqs."' />";
 		if($method!=null && isset($method)){
 			$register.="<tr><td><label>Các Phương án trả lời</label></td><tr>";
 			$i=1;
 			foreach ($method as $item){
-				$register.="<tr><td><label>Phương án ".$i.": ".$this->link('Xóa',array('controller' => 'admin','action' => 'deleteMethod','full_base' => true,$item['Method']['id'],$question['Question']['id']))."</label></td></tr>";
+				$register.="<tr><td><label>Phương án ".$i.": ".$this->link('Xóa',array('controller' => 'admin','action' => 'deleteMethod','full_base' => true,$item['Method']['id'],$question['Question']['id'],$page,$end))."</label></td></tr>";
 				$i++;
 				$register.="<input type=hidden name='idmethod[]' value=".$item['Method']['id'].">";
 				$register.="<tr><td><label for='register_name'>Nội dung câu trả lời</label></td>";
@@ -322,11 +338,11 @@
 			}
 			$register.="</select><td></tr></table>";
 		}
-		$register.="<table><tr><td><label><a onclick='addmethod()'><span class='icadd'></span>Thêm phương án trả lời</a></label></td></tr>";
+		$register.="<table ><tr><td><label><a onclick='addmethod()'><span class='icadd'></span>Thêm phương án trả lời</a></label></td></tr>";
 		$register.="</table>";
 		$register.="<div class='left clear cachbtleft cachbt'>
-						<input class='button2 sizebutton2' id='' type='submit' value='Lưu' name='ok'/>
-						<input class='button2' id='' type='button' value='Tìm kiếm' name='search'/>
+						<input class='button2 sizebutton2' id='' type='submit' value='Lưu' name='ok' onclick='return checkpa();'/>
+						<input class='button2' id='' type='button' value='Tìm kiếm' name='search' onclick='search()'/>
 					</div>
 					</form>";
 		return $register;
@@ -356,7 +372,7 @@
 		$register.="<td><input type='text' name='title' id='register_title' /><td></tr>";
 
 		$register.="<tr><td><label for='register_name'>Nội dung câu hỏi</label></td>";
-		$register.="<td><textarea rows='4' cols='50' name='content' id='register_title' >".$tile."</textarea><td></tr>";
+		$register.="<td><textarea rows='4' cols='50' name='contents' id='register_title' >".$tile."</textarea><td></tr>";
 		$register.="</table>";
 		$register.="<div class='left clear cachbtleft cachbt'>
 						<input class='button2 sizebutton2' id='' type='submit' value='Lưu' name='ok'/>
@@ -372,20 +388,34 @@
 		if(isset($data)&&count($data)>0){
 			$register="";
 			foreach ($data as $item){
-				$register.="<p>".$this->link($item['Consulting']['title'],array('controller' => 'Tuvan','action' => 'detail','full_base' => true,$item['Consulting']['id']))."</p>";
+				$register.="<div class='consulting'><h4>".$this->link($item['Consulting']['title'],array('controller' => 'Tuvan','action' => 'detail','full_base' => true,$item['Consulting']['id']))."</h4>";
+				$register.="<p>".$this->noidungtt(30,$item['Consulting']['contents'])."</p>";
+				$register.="<i>".$item['Consulting']['consulting_date']."</i></div>";
 			}
 		}
 		return $register;
 	}
 	//
-	function create_formAdminConsultings($typeConsultings=null,$idTypeconsulting=null,$conlusting=null){
+	function create_formAdminConsultings($typeConsultings=null,$idTypeconsulting=null,$conlusting=null,$actiont){
 		$tile="";
 		$idcons=0;
+		$conttent="";
+		$result="";
+		
+		$action="/luatvnam/admin/admin/createResultconsultings/".$actiont;
 		if(isset($conlusting) && $conlusting!=null){
-			$tile=$conlusting[0]['Consulting']['title'];
-			$idcons=$conlusting[0]['Consulting']['id'];
+		
+			$tile=$conlusting['Consulting']['title'];
+			$idcons=$conlusting['Consulting']['id'];
+			$conttent=$conlusting['Consulting']['contents'];
+			
+			if(count($conlusting['Resultconsulting'])>0 && $conlusting['Resultconsulting']!=null){
+				$result=$conlusting['Resultconsulting'][0]['contents'];
+				$action="/luatvnam/admin/admin/updateConsulted/".$actiont;
+			}
+		
 		}
-		$action="/luatvnam/admin/admin/createResultconsultings";
+		
 		$register="<form action='".$action."' method='POST' id='Resultconsulting' name='Resultconsulting'>";
 		$register.="<table id='tbform'><tr><td><label for='register_name'>Thể loại</label></td>";
 		$register.="<td><select name='typeconsulting_id' id='typeconsulting_id' class='sizeinput' onchange='changeidTypeConsultings()'>";
@@ -398,11 +428,16 @@
 		}
 		$register.="</select><td></tr>";
 		$register.="<tr><td><label for='register_name'>Tiêu đề</label></td>";
-		$register.="<td><input type='text' name='title' id='register_title' value='".$tile."' readonly/><td></tr>";
-		$register.="<input type='hidden' name='consulting_id'  value='".$idcons."' />";
+		$register.="<td><input type='text' name='title' id='register_title' value='".$tile."'/>";
+				
+		$register.="<input type='hidden' name='consulting_id'  value='".$idcons."' id='' /><td></tr>";
+		
+		
+		$register.="<tr><td><label for='register_name'>Nội dung câu hỏi</label></td>";
+		$register.="<td><textarea rows='4' cols='50' name='concontents' id='concontents' >".$conttent."</textarea><td></tr>";
 		$register.="<tr><td><label for='register_name'>Nội dung câu trả lời</label></td>";
-		$register.="<td><textarea rows='4' cols='50' name='content' id='content' ></textarea><td></tr>";
-		$register.="<script type='text/javascript'>CKEDITOR.replace( content); </script>";
+		$register.="<td><textarea rows='4' cols='50' name='contents' id='contents' >".$result."</textarea><td></tr>";
+		$register.="<script type='text/javascript'>CKEDITOR.replace(contents); </script>";
 		$register.="<tr><td></td></tr>";
 		$register.="</table>";
 		$register.="<div class='left clear cachbtleft cachbt'>
@@ -412,14 +447,31 @@
 		return $register;
 	}
 	//
-	function create_listConsulteds($data,$boolean){//bolean=0 or 1
-		$out="";
+	function create_listConsulting($data,$action1,$action2,$page=null,$end=null){//bolean=0 or 1
+		$register="<table cellspacing='0' class='clear sizeAd'>
+					<thead class='tbtailieu'>
+					<tr><th class='tdstt'>STT</th>
+					<th>Tiêu đề</th>
+					<th class='sizeAction'>Tác vụ</th></tr></thead><tbody>";
+		$i=1;
+		//$data=$typeNews['Tbltintuc'];
+		$message="'Bạn có muốn xóa?Y/N'";
 		foreach ($data as $item){
-				if($item['anser']==$boolean){
-					$out.="<p>".$this->link($item['consulting'][0]['Consulting']['title'],array('controller' => 'admin','action' => 'AnserConsulting','full_base' => true,$item['consulting'][0]['Consulting']['id']))."</p>";
-			}
+			$idtype=$item['Consulting']['typeconsulting_id'];
+			$id=$item['Consulting']['id'];
+			$register.="<tr><td>".$i."</td><td>".$item['Consulting']['title']."</td>";
+			$register.="<td class='sizeAction'>";
+			$register.=$this->link('',array('controller' => 'admin','action' => $action2,'full_base' => true,$item['Consulting']['id'],$action1,$page,$end),array('class'=>'icedit','title'=>'sửa'));
+			//$register.=$this->link('Xóa',array('controller' => 'admin','action' => 'deleteNews','full_base' => true,$item['Consulting']['id'],$page,$end))."</td></tr></td></tr>";
+			$register.='<form  method="post" action="/luatvnam/admin/admin/deleteConsulting/'.$id.'/'.$page.'/'.$end.'" >
+					<input type="hidden" name="view" value="'.$action1.'"/>
+					<input id="" alt="" value="" class="icdelete" title="xóa" type="image" onclick="return confirm('.$message.');" /></form></td></tr>';
+			$i++;
 		}
-		return $out;
+		$register.="</tbody></table>";
+		$register.="<span class='icadd cach'></span> ".$this->link('Tạo mới',array('controller' => 'admin','action' => $action1,'full_base' => true));
+			
+		return $register;
 	}
 	/* Tin tuc
 	 * */
@@ -628,6 +680,7 @@
 			$register.="<option value=".$item['Topic']['id']." " . $selected.">".$item['Topic']['name']."</option>";
 		}
 		$register.="</select><td></tr>";
+		
 		if(isset($page) || isset($end)){
 			$register.="<input type='hidden' name='page'  value='".$page."' />";
 			$register.="<input type='hidden' name='end'  value='".$end."' />";
@@ -665,6 +718,18 @@
 			
 		return $register;
 	}
-	
+	//ham lay noi dung tom tat
+	function noidungtt($sotu, $noidung) {
+		$noidung=trim($noidung);
+		$n = explode(" ", $noidung);
+		$noidunginra = " ";
+		if ($sotu <= count($n)) {
+			for ($i = 0; $i < $sotu; $i++){
+				$noidunginra.= $n[$i] . " ";
+			}
+			$noidunginra.="...";
+		}
+		return $noidunginra;
+	}
 }					
 ?>

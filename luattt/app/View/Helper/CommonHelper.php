@@ -7,6 +7,7 @@ class CommonHelper extends HtmlHelper{
 		$footer="<span>Bản quyền (C) 2013 thuộc Võ Thị TƯờng Vy</span></br><span>Trường Đại học Bách Khoa - Đại học Đà Nẵng</span></br>";
 		$footer.="<span>Địa chỉ: 272 Thái Thị Bôi, Quận Thanh Khê, Đà Nẵng</span></br><span>Điện thoại: 0905743649</span>";
 		$header="<div id='logo'>".$this->image("image/logo2.png", array('alt' => 'lawVN'))."</div><div class='today'>Hôm nay :". date('d-m-Y')."</div> <div class='clear'></div>";
+		$header.='<form action="/luatvnam/Searchs/search" method="POST"><input type="text" name="info"/><input type="submit" name="search" value="Tìm Kiếm"/></form>';
 		$data = array(
 				"header" => $header,
 				"footer" => $footer,
@@ -14,6 +15,7 @@ class CommonHelper extends HtmlHelper{
 
 		return $data;
 	}
+	
 	//
 	function create_heaeder(){
 		$tt="Learn Law";
@@ -22,7 +24,7 @@ class CommonHelper extends HtmlHelper{
 		$header.=$this->charset();
 		$header.="<title>".$tt."</title>";
 		$header.=$this->css(array("styles.css","lightbox.css","tabs.css"));
-		$header.= $this->script(array('jquery-1.7.2.min.js','validate.js','lightbox.js','jcarousellite_1.0.1c4.js','jquery.jgfeed','news.js','general.js','highlightNav.js'));
+		$header.= $this->script(array('jquery-1.7.2.min.js','validate.js','lightbox.js','jcarousellite_1.0.1c4.js','jquery.jgfeed.js','news.js','general.js','highlightNav.js'));
 		$header.=$this->css(array("themes/1/js-image-slider.css","generic.css"));
 		$header.= $this->script(array('themes/1/js-image-slider.js','slideShow.js'));
 		
@@ -56,7 +58,8 @@ class CommonHelper extends HtmlHelper{
 		$menu.="</ul></li><li class=''>".$this->link('Download',array('controller' => 'Uploads','action' => 'index','full_base' => true))."</li>";
 		$menu.="<li class=''>".$this->link('Diễn đàn',array('controller' => 'Forums','action' => 'index','full_base' => true))."</li>";
 		$menu.="<li class=''>".$this->link('Thi online',array('controller' => 'tests','action' => '','full_base' => true))."</li>";
-
+		$menu.="<li class=''>".$this->link('Tư vấn pháp luật',array('controller' => 'Tuvan','action' => 'index','full_base' => true))."</li>";
+		
 		if(!isset($username)){
 			$menu.="<li id='' style='float:right'>".$this->link('Đăng ký',array('controller' => 'users','action' => 'register','full_base' => true))."</li>";
 			$menu.="<li id='login' style='float:right'><a href='#'>Đăng nhập</a></li>";
@@ -72,7 +75,7 @@ class CommonHelper extends HtmlHelper{
 		return $menu;
 	}
 	function create_right(){
-		$time = new CommonModel();
+		$time = new Common();
 		$data=$time->query("SELECT id_tintuc,tieude, ten_anh FROM tbltintucs ORDER BY ngaythang DESC LIMIT 0,5");
 
 		$right="<div class='block' id='link' ><div class='block-title'>Thông Báo<div id='show' class='mo1'></div> </div>";
@@ -112,7 +115,7 @@ class CommonHelper extends HtmlHelper{
 		return $right;
 	}
 	function create_countonline(){
-		$time = new CommonModel();
+		$time = new Common();
 		$countonline="</br>Đang truy cập :";
 		$tg=time();
 		$tgout=900;
@@ -133,7 +136,7 @@ class CommonHelper extends HtmlHelper{
 	}
 	//
 	function create_countvisiter(){
-		$time = new CommonModel();
+		$time = new Common();
 		$countvisiter="Lượt truy cập: ";
 		$tg=time();
 		$tgout=900;
@@ -155,7 +158,7 @@ class CommonHelper extends HtmlHelper{
 	}
 	//
 	function slideImage(){
-		$time = new CommonModel();
+		$time = new Common();
 		$data=$time->query("SELECT id_tintuc,ten_anh,tieude FROM tbltintucs WHERE hien_an = 1 LIMIT 0,7");
 		$slider="<div id='sliderFrame'><div id='slider'>";
 		foreach($data as $item){
@@ -180,7 +183,7 @@ class CommonHelper extends HtmlHelper{
 	function getRss($urlrss,$idloai){
 		try {
 			include_once('simple_html_dom.php');				
-			$tbltt = new CommonModel();
+			$tbltt = new Common();
 			$dom=new DOMDocument('1.0','utf-8');//tao doi tuong dom
 			$dom->load($urlrss)    ;//muon lay rss tu trang nao thi ban khai bao day
 			$items = $dom->getElementsByTagName("item");//lay cac element co tag name la item va gan vao bien $items
@@ -222,9 +225,9 @@ class CommonHelper extends HtmlHelper{
 	//
 	function getRssPhobien($urlrss,$idloai){
 		try {
-			$tbltt = new CommonModel();
-			$dom=new DOMDocument('1.0','utf-8');//tao doi tuong dom
-			$dom->load($urlrss)    ;//muon lay rss tu trang nao thi ban khai bao day
+			$tbltt = new Common();
+			$dom=new DOMDocument('1.0','utf-8');//tao doi tuong dom(html)
+			$dom->load($urlrss)    ;//muon lay rss tu trang nao thi ban khai bao day//urlrss:link cua xml
 			$items = $dom->getElementsByTagName("item");//lay cac element co tag name la item va gan vao bien $items
 			$dom1=new DOMDocument('1.0','utf-8');
 			$i=0;
@@ -255,6 +258,7 @@ class CommonHelper extends HtmlHelper{
 				if(count($data)==0){
 					$tbltt->query("insert into tbltintucs(tieude,noidung,ngaythang,id_theloai) values('".$element[0]->innertext."','".$content."','".date('y/m/d h:i:s',time())."',".$idloai.")");
 				}
+				print_r("<p>".$p[0]->outertext."</p");
 			}
 		} catch (Exception $e) {
 			echo "error";
@@ -263,7 +267,7 @@ class CommonHelper extends HtmlHelper{
 	}
 	//30/4/2014
 	function createTopRight(){
-		$tbltt = new CommonModel();
+		$tbltt = new Common();
 		$data=$tbltt->query("SELECT id_tintuc,tieude FROM tbltintucs where id_theloai=5 ORDER BY ngaythang DESC LIMIT 0,5");
 		$topright="<div class='div-text'><ul id='tabs'><li><a href='#' name='tab1'>Thông báo</a></li>";
 		$topright.="<li><a href='#' name='tab2'>Chính sách mới</a></li></ul>";
@@ -277,54 +281,6 @@ class CommonHelper extends HtmlHelper{
 	}
 
 	//
-	function getCauhoi($urlrss,$idloai=null){
-	
-		try {
-			//include_once('simple_html_dom.php');
-			$tbltt = new CommonModel();
-			$dom=new DOMDocument('1.0','utf-8');//tao doi tuong dom
-			$dom->load($urlrss)    ;//muon lay rss tu trang nao thi ban khai bao day
-			$items = $dom->getElementsByTagName("item");//lay cac element co tag name la item va gan vao bien $items
-			$dom1=new DOMDocument('1.0','utf-8');
-			$i=0;
-			$data="<table>";
-			foreach($items as $item)//lap
-			{
-// 				$i++;
-// 				if($i==5)
-// 					break;
-				$titles=$item->getElementsByTagName('title');//lay cac element co tag name la title va gan vao bien $titles
-				$title=$titles->item(0);//lay ra gia tri dau tuien trong array $titles
-					
-				$descriptions=$item->getElementsByTagName('description');
-				$des=$descriptions->item(0);
-				$links=$item->getElementsByTagName('link');
-				$link=$links->item(0);
-				//load tin tuc
-				$html = new simple_html_dom();
-				$html->load_file($link->nodeValue);
-				$element = $html->find("h1");
-				$spanNgay=$html->find("span");
-				$data.="<tr><td>".$element[0]->innertext."<td><td>".$spanNgay[0]->outertext."</td></tr>";
-				$divMota=$html->find("div.one_answer");
-				//$content="<div>".$divMota[0]->outertext."".$divcontent[0]->outertext."</div>";
-				//lu vao csdl
-				//$datas=$tbltt->query("SELECT * FROM consultings WHERE title='".$element[0]->innertext."'");
-				//if(count($datas)==0){
-				//$tbltt->query("insert into consultings(typeconsulting_id,title,content,auther) values(1,'".$element[0]->innertext."','".$spanNgay[0]->outertext."','guest')");
-				//$datas=$tbltt->query("SELECT * FROM consultings WHERE title='".$element[0]->innertext."'");
-				//$tbltt->query("insert into resultconsultings(consulting_id,title,content,user_id) values(".$datas['consultings']['id'].",'".$element[0]->innertext."','".$divMota[0]->outertext."',1)");
-				//}
-			}
-			$data.="</table>";
-			return $data;
-		} catch (Exception $e) {
-			echo "error";
-		}
-		return "";
-	
-	
-	}
 	//ham lay noi dung tom tat
 	function noidungtt($sotu, $noidung) {
 		$noidung=trim($noidung);

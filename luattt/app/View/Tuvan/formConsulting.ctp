@@ -2,7 +2,7 @@
 <?php
 $head=$this->Common->general();
 echo $this->Common->create_heaeder();
-$this->Common->getRss("http://www.moj.gov.vn/_layouts/GenRss.aspx?List=60BA73DF-77BC-4E2B-A006-82B37A1C39C6",5);
+echo $this->Common->script("tuvanonline.js");
 ?>
 <div id='bttop'>BACK TO TOP</div></head>
 <body>
@@ -26,26 +26,18 @@ $this->Common->getRss("http://www.moj.gov.vn/_layouts/GenRss.aspx?List=60BA73DF-
                     
                 </div>
                 <div class="content1">
-                    <div class="left">
-                   <div class="title">PHỔ BIẾN KIẾN THỨC PHÁP LUẬT</div>
-                	<div class="content2">
-                    
-                    	<?php //$this->Common->getRssPhobien("http://www.moj.gov.vn/_layouts/GenRss.aspx?List=976539B6-94DB-48F3-9186-3F6F47C3DA1A",8);
-                    	echo $this->Contentnews->hienthinoidung(8);
-                    	//echo $this->Contentnews->tinlienquan(8);
-                    	?>
-						
-                	</div>
-                </div>
-                
-                <div class="left">
-                   <div class="title">TIN TỨC-SỰ KIỆN</div>
-                	<div class="content2">
-                    
-                    	<?php //$this->Common->getRss("http://www.moj.gov.vn/_layouts/GenRss.aspx?List=9BB9ECE7-A84C-4671-A699-2EC8D1F7FE9D",7);
-                    	echo $this->Contentnews->hienthinoidung(7);?>
+                    <div class="content1">
+                   <div class="title">Biểu mẫu đặt câu hỏi</div>
+                	<div class="content">
+                	
+                    <?php 
+                    if(isset($message)){
+                    	?><script> alert(<?php echo $message; ?>);</script>;<?php
+                    }
+                    echo $this->User->create_formConsultings($typeconsulting,$idTypeconsulting,$page,$pageend);?>
 
                 	</div>
+                </div>
                 </div>
                 </div>
                 <div class="clear"></div>
@@ -54,6 +46,6 @@ $this->Common->getRss("http://www.moj.gov.vn/_layouts/GenRss.aspx?List=60BA73DF-
            <div id='footer'><?php  
            		$data=$this->Common->general();
            		echo $data['footer'];
-           		 ?></div>
+           		 ?></div>;
 	</div></body></html>
         

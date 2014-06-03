@@ -16,29 +16,23 @@ echo $this->Common->script("testsOnline.js");
 					<div class="clear cach"></div>
                     <?php                  
 	                    $method=(isset($method)?$method:null);
-	                    $question=(isset($question)?$question:null);
-	                   	echo $this->User->create_formManageQuestion($type,$question,$method,$idtype);
-	                   	echo $this->User->create_listQuestion($data); 
-   
+	                    $question=(isset($question)&&$question!=null?$question:null);
+	                    $idqs=(isset($question)&&$question!=null?$question['Question']['id']:0);
+	                   	echo $this->User->create_formManageQuestion($type,$question,$method,$idtype,$page,$pageend);
+	                   	
+	                   	echo $this->User->create_listQuestion($data,$page,$pageend); 
+                    ?>
+                    <?php if(isset($msg)){
+                    $css='<script type="text/javascript">
+                    var txt = new String('.$msg.');
+                     alert(txt);</script>';
+                    	echo $css;
+                    }
                     ?>
                     <div class="clear"></div>
                     <div id="paging" class="right">
-		                <?php echo   $this->Common->link('Trước',array('controller' => 'admin','action' => 'admin_manageQuestion','full_base' => true,$idtype,($page>1?$page-1:1),$pageend),array('class'=>'button' ));
-		                ?>
-		                <?php	if($pagebgin>1)
-		                		echo "...";
-		                	for($i=$pagebgin;$i<=$pageend;$i++){
-		                		$class="";
-		                		if($page==$i){
-		                			$class="curent";
-		                		}
-		                		echo $this->Common->link($i,array('controller' => 'admin','action' => 'admin_manageQuestion','full_base' => true,$idtype,$i,$pageend),array('class'=>$class));
-		                	}
-		                	if($pageend<$numberrecord)
-		                		echo "...";
-		                	if($page<$numberrecord){
-		                 		echo $this->Common->link('Sau',array('controller' => 'admin','action' => 'admin_manageQuestion','full_base' => true,$idtype,($page<$numberrecord?$page+1:$numberrecord),$pageend),array('class'=>'button' ));
-		                 	}
+		                <?php  
+		                echo $this->User->pagination('admin','admin_manageQuestion',$idtype,$idqs,$page,$pagebgin,$pageend,$numberrecord);
 		                ?>
                 	</div>
                 </div>
