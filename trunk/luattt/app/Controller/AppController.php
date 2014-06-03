@@ -20,6 +20,7 @@
  */
 
 App::uses('Controller', 'Controller');
+include_once('..\View\Helper\simple_html_dom.php');
 
 /**
  * Application Controller

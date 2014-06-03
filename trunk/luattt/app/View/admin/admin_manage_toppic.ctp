@@ -37,7 +37,7 @@ echo $this->Common->create_heaeder();
                     <div class="clear"></div>
                     <div id="paging" class="right">
 		                <?php 
-		                echo $this->User->pagination("admin","manageToppic",$idforum,$page,$pagebgin,$pageend,$numberrecord);
+		                echo $this->User->pagination("admin","manageToppic",$idforum,null,$page,$pagebgin,$pageend,$numberrecord);
 		                ?>
                 	</div>
                 </div>

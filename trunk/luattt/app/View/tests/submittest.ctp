@@ -36,6 +36,39 @@ $gerne=$this->Common->general();
                     	
                     ?>
                     </div>
+                      <div class="title">ĐÁP ÁN</div>
+                      <?php 
+                      $page=isset($page)?$page:1;
+                      $i=($page-1)*10+1;
+                      $html="";
+                      foreach($data as $item){
+                      		$html.="<p><strong>Câu ".$i." </strong>".$item[0]['Question']['title']."</p>";
+                    		$methods=$item[0]['Method'];
+                    		
+                    		$char='A';
+                    		foreach($methods as $method){
+                    		$check="";
+                    		$class="";
+                    		if($method['id']==$item['chekmethod']){
+                    			$check="checked";
+                    			$class="increct";
+                    		}
+                    		if($method['corect']!=null && $method['corect']==1){
+                    			$class="corect";
+                    		}
+                			$html.=$char.") <span class='".$class."'><input  type='radio' name='".$item[0]['Question']['id']."' disabled value='".$item[0]['Question']['id']."-".$method['id']."' ".$check.">".$method['content']."</span><br>";
+                    			$char++;
+                    		}
+                    		$i++;
+                      }
+                      $html.="<div id='paging' class='right'>".$this->Common->link('Trước',array('controller' => 'Tests','action' => 'viewResult','full_base' => true,($page>1?($page-1):1)));
+                    	$html.=$this->Common->link(1,array('controller' => 'Tests','action' => 'viewResult','full_base' => true,1));
+                    $html.=$this->Common->link(2,array('controller' => 'Tests','action' => 'viewResult','full_base' => true,2));
+                     $html.=$this->Common->link(3,array('controller' => 'Tests','action' => 'viewResult','full_base' => true,3));
+                     $html.=$this->Common->link('Sau',array('controller' => 'Tests','action' => 'viewResult','full_base' => true,($page<3?($page+1):3)))."</div>";
+                    	
+                    	echo $html;
+                    ?>
                 </div>
                 <div class="clear"></div>
             </div>

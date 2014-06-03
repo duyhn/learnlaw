@@ -26,29 +26,22 @@ echo $this->Common->script("tuvanonline.js");
                     
                 </div>
                 <div class="content1">
-                    <div class="content1">
-                   <div class="title">Biểu mẫu đặt câu hỏi</div>
-                	<div class="content">
-                	
-                    <?php 
-                    if(isset($message)){
-                    	?><script> alert(<?php echo $message; ?>);</script>;<?php
-                    }
-                    echo $this->User->create_formConsultings($typeconsulting,$idTypeconsulting);?>
-                	</div>
-                </div>
-                
-                <div class="content1">
-                   <div class="title">Các câu hỏi nổi bật</div>
-                	<div class="content">
-                    
+                <div class="title">CÁC CÂU HỎI MỚI NHẤT</div>
+                <div class="content2">
+                 <?php
+                 	echo $this->User->create_listConsultings($resultNews);
+                 	
+                 ?>
+                   <div class="clear"></div>
+                 </div>
+                   <div class="title">CÁC CÂU HỎI NỔI BẬT</div>
+                	<div class="content2">
                     	<?php 
                     	
-                    	
-                    	$conlustings=(isset($Consultings)?$Consultings:null);
-                    	echo $this->User->create_listConsultings($conlustings);
-                    	//$this->Common->getRss("http://www.moj.gov.vn/_layouts/GenRss.aspx?List=9BB9ECE7-A84C-4671-A699-2EC8D1F7FE9D",7);
-                    	//print_r($this->Common->getCauhoi("http://tuvan.tinmoi.vn/rss/hoi-dap-phap-luat.rss"));?>
+                    	echo $this->User->create_listConsultings($resultFeat);
+                    	//print_r(split("\/","http://localhost/luatvnam/Tuvan"));
+                    	?>
+                		
 
                 	</div>
                 </div>

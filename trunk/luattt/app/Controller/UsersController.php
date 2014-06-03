@@ -41,11 +41,13 @@ class UsersController extends AppController{
 	function login(){
 		if ($this->request->is('post')) {
 			if ($this->Auth->login($this->request->data)) {
-				$this->Session->write($this->sessionUsername,$this->request->data['username']);
-				$data=$this->User->find('all',array('conditions' => array('username' =>$this->Session->read($this->sessionUsername))));
-				$this->Session->write($this->sessionUserid,$data[0]['User']['user_id']);
-				$this->Session->write($this->sessionUserRole,$data[0]['User']['idRole']);
-				if($data[0]['User']['idRole'] == 1){
+				$data=$this->User->find('first',array('conditions' => array('username' =>$this->request->data['username'])));
+				if(isset($data)&&count($data)>0){
+					$this->Session->write($this->sessionUsername,$data['User']['username']);
+					$this->Session->write($this->sessionUserid,$data['User']['user_id']);
+					$this->Session->write($this->sessionUserRole,$data['User']['idRole']);
+				}
+				if($data['User']['idRole'] == 1){
 					$this->Auth->loginRedirect = array('admin' =>true,'controller' => 'users', 'action' => 'index');
 				}else{
 					$this->Auth->loginRedirect = array('admin' =>false,'controller' => 'users', 'action' => 'index');
@@ -57,7 +59,7 @@ class UsersController extends AppController{
 //				}			
 //				else
 //					return $this->redirect($this->Auth->redirect());
-					if($data[0]['User']['idRole'] == 1){
+					if($data['User']['idRole'] == 1){
 						$this->Auth->loginRedirect = array('admin' =>true,'controller' => 'users', 'action' => 'index');
 					}else{
 						$this->Auth->loginRedirect = array('admin' =>false,'controller' => 'Forums', 'action' => 'index');

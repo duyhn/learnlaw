@@ -1,5 +1,5 @@
 <?php
-class CommonModel extends AppModel{
+class Common extends AppModel{
 	var $useTable = false;	
 }
 ?>

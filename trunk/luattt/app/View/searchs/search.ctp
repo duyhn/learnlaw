@@ -28,20 +28,21 @@ $gerne=$this->Common->general();
                     
                 </div>
                 <div class="content1">
-                 <div class="title"><?php echo $this->Html->link(__('Trang chủ'),'/users',array('class'=>'title'));?>> DANH MỤC BÀI THI</div>
+                 <div class="title"><?php echo $this->Html->link(__('Trang chủ'),'/users',array('class'=>'title'));?>>Kêt quả tìm kiếm</div>
                     <div class="content2">
-                    
                     <?php
-                    	$html="";
-                    	$i=1;
-                    	if(isset($data)){
-                    		foreach($data as $item){
-                    			$html.= "<p> <span class='tdstt'>".$i.".</span>";
-                    			$html.=$this->Common->link($item['typequestions']['title'],array('controller' => 'tests','action' => 'confirmTest',$item['typequestions']['id'],1))."</p>";
-                    			$i++;
-                    		}
-                    	}
-                    	echo $html;
+                    if(count($data)<=0)
+                    	echo "<h3>Không tìm thấy</h3>";
+                   // print_r($data);
+                   else{
+                    $html="";
+                    foreach ($data as $item){
+                    	$html.="<div class='consulting'><a href='/".$item['url']."' style='font-size:16px;'>".$this->User->noidungtt(10,$item['title'])."</a><br>";
+                    	$html.="<i style='color: #008000;'>".$item['url']."</i>";
+                    	$html.="<p>".$this->User->noidungtt(50,$item['decription'])."</p></div>";
+                    }
+                    echo $html;
+                    }
                     ?>
                     </div>
                 </div>

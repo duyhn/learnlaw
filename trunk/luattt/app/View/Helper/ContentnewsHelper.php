@@ -1,7 +1,7 @@
 <?php
 class ContentnewsHelper extends HtmlHelper{
 	function hienthinoidung($idtloai){
-		$nd= new CommonModel();
+		$nd= new Common();
 		//$idtloai=1;//xemlai
 		$out="";
 		$data=$nd->query( "SELECT tieude,id_tintuc,ngaythang, solanxem,id_theloai FROM tbltintucs WHERE id_theloai=".$idtloai." ORDER BY ngaythang DESC LIMIT 0,3");
@@ -28,7 +28,7 @@ class ContentnewsHelper extends HtmlHelper{
 			$where=" AND id_tintuc<>".$idtin;
 		}
 		$datatin=(isset($datatin)?$datatin:null);
-		$nd= new CommonModel();
+		$nd= new Common();
 		$output ='<div class="clear more left">';
 		$output .='<div class="tinthem left"><div class="left iconleft"></div>MORE</div>';
 		$data=$nd->query("SELECT tieude,id_tintuc,ngaythang, solanxem,id_theloai FROM tbltintucs WHERE id_theloai=".$idtloai." ".$where."  ORDER BY ngaythang DESC LIMIT 0,5");
