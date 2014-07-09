@@ -1,7 +1,6 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php
-$head=$this->Common->general();
-echo $this->Common->create_heaeder();
+$head=$this->Common->general_admin();
+echo $this->Common->header_admin();
 echo $this->Common->script("filesupload.js");
 ?>
 </head>
@@ -21,7 +20,7 @@ echo $this->Common->script("filesupload.js");
 	action="<?php echo $this->Html->url('/admin/admin/manageUpload'); ?>"
 	method="post" enctype="multipart/form-data">
 
-<fieldset class="size1"><legend> Chọn Tài liệu </legend>
+<fieldset class="size1"><legend> Thông tin tài liệu </legend>
 <div class='formcon'>
 <div class='label' style="margin-right: 5px;">Chọn thể loại tài liệu</div>
 <div class='input'><select name='idloai' id='idloai' style='height: 25px;width: 200px;' onchange='changeIdfile()'>
@@ -34,19 +33,27 @@ echo $this->Common->script("filesupload.js");
 	<?php }?>
 </select></div>
 </div>
-<input type="file" name="file" id="textfield" /> <?php //echo $this->Form->file('file');?>
-
+<div class="left clear" ><input style="margin:5px 0 5px 130px" type="file" name="file" id="textfield" /> <?php //echo $this->Form->file('file');?>
+</div>
+<div class="containdiv"><label class="label clear">Tên tài liệu </label><input type="text" name="title" id="title" /></div>
+<div class="containdiv"><label class="label clear">Mô tả </label><textarea name="mota" id="mota" ></textarea></div>
 </fieldset>
 <div class='left clear cachbtleft cachbt'>
- <input type='submit' id='submitup' class='button2' value='Upload' name='add' /></div>
+ <input type='submit' id='submitup' class='button2' value='Upload' name='add' />
+  <input type='reset' class='button2' value='Nhập lại' name='' />
+ </div>
 </form>
 
 <table cellspacing="0" class="clear sizeAd">
 	<thead class="tbtailieu">
 		<tr>
-				<th class="tdstt">STT</th> <th>Tên tài liệu</th>
-				<th>Loại tài liệu</th> <th>Kích thước</th> <th>Ngày đăng</th>
-				<th>Ngày cập nhật</th> <th class="sizeAction" colspan=2>Tác vụ</th>
+				<th class="tdstt">STT</th> 
+				<th>Tên tài liệu</th>
+				<th>Kích thước</th> 
+				<th>Mô tả</th> 
+				<th>Ngày đăng</th>
+				<th>Cập nhật</th> 
+				<th class="sizeAction" colspan=2>Tác vụ</th>
 		
 		</tr>
 		<thead>
@@ -60,16 +67,16 @@ echo $this->Common->script("filesupload.js");
 			$class="odd";
 		}
 		?>
-			<tr id="trupload" class="<?php echo $class ?>">
+			<tr id="" class="<?php echo $class ?>">
 				<td><?php echo $i; ?></td>
-				<td><?php echo $data['Upload']['name']; ?></td>
-				<td><?php echo $data['Tblloaitailieu']['tenloai']; ?></td>
+				<td><?php echo $data['Upload']['title']; ?></td>
 				<td><?php echo $data['Upload']['size']; ?></td>
-				<td><?php echo $data['Upload']['date']; ?></td>
-				<td><?php echo $data['Upload']['modified']; ?></td>
+				<td><?php echo $data['Upload']['mota']; ?></td>
+				<td><?php echo $this->User->inngay($data['Upload']['date']); ?></td>
+				<td><?php echo $this->User->inngay($data['Upload']['modified']); ?></td>
 			
-				<td><?php echo $this->Html->link('Sửa',array('controller' => 'Uploads','action' => 'update','full_base' => true,$data['Upload']['id']));?></td>
-				<td><?php echo $this->Html->link('Xóa',array('controller' => 'Uploads','action' => 'delete','full_base' => true,$data['Upload']['id']));?></td>
+				<td ><?php echo $this->Html->link('',array('controller' => 'admin','action' => 'admin_updateUpload','full_base' => true,$data['Upload']['id']),array('class'=>'icedit','title'=>'sửa'));?></td>
+				<td><?php echo $this->Html->link('',array('controller' => 'admin','action' => 'admin_deleteUpload','full_base' => true,$data['Upload']['id']),array('class'=>'icdelete','title'=>'xóa'));?></td>
 			</tr>
 			<?php endforeach; ?>
 

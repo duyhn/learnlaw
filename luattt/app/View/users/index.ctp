@@ -2,7 +2,7 @@
 <?php
 $head=$this->Common->general();
 echo $this->Common->create_heaeder();
-$this->Common->getRss("http://www.moj.gov.vn/_layouts/GenRss.aspx?List=60BA73DF-77BC-4E2B-A006-82B37A1C39C6",5);
+//$this->Common->getRss("http://www.moj.gov.vn/_layouts/GenRss.aspx?List=60BA73DF-77BC-4E2B-A006-82B37A1C39C6",5);
 ?>
 <div id='bttop'>BACK TO TOP</div></head>
 <body>
@@ -30,7 +30,8 @@ $this->Common->getRss("http://www.moj.gov.vn/_layouts/GenRss.aspx?List=60BA73DF-
                    <div class="title">PHỔ BIẾN KIẾN THỨC PHÁP LUẬT</div>
                 	<div class="content2">
                     
-                    	<?php //$this->Common->getRssPhobien("http://www.moj.gov.vn/_layouts/GenRss.aspx?List=976539B6-94DB-48F3-9186-3F6F47C3DA1A",8);
+                    	<?php 
+                    	
                     	echo $this->Contentnews->hienthinoidung(8);
                     	//echo $this->Contentnews->tinlienquan(8);
                     	?>

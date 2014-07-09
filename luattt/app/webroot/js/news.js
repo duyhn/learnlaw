@@ -28,7 +28,7 @@
 		        console.log("description: " + el.find("description").text());
 		    });
 		});*/
-	  var url1="/luatvnam/Tbltintucs/getNewsInWeb1/";
+	 var url1="/luatvnam/Tbltintucs/getNewsInWeb1/";
 		$.ajax({
 	        type:  'GET',
 	        cache:  false ,
@@ -56,6 +56,35 @@
 	   }  
 
 		});
+		var url3="/luatvnam/Tbltintucs/getNewsChinhsach/";
+		$.ajax({
+	        type:  'GET',
+	        cache:  false ,
+	        url: url3 ,
+	        
+	        success: function(resp) {
+	        	console.log("ok");
+	        },
+	       error: function(e){  
+	    	   console.log('Error: ' + e);  
+	   }  
+
+		});
+		/*
+		var urlvtc="/luatvnam/Tbltintucs/getnewsVTC/";
+		$.ajax({
+	        type:  'GET',
+	        cache:  false ,
+	        url: urlvtc ,
+	        
+	        success: function(resp) {
+	        	console.log("ok");
+	        },
+	       error: function(e){  
+	    	   console.log('Error: ' + e);  
+	   }  
+
+		});*/
 	 
   });
  function changeidTypeNews(){

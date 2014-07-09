@@ -29,5 +29,21 @@ class PostsController extends AppController {
             $this->set('forum',$forum);
         }
     }
+    public function update($idpost) {
+    	
+    	$this->Post->updateAll(array('Post.content'=>"'".$this->request->data['Post']['content']."'",'Post.modified'=>date("YmdHis", time())),array('Post.id'=>$idpost));
+    	$this->redirect(array('controller'=>'topics','action'=>'view',$this->request->data['Post']['topic_id']));
+    }
+    public function delete($idpost) {
+    	$msg="Xóa không thành công!";
+    	$post=$this->Post->find('first',array('conditions'=>array('Post.id'=>$idpost)));
+    	$idtopic=$post['Post']['topic_id'];
+    	$this->Post->deleteAll(array('Post.id'=>$idpost));
+    	if($this->Post->find('count',array('conditions'=>array('Post.id'=>$idpost)))==0){
+    		$msg="Xóa tha`nh công!";
+    	}
+    	$this->set("msg",$msg);
+    	$this->redirect(array('controller'=>'topics','action'=>'view',$idtopic));
+    }
      
 }

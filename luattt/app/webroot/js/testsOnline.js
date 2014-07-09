@@ -21,6 +21,7 @@ function checkLogin(){
 }
 
 var myVar;
+//tinh va hien thi thoi gian thi online
 function displaytime(time){
 	var minute=parseInt(time/60);
 	var second=parseInt(time%60);

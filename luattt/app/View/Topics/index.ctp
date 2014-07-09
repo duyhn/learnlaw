@@ -46,7 +46,7 @@
 		            <thead class="title">
 		                 <tr >
 		                            <th colspan=2 class="ttForum">Diễn đàn: <?php echo $forum['Forum']['name']?></th>
-		                            <th>Tạo bởi</th>
+		                            <th class="colgenner">Tạo bởi</th>
 		                            <th class="colgenner1">Ngày tạo</th>
 		                            <th class="colgenner"></th>
 		                            <th class="baicuoi">Bài cuối</th>
@@ -72,7 +72,7 @@
 		                    </td>
 		                    <td><?php
 		                        echo $this->Html->link($topic['User']['username'],
-		                                                array('controller'=>'users','action'=>'profile',$topic['User']['user_id']));
+		                                                array('controller'=>'users','action'=>'infoMember',$topic['User']['user_id']));
 		                        ?>
 		                    </td>
 		                    <td><?php
@@ -91,7 +91,7 @@
 		                        echo $this->Time->timeAgoInWords($post['created']);
 		                        echo '<p><small>bởi</small>&nbsp;';
 		                        echo $this->Html->link($topic['User']['username'],array('controller'=>'users',
-		                                                                                        'action'=>'profile',
+		                                                                                        'action'=>'infoMember',
 		                                                                                        $topic['User']['user_id'])).' </p>';
 		                             
 		                       }
@@ -103,9 +103,9 @@
 		        </table>
 	        <div id="paging" class="right">
 	            <?php
-	            //pagination($controller,$action,$idtype,$page,$pagebgin,$pageend,$numberrecord)
-	            
-	            echo $this->User->pagination("topics","index",$forum['Forum']['id'],$page,$pagebgin,$pageend,$numberrecord);
+	         //   pagination($controller,$action,$idtype,$page,$pagebgin,$pageend,$numberrecord)
+	        //echo $page."-".$pagebgin."-".$pageend."-".$numberrecord;
+	            echo $this->User->pagination("topics","index",$forum['Forum']['id'],null,$page,$pagebgin,$pageend,$numberrecord);
 	                //echo $this->element('paginator');
 	            ?>
 	         </div>

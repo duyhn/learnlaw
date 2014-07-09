@@ -3,10 +3,10 @@
 class UsersController extends AppController{
 	var $name="Users";
 	var $_sessionUid = "Userid";
-	public $uses = array('User');
+	public $uses = array('User','Forum','Topic','Post','Tests');
 
 	function  index(){
-		$this->set('title_for_layout', 'Learn laws');
+		$this->set('title_for_layout', 'Học luật Việt Nam');
 		if($this->Session->read($this->sessionUserid)==1){
 			$this->Auth->loginRedirect = array('admin' =>true,'controller' => 'users', 'action' => 'index');
 			return $this->redirect($this->Auth->redirect());
@@ -14,13 +14,21 @@ class UsersController extends AppController{
 	}
 	//3-5
 
-	public function profile($id) {
+	public function profile($id=null) {
 		$this->Auth->allow();	
 		//$_sessionUid = "Userid";	 
 		//return $this->User->find(all);
 		$data=$this->User->find('first',array('conditions' => array('User.username' => $id)));
 		$this->set("data",$data);
 	}
+	public function infoMember($id=null) {
+		$this->Auth->allow();	
+		//$_sessionUid = "Userid";	 
+		//return $this->User->find(all);
+		$data=$this->User->find('first',array('conditions' => array('User.user_id' => $id)));
+		$this->set("data",$data);
+	}
+	 
 	 
 	function beforeFilter(){
 		parent::beforeFilter();
@@ -34,44 +42,51 @@ class UsersController extends AppController{
 		$this->Auth->logoutRedirect=array('admin' =>false,'controller'=>'users','action'=>'index');
 		$this->Auth->loginError = 'Failed to login';//thong bao dang nhap bi lo
 		$this->Auth->authError = 'Access denied'; //thong bao truy cap khong dung khu vuc
-		$this->Auth->allow(array('index', 'register'));
+		$this->Auth->allow(array('index', 'register',"CheckUser"));
 	}
 	
 	
 	function login(){
 		if ($this->request->is('post')) {
-			if ($this->Auth->login($this->request->data)) {
-				$data=$this->User->find('first',array('conditions' => array('username' =>$this->request->data['username'])));
+			$user=array();
+			$user['User']['username']=$this->request->data['username'];
+			$user['User']['password']=$this->data['password'];
+			if ($this->Auth->login($user)) {
+				$hash = Security::hash($this->data['password'],NULL,TRUE);
+				$data=$this->User->find('first',array('conditions' => array('username' =>$this->request->data['username'],'password'=>$hash,'status'=>1)));
 				if(isset($data)&&count($data)>0){
 					$this->Session->write($this->sessionUsername,$data['User']['username']);
 					$this->Session->write($this->sessionUserid,$data['User']['user_id']);
 					$this->Session->write($this->sessionUserRole,$data['User']['idRole']);
-				}
-				if($data['User']['idRole'] == 1){
-					$this->Auth->loginRedirect = array('admin' =>true,'controller' => 'users', 'action' => 'index');
-				}else{
-					$this->Auth->loginRedirect = array('admin' =>false,'controller' => 'users', 'action' => 'index');
-
-				}
-				//xet dang nhap trong form login rieng
-				if(isset($_POST['reforums'])){
-//					return $this->redirect(array('user' =>false,'controller' => 'Forums', 'action' => 'index'));
-//				}			
-//				else
-//					return $this->redirect($this->Auth->redirect());
 					if($data['User']['idRole'] == 1){
 						$this->Auth->loginRedirect = array('admin' =>true,'controller' => 'users', 'action' => 'index');
 					}else{
-						$this->Auth->loginRedirect = array('admin' =>false,'controller' => 'Forums', 'action' => 'index');
-	
+						$this->Auth->loginRedirect = array('admin' =>false,'controller' => 'users', 'action' => 'index');
+					
 					}
-				}
-				return $this->redirect($this->Auth->redirect());//chuyen huong trang
+					//xet dang nhap trong form login rieng
+					if(isset($_POST['reforums'])){
+						//					return $this->redirect(array('user' =>false,'controller' => 'Forums', 'action' => 'index'));
+						//				}
+						//				else
+							//					return $this->redirect($this->Auth->redirect());
+						if($data['User']['idRole'] == 1){
+							$this->Auth->loginRedirect = array('admin' =>true,'controller' => 'users', 'action' => 'index');
+						}else{
+							$this->Auth->loginRedirect = array('admin' =>false,'controller' => 'Forums', 'action' => 'index');
+					
+						}
+					}
 			}
-
-			$this->Session->setFlash(__('Username or Password không chính xác, mời nhập lại!'));
-
+			else{
+				$this->Auth->loginRedirect = array('admin' =>false,'controller' => 'users', 'action' => 'login');
+				$this->Session->setFlash(__('Username or Password không chính xác, mời nhập lại!'));
+			}
+				
 		}
+		
+		return $this->redirect($this->Auth->redirect());//chuyen huong trang
+	}
 	}
 	
 	function logout(){
@@ -92,8 +107,10 @@ class UsersController extends AppController{
 		if(isset($_POST['ok'])){
 			$this->request->data['idRole']=2;
 			$this->request->data['status']=1;
-			$this->User->save($this->request->data);
-			$this->render("profile");
+			$this->User->saveAll($this->request->data);
+			$data=$this->User->find('first',array('conditions' => array('User.username' => $this->request->data['username'])));
+			$this->set("data",$data);
+			$this->render("thongbao");
 			
 		}
 		else{
@@ -169,5 +186,65 @@ class UsersController extends AppController{
 		$data=$this->User->find('first',array('conditions' => array('User.user_id' => $id)));
 	$this->set("data",$data);
 				 $this->render("profile");
+	}
+	public function CheckUser(){
+		$this->Auth->allow();
+		$name=$this->request->data['name'];
+		$user=$this->User->find("first",array('conditions' => array('User.username' => $name)));
+		$this->set("user",$user);
+	}
+	
+	//
+	public function managerTopic($idforum=null,$page=null,$end=null) {
+		$this->populateTopics($idforum,$page,$end);
+	}
+	public function createTopic() {
+		$this->Auth->allow();
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
+		$this->request->data['user_id']=$this->Session->read($this->sessionUserid);
+		$this->request->data['created']=date("YmdHis", time());
+		$this->request->data['modified']=date("YmdHis", time());
+		$this->Topic->saveAll($this->request->data);
+		$this->populateTopics($this->request->data['forum_id'],null,null);
+		$this->render("managerTopic");
+	}
+	public function populateTopics($idforum=null,$page=null,$end=null){
+		$page=(isset($page)&&$page!=null?$page:1);
+		$end=(isset($end)&&$end!=null?$end:$this->numberpage);
+		$this->set("forums",$this->Forum->find('all'));
+		$topics=$this->Topic->find('count',array('conditions' => array('Topic.user_id' => $this->Session->read($this->sessionUserid))));
+		$this->set("topics",$this->Topic->find('all',array('conditions' => array('Topic.user_id' => $this->Session->read($this->sessionUserid)),'limit' => $this->numberRecord, 'offset'=>($page-1)*$this->numberRecord)));
+		$this->pagination($page,$topics, $end);
+	}
+	public function editTopic($idTopic,$page=null,$end=null) {
+		$topic=$this->Topic->find("first",array('conditions' => array('Topic.id'=>$idTopic)));
+		$this->set("Topic",$topic);
+		$this->populateTopics($topic['Topic']['forum_id'],null,null);
+		$this->render("managerTopic");
+	}
+	public function UpdateTopic($idtopic) {
+		date_default_timezone_set('Asia/Ho_Chi_Minh');
+		$topic=$this->Topic->find("first",array('conditions' => array('Topic.id'=>$idtopic)));
+		$this->Topic->updateAll(array('modified'=>date("YmdHis", time()),'forum_id'=>$this->request->data['forum_id'],'name'=>"'".$this->request->data['name']."'",'content'=>"'".$this->request->data['content']."'"),array('Topic.id' =>$idtopic));
+		$this->populateTopics($topic['Topic']['forum_id'],null,null);
+		$this->render("managerTopic");
+	}
+	public function deleteTopic($idtopic,$page=null,$end=null) {
+		$topic=$this->Topic->find("first",array('conditions' => array('Topic.id'=>$idtopic)));
+		$this->Post->deleteAll(array('Post.topic_id'=>$idtopic));
+		$msg="'Xóa không thành công!'";
+		if($this->Post->find('count',array('conditions' => array('Post.topic_id'=>$idtopic)))==0){
+			$this->Topic->deleteAll(array('Topic.id'=>$idtopic));
+		}
+		if($this->Topic->find('count',array('conditions' => array('Topic.id'=>$idtopic)))==0){
+			$msg="'Xóa thành công!'";
+		}
+		$this->set("msg",$msg);
+		$this->populateTopics($topic['Topic']['forum_id'],null,null);
+		$this->render("managerTopic");
+	}
+	public function findTest($iduser){
+		
+		$this->set("data",$this->Tests->find("all",array('conditions'=>arr('Tests.'))));
 	}
 }

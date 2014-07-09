@@ -21,44 +21,40 @@ echo $this->Common->script(array("pdfobject.js,files.js"));
 <div id="main">
 	<div id="sidebar-right"><?php echo $this->Common->create_right(); ?></div>
 	<div class="content1">
-		<div class="content2">
-		<ul id="titleli">
-	          <li class="textTop">
-	            <?php echo $this->Html->link(__('Tài liệu'),'/Uploads/')?>
-	          </li>
-	          <li class="active">
+		<div class="content">
+		<div class="title">
+	           <?php echo $this->Html->link(__('Tài liệu'),'/Uploads/')?> >
 	           <?php echo $tblloaitailieu['Tblloaitailieu']['tenloai'];?>
-	          </li>
-	        </ul>
+
+	    </div>
 		
-		<table cellspacing="0" class="sizetb">
-			<thead class="tbtailieu">
-				<tr>
-					<th <th class="tdstt">STT</th>
-					<th>Tên</th>
-					<th>Lượt tải</th>
-					<th></th>
-				</tr>
-			<thead>
-			
+		<div class="download">
+		
 			<?php 
-			$i=0;
 			foreach ($datas as $data): 
-			$class="even";
-			if(($i%2)!=0){
-				$class="odd";
-			}
+			
 			?>			
-			<tr id="trupload" class="<?php echo $class ?>">
-				<td><?php echo $data['Upload']['id']; ?></td>
-				<td><?php echo $data['Upload']['name']; ?></td>
-				<td class="td1"><?php echo $data['Upload']['dem']; ?></td>
-				<td class="td1"><?php echo $this->Html->link('Tải về',array('controller' => 'Uploads','action' => 'download','full_base' => true,$data['Upload']['id']));
+			<div id="trType" style="padding-top:10px;">
+			<div class="left" style="width:100%;">
+				<div class="icbook"></div>
+				<div class="left" id="titleFile"><?php echo $this->Html->link($data['Upload']['title'],array('controller' => 'Uploads','action' => 'download','full_base' => true,$data['Upload']['id']),array('class' => 'titleTailieu'));	?></div>			
+			<?php	 
+				$date = $data['Upload']['modified'];
+				 $d = getdate(strtotime($date));
+				$inngay = $d['mday'].'/'.$d['mon'].'/'.$d['year'] .' '. $d['hours'].':'.$d['minutes'].':' .$d['seconds'];		
+				?>	
+				<div class="left" style="margin-left:5px;font-size:12px;">(Ngày cập nhật: <?php echo $inngay; ?>)</div>
+				<div class="right" style="font-size:12px;">Lượt tải: <?php echo $data['Upload']['dem']; ?></div>
+				<div class="right"><?php echo $this->Html->link('',array('controller' => 'Uploads','action' => 'download','full_base' => true,$data['Upload']['id']),array('class'=>'icdownload','title'=>'download'));	?></div>
 				
-				?><a onclick="viewpdf()">Xem</a></td>
-			</tr>
-			<?php $i++; endforeach; ?>
-		</table>
+			</div>
+			<div class="left clear">
+				<strong>Mô tả: </strong><?php echo $data['Upload']['mota']; ?>
+				<?php echo $this->Html->link('Xem',array('controller' => 'Uploads','action' => 'display','full_base' => true,$data['Upload']['id']));?>
+			</div>
+			</div>
+			<?php endforeach; ?>
+		</div>
 	<div id="paging" class="right">
  <?php 
 		echo $this->User->pagination("Uploads","view",$idloai,null,$page,$pagebgin,$pageend,$numberrecord);

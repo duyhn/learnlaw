@@ -15,3 +15,12 @@ function changeForum(){
 	var item2 = s1.options[s1.selectedIndex].value;
 	window.location.href="/luatvnam/admin/admin/manageComment/"+item2+"/"+item1+"/"+idpost;
 }
+function editPost(object,content){
+	//document.getElementById("PostContent").value=document.getElementById("post_"+content).innerHTML;
+	 CKEDITOR.instances.PostContent.setData(document.getElementById("post_"+content).innerHTML);
+	document.getElementById("PostViewForm").action="/luatvnam/posts/update/"+object.value;
+	//alert(object.value);
+}
+function changeidForum(e){
+	window.location.href="/luatvnam/admin/admin/manageComment/"+item2+"/"+item1+"/"+idpost;
+}

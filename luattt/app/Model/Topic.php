@@ -28,20 +28,21 @@ class Topic extends AppModel {
  * @var array
  */
     public $belongsTo = array(
+    'User' => array(
+            'className' => 'User',
+            'foreignKey' => 'user_id',
+            'conditions' => '',
+            'fields' => '',
+            'order' => ''
+        ),
         'Forum' => array(
             'className' => 'Forum',
             'foreignKey' => 'forum_id',
             'conditions' => '',
             'fields' => '',
             'order' => ''
-        ),
-        'User' => array(
-            'className' => 'User',
-            'foreignKey' => 'user_id',
-            'conditions' => '',
-            'fields' => '',
-            'order' => ''
         )
+        
     );
  
 /**
@@ -56,7 +57,7 @@ class Topic extends AppModel {
             'dependent' => false,
             'conditions' => '',
             'fields' => '',
-            'order' => '',
+            'order' => 'Post.created DESC',
             'limit' => '',
             'offset' => '',
             'exclusive' => '',

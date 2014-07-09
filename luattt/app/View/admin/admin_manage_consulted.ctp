@@ -1,9 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php
-$head=$this->Common->general();
-echo $this->Common->create_heaeder();
+$head=$this->Common->general_admin();
+echo $this->Common->header_admin();
 echo $this->Common->script("ckeditor/ckeditor.js");
-
+echo $this->Common->script("admin.js");
 
 ?>
 </head>
@@ -27,12 +26,12 @@ echo $this->Common->script("ckeditor/ckeditor.js");
                     <div class="clear cach"></div>
                     <?php
                    
-                    echo $this->User->create_listConsulting($consulted,"manageConsulted","editConsulting",$page,$pageend);
+                    echo $this->User->create_listConsulting($consulted,"admin_manageConsulted","editConsulting",$page,$pageend);
                     ?>
                     <div class="clear"></div>
                     <div id="paging" class="right">
 		                <?php 
-		                echo $this->User->pagination("admin","admin__manageConsulted",$idtype,null,$page,$pagebgin,$pageend,$numberrecord);
+		                echo $this->User->pagination("admin","admin_manageConsulted",$idtype,null,$page,$pagebgin,$pageend,$numberrecord);
 		                ?>
                     </div>
                     <?php if(isset($msg)){

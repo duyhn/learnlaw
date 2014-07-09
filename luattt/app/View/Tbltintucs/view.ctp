@@ -36,17 +36,18 @@ echo $this->Common->create_heaeder();
 						<div class="date float"><?php echo $inngay ;?>
 						<span class="author">Author: <?php echo $data[0]['tbltintucs']['tacgia'] ?></span></div>
 						<div class='left clear'><?php  echo $data[0]['tbltintucs']['noidung']  ?></div>
-						<div class='countview'>( <?php echo $data[0]['tbltintucs']["solanxem"] ?> lần xem)</div>
+						<div class='countview'>Nguồn:<?php echo $data[0]['tbltintucs']['nguon'] ?> .( <?php echo $data[0]['tbltintucs']["solanxem"] ?> lần xem)</div>
                     </div>
                     <?php 
                 echo $this->Contentnews->tinlienquan($data[0]['tbltintucs']['id_theloai'],null,$data[0]['tbltintucs']['id_tintuc']);
                 ?>
                 </div>
-                <div class="clear cach"></div>
+               </div>
                 
-            </div>
+           
+             <div class="clear cach"></div>
            <div id='footer'><?php  
            		$data=$this->Common->general();
-           		echo $data['footer'];
+           		echo $data['footer']
            		 ?></div>
 	</div></body></html>

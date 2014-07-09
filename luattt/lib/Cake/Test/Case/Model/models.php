@@ -18,6 +18,7 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
+App::uses('CakeTestModel', 'Lib');
 App::uses('Model', 'Model');
 
 /**

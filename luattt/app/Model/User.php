@@ -20,6 +20,13 @@ class User extends AppModel{
                 'rule' => array('email')
             ),
         ),
+		'role' => array(
+					'valid' => array(
+							'rule' => array('inList', array('admin', 'user')),
+							'message' => 'Please enter a valid role',
+							'allowEmpty' => false
+					)
+			)
     );
  
     //The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -57,7 +64,23 @@ class User extends AppModel{
             'counterQuery' => ''
         )
     );
-	
+	//
+    public $belongsTo = array(
+    		'Role' => array(
+    				'className' => 'Role',
+    				'foreignKey' => 'idRole',
+    				'dependent' => false,
+    				'conditions' => '',
+    				'fields' => '',
+    				'order' => '',
+    				'limit' => '',
+    				'offset' => '',
+    				'exclusive' => '',
+    				'finderQuery' => '',
+    				'counterQuery' => ''
+    		),
+    );
+	//
 	function setUserName($username){
 		$this->userName=$username;
 	}

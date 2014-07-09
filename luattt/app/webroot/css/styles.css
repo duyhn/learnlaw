@@ -16,8 +16,9 @@ body { /*font-family: Times New Roman, Times, serif;*/
 }
 
 h1,h2,h3,h4,h5,h6 {
-	font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
-	color: #006;
+	font-family: Arial, Helvetica, sans-serif;
+	color:#0B508C;
+	margin:5px 0 2px 0;
 }
 input[type=text],input[type=password]{width:350px;}
 .clear {
@@ -78,12 +79,13 @@ a:hover {
 #header #logo {
 	width: 970px;
 	float: left;
+	margin-bottom:10px;
 }
-
+.logoleft{float:left;width:120px;height:100px;}
 #header .today {
-	position: absolute;
-	margin: 0 0 0 770px;
+	float:right;
 	color: #999999;
+	margin-top:10px;
 }
 
 #menu-nav { /* background-image:url(../img/images/menu_center.png);
@@ -970,6 +972,7 @@ ul.nav1 li.current {
 	color: #000;
 	border-color: #444;
 }
+.curent{background-color: #6699ff;color:#FFF!important;font-weight:bold;}
 .time{
 	font-family:arial;
 	color:#ff0000;
@@ -996,7 +999,6 @@ ul.nav1 li.current {
 fieldset{padding:10px;}
 .contain table {
 	border-collapse: collapse;
-	padding: 10px 15px;
 }
 
 .contain .title {
@@ -1101,7 +1103,8 @@ fieldset{padding:10px;}
 
 
 table tbody td{
-	text-indent: 10px;
+	text-indent: 5px;
+	padding:5px 5px 5px 0;
 }
 .titleDate{
 	background-image: linear-gradient(to bottom, #93c6ff, #6699ff);
@@ -1110,7 +1113,10 @@ table tbody td{
 	font:bold 13px Arial;
 }
 .tdfisrt{
- width:150px;border-right:1px solid #bababa;
+ width:160px;padding:5px;min-height:70px;
+}
+.tdsecond{
+padding:5px;min-height:70px;width:720px;border-left: solid 1px #ddd;
 }
 /*Noi dung toptic*/
 .contentToppic{
@@ -1119,7 +1125,10 @@ table tbody td{
 	float:left;
 	padding-bottom:10px;
 }
-.contentToppic .nd{font:normal 13px Arial; line-height: 18px;}
+.date{font:normal 12px Arial}
+.contentToppic .nd, .tdeTop{font:normal 14px Arial; line-height: 18px;}
+.bdpost{float:left;width:100%; border-radius:7px;box-shadow: 0 0 1px #000;margin-top:7px;}
+.tdeTop{color:#1e62a3;}
 .breadcrumb{float:left;width: 450px;}
 hr{margin:3px;}
 .tdImg{width:50px;}
@@ -1136,9 +1145,10 @@ hr{margin:3px;}
 }
 .alertinfo{margin-bottom:10px;float:left;}
 .colgenner{width:70px;}
-.colgenner1{width:160px;}
+.colgenner1{width:140px;}
 .info{color:#003366;margin-bottom:10px;width:100%;}
 .tieude1 a{font:bold 12px #006699;}
+.tieudechung{font:bold 15px Arial;color:#1262A8;}
 /*User Register*/
 .containregis{float:left;}
 .label{float:left;width:130px;font-weight:bold;}
@@ -1227,11 +1237,14 @@ p{padding:0;margin:0;}
 	font:bold 13px Arial;
 }
 .sizetb{width:680px;padding:10px;}
-#trupload {height:25px;}
+#trupload {font: 12px/1.5em Arial,Helvetica,sans-serif;width:100%;}
 #trupload:hover {background-image:linear-gradient(to bottom,#F0FFFF, #99ccff);}
-#trupload td{padding: 5px;}
-.tdstt{width:30px;text-align: center;float:left}
-.td1{width:60px;text-align: center;}
+#trType:hover{cursor: pointer;}
+#trType td, #trupload td{padding: 5px;}
+#trType {float:left;}
+
+.stt,.tdstt{width:30px;text-align: center;}
+.td1{width:60px;text-align: center!important;}
 .td2{width:100px;}
 .odd {
 	background-color: #fafff2;
@@ -1498,7 +1511,7 @@ ul#titleli > li{
 	z-index: 6000;
 	margin: auto 0;
 	float: left;
-	width: 1200px;
+	width: 1250px;
 	height: 40px!important;
 }
 
@@ -1569,31 +1582,42 @@ ul#titleli > li{
 .sizeAd{width: 990px;}
 /*size,dis button*/
 .cachbt{margin-bottom:20px;}
-.cachbtleft{margin-left:450px;}
+.cachbtleft{margin-left:400px;}
 .sizebutton2{width:80px;}
 /**/
 
 /*Input*/
+label{font-weight:bold;width:120px;}
 #containad select ,.sizeinput{width:300px;height:25px;}
 #containad input[type=text],
 #containad input[type=password],
 #containad input[type=textarea]
-	 {width:700px;height:25px;}
-#containad textarea {width:700px;height:50px;font:normal 12px arial;}
+	 {width:845px;height:25px;}
+#containad textarea {width:845px;height:50px;font:normal 12px arial;}
 #containad label{font-weight:bold;}
 .transHoa{text-transform: uppercase;}
 
 /*icon*/
-.icview, .icadd, .icedit, .icdelete{width:16px;height:16px;float:left;margin:2px;}
+.icview, .icadd, .icedit, .icdelete, .icdownload, .ictick,.icbook,.icedit_doc,.icdelete_doc
+	{width:16px;height:16px;float:left;margin:2px;}
 .icadd{background-image:url(../img/icon/list_add.png) }
 .icedit{background-image:url(../img/icon/list_edit.png)}
 .icdelete{background-image:url(../img/icon/list_delete.png)}
 .icview{background-image:url(../img/icon/list.png)}
+.icdownload{background-image:url(../img/icon/download.png)}
+.icsearch{background-image:url(../img/icon/search.png);
+			width:32px;height:32px;float:right;border: none;background-color: #E1F1FA;padding:0;
+		}
+.icsearch:hover{box-shadow:0 0 1px #FFF;border-radius:7px;border:solid 1px #fff;}
 .icadd:hover, .icedit:hover, .icdelete:hover{
 	border-color: #999;
 	-moz-box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
 	-webkit-box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);}
+.ictick{background-image:url(../img/icon/tick.gif);width:14px; height:13px;margin-top:4px;}
+.icbook{background-image:url(../img/icon/book.png)}
+.icdelete_doc,.icedit_doc{background-image:url(../img/icon/edit_doc.png);float:right;border: none;background-color: #FFF;padding:0;}
+.icdelete_doc{background-image:url(../img/icon/delete_doc.png);}
 /*Profile*/
 .contain_pro{float:left;margin:20px 0 20px 100px;}
 .contain_pro .label{width:150px;}
@@ -1615,8 +1639,26 @@ ul#titleli > li{
 }
 .corect{
 	background-color:green;
+	color:#FFF;
 }
 .consulting{
 	border-color: #999;
 	border-bottom: 1px solid #B0C4DE;
 }
+#tbform{margin:20px 0 10px 20px;}
+.timeThi{color:#1e841e}
+#detailTuvan h3{font:bold 18px UTMA;margin:0!important;color:#F05700}
+
+.titleTailieu{font:bold 15px Arial;}
+.title a{color:#F0FFFF;}
+#titleFile a{color:#006699;}
+.title a:hover{color:#ffdb75;}
+.download{width:670px;margin:10px;float:left}
+#titleFile a:hover{color: #FF9900;}
+
+.containdiv{float:left; margin:5px 0 0 0;}
+#cke_noidung,#cke_contents{width:850px;}
+
+.colngay{width:120px;}
+
+#forumindex td{border: solid 1px #ddd}

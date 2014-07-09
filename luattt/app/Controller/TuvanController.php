@@ -1,6 +1,6 @@
 <?php
 
-
+include_once('..\View\Helper\simple_html_dom.php');
 class TuvanController extends AppController {
 	var $name="Tuvan";
 	public $uses = array('Typeconsulting','Consulting','Resultconsulting');
@@ -12,7 +12,7 @@ class TuvanController extends AppController {
 	}
 	function beforeFilter(){
 		parent::beforeFilter();
-		$this->Auth->allow(array('index','createConsultings','getRssTuvan','detail'));
+		$this->Auth->allow(array('index','createConsultings','getRssTuvan','detail','formConsulting'));
 	}
 	public function createConsultings($begin=null,$end=null) {
 
@@ -24,13 +24,15 @@ class TuvanController extends AppController {
 			$data['auther']="guest";
 
 		$this->Consulting->saveAll($data);
-		$this->set("message","Câu hỏi của bạn đã được gởi đi!");
+		$this->set("msg","'Câu hỏi của bạn đã được gởi đi!'");
 		$this->populateForm($data['typeconsulting_id'],$begin,$end);
-		$this->render('index');
+		$this->render('formConsulting');
 	}
 	public function populateForm($idTypeconsulting=null,$page=null,$end=null){
 		$page=(($page==null || !isset($page))?1:$page);
 		$end=(($end==null)||!isset($end)?$this->numberpage:$end);
+		$this->set("typeconsulting",$this->Typeconsulting->find("all"));
+		$this->set("idTypeconsulting",1);
 		$result=$this->Resultconsulting->find("all",array('order'=>array('Resultconsulting.result_date DESC'),'limit' => 7));
 		$this->set("resultNews",$result);
 		$resultFeat=$this->Resultconsulting->find("all",array('order'=>array('Resultconsulting.view DESC'),'limit' => 7));
@@ -83,8 +85,8 @@ class TuvanController extends AppController {
 				$links=$item->getElementsByTagName('link');
 				$link=$links->item(0);
 				//load tin tuc
-				$html = new simple_html_dom();
-				$html->load_file($link->nodeValue);
+				//$html = new simple_html_dom();
+				$html=file_get_html($link->nodeValue);
 				$element = $html->find("h1");
 				$spanNgay=$html->find("span");
 
@@ -94,7 +96,7 @@ class TuvanController extends AppController {
 					//luu csdl
 					$consul['typeconsulting_id']=1;
 					$consul['title']=$element[0]->innertext;
-					$consul['content']=$spanNgay[0]->innertext;
+					$consul['contents']=$spanNgay[0]->innertext;
 					$consul['auther']="admin";
 					$chekarr=$this->Consulting->find("first",array('conditions' => array('Consulting.title' => $consul['title'])));
 
@@ -105,7 +107,7 @@ class TuvanController extends AppController {
 						$resultcon['user_id']=1;
 						$resultcon['consulting_id']=$con['Consulting']['id'];
 						$resultcon['title']=$consul['title'];
-						$resultcon['content']=$divMota[0]->outertext;
+						$resultcon['contents']=$divMota[0]->outertext;
 						$this->Resultconsulting->saveAll($resultcon);
 					}
 				}
@@ -125,6 +127,10 @@ class TuvanController extends AppController {
 			echo "error".$e;
 		}
 		$this->render('index');
+	}
+	public function formConsulting(){
+		
+		$this->populateForm(null,null,null);
 	}
 }
 ?>

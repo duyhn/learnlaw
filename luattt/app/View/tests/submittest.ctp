@@ -29,10 +29,12 @@ $gerne=$this->Common->general();
                 </div>
                 <div class="content1">
                  <div class="title">KẾT QUẢ BÀI THI</div>
-                    <div class="content">
+                    <div class="content2">
+                    <p>Xin chào: <?php echo $this->Session->read("Username");?> Kết quả bài thi của bạn:</p>
+                   
                     <?php
-                    	echo "<p> số câu lời đúng:".$numbercorect."/30</p>";
-                    	echo "<p>Điểm: ".$core."</p>";
+                    	echo "<p> Số câu lời đúng:".$this->Session->read("numbercorect")."/20</p>";
+                    	echo "<p>Điểm: ".$this->Session->read("core")."</p>";
                     	
                     ?>
                     </div>
@@ -40,12 +42,13 @@ $gerne=$this->Common->general();
                       <?php 
                       $page=isset($page)?$page:1;
                       $i=($page-1)*10+1;
-                      $html="";
+                      $html="<div class='content2'>";
                       foreach($data as $item){
-                      		$html.="<p><strong>Câu ".$i." </strong>".$item[0]['Question']['title']."</p>";
+                      		$html.="<p><strong>Câu ".$i.": ".$item[0]['Question']['title']." </strong></p>";
                     		$methods=$item[0]['Method'];
                     		
                     		$char='A';
+                    		//kiem tra dap an dung sai
                     		foreach($methods as $method){
                     		$check="";
                     		$class="";
@@ -61,11 +64,10 @@ $gerne=$this->Common->general();
                     		}
                     		$i++;
                       }
-                      $html.="<div id='paging' class='right'>".$this->Common->link('Trước',array('controller' => 'Tests','action' => 'viewResult','full_base' => true,($page>1?($page-1):1)));
+                      $html.="</div><div id='paging' class='right'>".$this->Common->link('Trước',array('controller' => 'Tests','action' => 'viewResult','full_base' => true,($page>1?($page-1):1)));
                     	$html.=$this->Common->link(1,array('controller' => 'Tests','action' => 'viewResult','full_base' => true,1));
-                    $html.=$this->Common->link(2,array('controller' => 'Tests','action' => 'viewResult','full_base' => true,2));
-                     $html.=$this->Common->link(3,array('controller' => 'Tests','action' => 'viewResult','full_base' => true,3));
-                     $html.=$this->Common->link('Sau',array('controller' => 'Tests','action' => 'viewResult','full_base' => true,($page<3?($page+1):3)))."</div>";
+                    $html.=$this->Common->link(2,array('controller' => 'Tests','action' => 'viewResult','full_base' => true,2));                
+                     $html.=$this->Common->link('Sau',array('controller' => 'Tests','action' => 'viewResult','full_base' => true,($page<2?($page+1):2)))."</div>";
                     	
                     	echo $html;
                     ?>

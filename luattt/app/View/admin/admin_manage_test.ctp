@@ -1,8 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php
-$head=$this->Common->general();
-echo $this->Common->create_heaeder();
+$head=$this->Common->general_admin();
+echo $this->Common->header_admin();
 echo $this->Common->script("testsOnline.js");
+echo $this->Common->script("admin.js");
 ?>
 </head>
 <body>
@@ -23,7 +23,7 @@ echo $this->Common->script("testsOnline.js");
                     <div class="clear"></div>
                     <div id="paging" class="right">
 		                <?php 
-		                echo $page;
+		
 		                echo $this->User->pagination('admin','admin_manageQuestion',$idtype,null,$page,$pagebgin,$pageend,$numberrecord);
 		                 ?>
                 	</div>

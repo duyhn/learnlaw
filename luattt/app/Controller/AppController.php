@@ -20,7 +20,7 @@
  */
 
 App::uses('Controller', 'Controller');
-include_once('..\View\Helper\simple_html_dom.php');
+
 
 /**
  * Application Controller
@@ -45,19 +45,26 @@ class AppController extends Controller {
 
 	function beforeFilter()
 	{
-	//	Security::setHash("md5");
-	//	$this->Auth->userModel = 'User';
-	//	$this->Auth->fields = array('username' => 'username', 'password' => 'password');
-		//$this->Auth->loginAction = array('admin' => false,'controller' => 'users','action' => 'index');
-	//	$this->Auth->loginRedirect = array('admin' =>true,'controller' => 'users', 'action' => 'add');
-	//	$this->Auth->loginError = 'Username / password combination.  Please try again';
-	//	$this->Auth->authorize = 'controller';
-	//	$this->set("admin",$this->_isAdmin());
-	//	$this->set("logged_in",$this->_isLogin());
-	//	$this->set("users_userid",$this->_usersUserID());
-	//	$this->set("users_username",$this->_usersUsername());
+// 		Security::setHash("md5");
+// 		$this->Auth->userModel = 'User';
+// 		$this->Auth->fields = array('username' => 'username', 'password' => 'password');
+// 		$this->Auth->loginAction = array('admin' => false,'controller' => 'users','action' => 'index');
+// 		$this->Auth->loginRedirect = array('admin' =>true,'controller' => 'users', 'action' => 'add');
+// 		$this->Auth->loginError = 'Username / password combination.  Please try again';
+// 		$this->Auth->authorize = 'controller';
+// 		$this->set("admin",$this->_isAdmin());
+// 		$this->set("logged_in",$this->_isLogin());
+// 		$this->set("users_userid",$this->_usersUserID());
+// 		$this->set("users_username",$this->_usersUsername());
 	
 		// Cấu hình layout
+		$sessionUsername  = "Username";
+		$sessionUserid = "Userid";
+		$sessionEmail = "Email";
+		$numberpage=5;
+		$numberRecord=5;
+		$numberpageStep=3;
+		$sessionUserRole="userRole";
 		$this->_configLayout();
 	
 	}
@@ -89,8 +96,7 @@ class AppController extends Controller {
 	}
 	//Phan trang
 	public function pagination($page,$numberrecord,$end){
-		$numberrecord=(round($numberrecord/$this->numberRecord)>0?($numberrecord%$this->numberRecord>0? round($numberrecord/$this->numberRecord)+1:round($numberrecord/$this->numberRecord)):1);
-	
+		$numberrecord=($numberrecord/$this->numberRecord>0?($numberrecord%$this->numberRecord>0? (int)($numberrecord/$this->numberRecord)+1:(int)($numberrecord/$this->numberRecord)):1);
 		$end=($end<$numberrecord?$end:$numberrecord);
 		$pageend=$page+$this->numberpageStep;
 		$pageend=($pageend<=$end?($page-$this->numberpageStep>($end-$this->numberpage)?$end:($page-$this->numberpageStep>1?$end-$this->numberpageStep+1:$this->numberpage)):($pageend<$numberrecord?$pageend:$numberrecord));

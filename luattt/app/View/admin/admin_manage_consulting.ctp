@@ -1,11 +1,9 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php
-$head=$this->Common->general();
-echo $this->Common->create_heaeder();
+$head=$this->Common->general_admin();
+echo $this->Common->header_admin();
 echo $this->Common->script("ckeditor/ckeditor.js");
 echo $this->Common->script("testsOnline.js");
-
-
+echo $this->Common->script("admin.js");
 ?>
 </head>
 <body>
@@ -24,14 +22,18 @@ echo $this->Common->script("testsOnline.js");
 		                   echo $this->User->create_formAdminConsultings($typeconsultings,null,$consul,"admin_manageConsulting");
 		                    
 	                    ?>
-	                    
-	                    
                     </div>
                     <div class="containrightad">
                     <div class="clear cach"></div>
                     <?php
                     echo $this->User->create_listConsulting($Consluting,"admin_manageConsulting","editConsulting",$page,$pageend);
                     ?>
+                    </div>
+                     <div class="clear"></div>
+                    <div id="paging" class="right">
+		                <?php 
+		                echo $this->User->pagination("admin","admin_manageConsulting",$idtype,null,$page,$pagebgin,$pageend,$numberrecord);
+		                ?>
                     </div>
                      <?php if(isset($msg)){
                     $css='<script type="text/javascript">
@@ -40,6 +42,8 @@ echo $this->Common->script("testsOnline.js");
                     	echo $css;
                     }
                     ?>
+                    <iframe id="myFrame" style="display:none" ></iframe>
+					<input type="button" value="Open PDF" onclick = "openPdf()"/>
                 </div>
             </div>
             <div class="cach clear"></div>

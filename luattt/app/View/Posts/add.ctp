@@ -37,7 +37,7 @@
                   <div class="form-group">
                     <label for="inputPassword3" class="col-sm-2 control-label">Nội dung</label>
                     <div class="col-sm-10">
-                        <?php echo $this->Form->textarea('content',array('class'=>'form-control','rows'=>8));?>
+                        <?php echo $this->Form->textarea('content',array('class'=>'form-control','rows'=>8,'placeholder'=>'Bình luận bằng tiếng Việt có dấu, không vi phạm pháp luật, thuần phong mỹ tục, lịch sự. Trân trọng!'));?>
                     </div>
                   </div>
                    

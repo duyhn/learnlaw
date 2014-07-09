@@ -20,36 +20,43 @@ $gerne=$this->Common->general();
 
             </div>
             <div class="clear"></div>
-            <div id="main">
-            
-                <div id="sidebar-right">
+            <div id="main">           
+                <div id="sidebar-right">  <?php echo $this->Common->create_right(); ?>                    
+                </div>
                 
-                <?php echo $this->Common->create_right(); ?>
-                    
-                </div>
                 <div class="content1">
-                 <div class="title"><?php echo $this->Html->link(__('Trang chủ'),'/users',array('class'=>'title'));?>>Kêt quả tìm kiếm</div>
+                 <div class="title"><?php echo $this->Html->link(__('Trang chủ'),'/users',array('class'=>'title'));?> Kết quả tìm kiếm</div>
                     <div class="content2">
-                    <?php
-                    if(count($data)<=0)
-                    	echo "<h3>Không tìm thấy</h3>";
-                   // print_r($data);
-                   else{
-                    $html="";
-                    foreach ($data as $item){
-                    	$html.="<div class='consulting'><a href='/".$item['url']."' style='font-size:16px;'>".$this->User->noidungtt(10,$item['title'])."</a><br>";
-                    	$html.="<i style='color: #008000;'>".$item['url']."</i>";
-                    	$html.="<p>".$this->User->noidungtt(50,$item['decription'])."</p></div>";
-                    }
-                    echo $html;
-                    }
-                    ?>
+		                    <?php
+		                    if(count($data)<=0)
+		                    	echo "<h3>Không tìm thấy</h3>";
+		                   // print_r($data);
+		                   	else{
+			                    $html="";
+			                    foreach ($data as $item){
+			           
+			                    	$html.="<div class='clear'><a href='/".$item['url']."' style='font-size:14px;font-weight:bold;margin-top:10px;'>".$this->User->noidungtt(10,$item['title'])."</a><br>";
+			                    	$html.="<i style='color: #008000;'>".$item['url']."</i>";
+			                    	$html.="<p style='font-weight:normal!important;margin-top:2px;'>"
+			                    		.$this->User->noidungtt(100,$item['decription'])."</p>
+			                    		</div>";
+			                    		
+			                    }
+			                    echo $html;
+			                    }
+		                    ?>
                     </div>
+
                 </div>
+                
             </div>
-           <div id='footer' class='clear'><?php  
+            
+           
+	<div class="clear"></div>
+	<div id='footer' class='clear'><?php  
            		$data=$this->Common->general();
            		echo $data['footer'];
            		 ?></div>
-	</div></body></html>
+    </div>
+	</body></html>
         
