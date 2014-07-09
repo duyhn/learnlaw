@@ -32,7 +32,7 @@ class Forum extends AppModel {
             'dependent' => false,
             'conditions' => '',
             'fields' => '',
-            'order' => '',
+            'order' => 'created DESC',
             'limit' => '',
             'offset' => '',
             'exclusive' => '',

@@ -48,7 +48,7 @@ class SearchsController extends AppController {
     		$Resultconsulting=$this->Resultconsulting->find("all",array('conditions' => array('OR' =>array('Resultconsulting.title like '=>'%'.$request['info'].'%','Resultconsulting.contents like'=>'%'.$request['info'].'%'))));
     		if(count($Resultconsulting)>0){
     			foreach ($Resultconsulting as $item){
-    				array_push($data,array("title"=>$item['Resultconsulting']['title'],"decription"=>$item['Resultconsulting']['contents'],"url"=>"luatvnam/Resultconsulting/detail/".$item['Resultconsulting']['id']));
+    				array_push($data,array("title"=>$item['Resultconsulting']['title'],"decription"=>$item['Resultconsulting']['contents'],"url"=>"luatvnam/Tuvan/detail/".$item['Resultconsulting']['consulting_id']));
     			}
     			
     		}

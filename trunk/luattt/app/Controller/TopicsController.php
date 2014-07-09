@@ -5,10 +5,11 @@ class TopicsController extends AppController {
    // public $components = array('Paginator');
     	// var $paginate = array(); 
     public $uses = array('Post','Topic');
-    public   $numberRecord=10;
+    
     	 
     public function beforeFilter() {
-        $this->Auth->allow('index','view');
+    	parent::beforeFilter();
+        $this->Auth->allow('index','view','search');
     }
      
     public function index($forumId=null,$page=null,$end=null) {
@@ -55,18 +56,19 @@ class TopicsController extends AppController {
         $this->set('topic', $topic);
         $this->set('forum', $forum);
         //$this->set('posts', $this->Paginator->paginate('Post'));
-        $post=$this->Post->find("all",array('conditions'=>array('Post.topic_id'=>$id), 'limit' => $this->numberRecord, 'offset'=>$page-1));
+        $post=$this->Post->find("all",array('conditions'=>array('Post.topic_id'=>$id), 'limit' => $this->numberRecord , 'order' => array(
+            'Post.modified' => 'DESC') , 'offset'=>($page-1)*$this->numberRecord));
         $this->set('posts',$post);
         $numberrecord=count($topic['Post']);
         $this->pagination($page, $numberrecord, $end);
     }
     //
     //Phan trang
-    public function pagination($page,$numberrecord,$end){
+   /* public function pagination($page,$numberrecord,$end){
     	$numberrecord=(round($numberrecord/$this->numberRecord)>0?($numberrecord%$this->numberRecord>0? round($numberrecord/$this->numberRecord)+1:round($numberrecord/$this->numberRecord)):1);
     	$end=($end<$numberrecord?$end:$numberrecord);
     	$pageend=$page+$this->numberpageStep;
-    	$pageend=($pageend<=$end?($page-$this->numberpageStep>($end-$this->numberpage)?$end:($page-$this->numberpageStep>1?$end-$this->numberpageStep+1:$this->numberpage)):($pageend<$numberrecord?$pageend:$numberrecord));
+    	$pageend=($pageend<$end?($page-$this->numberpageStep>($end-$this->numberpage)?$end:($page-$this->numberpageStep>1?$end-$this->numberpageStep+1:$this->numberpage)):($pageend<$numberrecord?$pageend:$numberrecord));
     	$pagebgin=$pageend-$this->numberpage+1;
     	$pagebgin=($pagebgin>1?$pagebgin:1);
     	$this->set("pageend",$pageend);
@@ -74,7 +76,7 @@ class TopicsController extends AppController {
     	$this->set("page",$page);
     	$this->set("numberrecord",$numberrecord);
     
-    }
+    }*/
     //
     //public 
     public function populateTopic($forumId,$page=null,$end=null){
@@ -82,13 +84,21 @@ class TopicsController extends AppController {
     	$page=(($page==null || !isset($page))?1:$page);
     	$end=(($end==null)||!isset($end)?$this->numberpage:$end);
     	//$forumId=(($idtype==null || !isset($idtype))?1:$idtype);
-    	$topics=$this->Topic->find('all',array('conditions'=>array('Topic.forum_id'=>$forumId), 'limit' => $this->numberRecord, 'offset'=>$page-1));
+    	$topics=$this->Topic->find('all',array('conditions'=>array('Topic.forum_id'=>$forumId), 'limit' => $this->numberRecord, 'order' =>array('Topic.modified'=>'DESC') , 'offset'=>($page-1)*$this->numberRecord));
     	$this->set("topics",$topics);
-    	$numberrecord=count($topics);
-    	
-    	
+    	$numberrecord=count($this->Topic->find('all',array('conditions'=>array('Topic.forum_id'=>$forumId))));
     	$this->pagination($page, $numberrecord,$end);
     
+    }
+    
+ public function search(){
+    	$data=array();
+    	if($this->request->data){
+    		$request=$this->request->data;
+    		$topic=$this->Topic->find("all",array('conditions' => array('OR' =>array('Topic.name like '=>'%'.$request['infoTopic'].'%','Topic.content like'=>'%'.$request['infoTopic'].'%'))));   		 		
+    	}
+    	
+    	$this->set("data",$topic);
     }
  
 }

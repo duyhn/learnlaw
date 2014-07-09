@@ -2,11 +2,12 @@
 class TestsController extends AppController{
 	var $name="Tests";
 	var $sessioncrtime="time";
-	var $time=1800;
+	var $time=1200;//thoi gian thi tinh theo giay
 	public $uses = array('Method','Test','Question','Result');
 	function index(){
 		$this->set("data",$this->Test->getAllTypesQuestion());
-
+		$this->Session->delete($this->sessioncrtime);
+		$this->Session->delete("test");
 		/*if(!$this->Session->read($this->sessionUsername)){
 			echo "<script type='text/javascript'>alert('báº¡n chÆ°a Ä‘Äƒng nháº­p!')</script>";
 		header("Location: {$_SERVER['HTTP_REFERER']}");
@@ -16,7 +17,6 @@ class TestsController extends AppController{
 		$id=isset($id)?$id:null;
 		$page=isset($page)?$page:null;
 		if(isset($this->request->data)&& count($this->request->data)>0){
-			print_r($this->request->data);
 			//$page=$this->request->data['page'];
 			//$id=$this->request->data['qsid'];
 			$this->submitform($this->request->data);
@@ -74,9 +74,10 @@ class TestsController extends AppController{
 					
 			}
 			
-			$core=round((10/30)*$corect,2);
-			$this->set("core",round((10/30)*$corect,2));
-			$this->set("numbercorect",$corect);
+			$core=round((10/20)*$corect,2);
+			$this->Session->write("core",round((10/20)*$corect,2));
+			
+			$this->Session->write("numbercorect",$corect) ;
 			$this->Session->delete($this->sessioncrtime);
 			$qs=array();
 			foreach ($data as $item){
@@ -87,7 +88,7 @@ class TestsController extends AppController{
 			$test['question']=$result;
 			$time=date("YmdHis", time());
 			$test['testdate']=$time;
-			$this->Test->save($test);
+			$this->Test->saveAll($test);
 			$test=$this->Test->find("first",array('conditions'=>array('Test.question'=>$result,'Test.testdate'=>$time)));
 			$result=array();
 			$result['user_id']=$this->Session->read($this->sessionUserid);
@@ -129,20 +130,21 @@ class TestsController extends AppController{
 	}
 
 	function createQuestion($id){
-		$data=$this->Question->find("all",array('conditions' => array('Question.id_type' => $id)));
+		if($id!=1){
+			$data=$this->Question->find("all",array('conditions' => array('Question.id_type' => $id)));
+		}
+		else{
+			$data=$this->Question->find("all");
+		}
 		$arr=array();
 		$result=array();
 		$i=0;
 		while ($i<20){
-			$rd=rand ( 0 , count($data)-1);
+			$rd=rand (0 , count($data)-1);
 			if($this->checkexistArray($arr, $rd)){
 				array_push($arr,$rd);
 				$i++;
 			}
-			/*if(array_search($rd,$arr)==null ){
-				array_push($arr,$rd);
-				$i++;
-			}*/
 		}
 		foreach ($arr as $item){
 			array_push($result,$data[$item]);
@@ -165,6 +167,7 @@ class TestsController extends AppController{
 		$this->render("submittest");
 		
 	}
+	//kiem tra cau hoi da co trong de thi hay chưa
 	public function checkexistArray($arr,$int){
 		if(isset($arr)&& count($arr)>0){
 			foreach ($arr as $item){

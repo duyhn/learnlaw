@@ -4,10 +4,15 @@ include_once('simple_html_dom.php');
 class CommonHelper extends HtmlHelper{
 
 	function general(){
-		$footer="<span>Bản quyền (C) 2013 thuộc Võ Thị TƯờng Vy</span></br><span>Trường Đại học Bách Khoa - Đại học Đà Nẵng</span></br>";
+		$footer="<span>Bản quyền (C) 2013 thuộc Võ Thị Tường Vy</span></br><span>Trường Đại học Bách Khoa - Đại học Đà Nẵng</span></br>";
 		$footer.="<span>Địa chỉ: 272 Thái Thị Bôi, Quận Thanh Khê, Đà Nẵng</span></br><span>Điện thoại: 0905743649</span>";
-		$header="<div id='logo'>".$this->image("image/logo2.png", array('alt' => 'lawVN'))."</div><div class='today'>Hôm nay :". date('d-m-Y')."</div> <div class='clear'></div>";
-		$header.='<form action="/luatvnam/Searchs/search" method="POST"><input type="text" name="info"/><input type="submit" name="search" value="Tìm Kiếm"/></form>';
+		$header="<div id='logo'>".
+		$this->image("image/logo.jpg", array('alt' => 'luatvn', 'class' => 'logoleft')).
+		$this->image("image/logo2.png", array('alt' => 'luatvn','style' => 'margin:10px 0 0 10px'))
+		."	
+		<div class='today'>Hôm nay: ". date('d-m-Y')."</div>";
+//		$header="<div id='logo'><image class='logoleft' src='img/image/logo.jpg' alt='luatvn'/></div><div class='today'>Hôm nay :". date('d-m-Y')."</div> <div class='clear'></div>";		
+		$header.='<form class="right" action="/luatvnam/Searchs/search" method="POST"><input type="text" id="search" name="info" style="width:200px;margin-top:9px;"/><input class="icsearch" id="btnsearch" type="submit" name="search" value=""/></form></div>';
 		$data = array(
 				"header" => $header,
 				"footer" => $footer,
@@ -18,22 +23,58 @@ class CommonHelper extends HtmlHelper{
 	
 	//
 	function create_heaeder(){
-		$tt="Learn Law";
+		$tt="Học Luật Việt Nam";
 		$data= $this->general();
 		$header="<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'> <html xmlns='http://www.w3.org/1999/xhtml'><head>";
 		$header.=$this->charset();
 		$header.="<title>".$tt."</title>";
-		$header.=$this->css(array("styles.css","lightbox.css","tabs.css"));
-		$header.= $this->script(array('jquery-1.7.2.min.js','validate.js','lightbox.js','jcarousellite_1.0.1c4.js','jquery.jgfeed.js','news.js','general.js','highlightNav.js'));
+		$header.=$this->css(array("styles.css","tabs.css"));
+		$header.= $this->script(array('jquery-1.7.2.min.js','validate.js','lightbox.js','jquery-latest.pack.js','jcarousellite_1.0.1c4.js','jquery.jgfeed.js','news.js','general.js','highlightNav.js'));
 		$header.=$this->css(array("themes/1/js-image-slider.css","generic.css"));
 		$header.= $this->script(array('themes/1/js-image-slider.js','slideShow.js'));
-		
-			
+		$header.="<script type='text/javascript'>
+			$(function() {
+			 $('.jcarouse').jCarouselLite({
+			 vertical: true,
+			 hoverPause:true,
+			 visible: 3,
+			 auto:500,
+			 speed:1000
+			 });
+			});
+			</script>";
+						
 		//$header.="<div id='bttop'>BACK TO TOP</div></head>";
 		//$header.="<body>";
 		//$header.="<div id='wrapper'><div id='header'>".$data['header']."</div><div class='cach'></div>";
 		//$header.="<div id='menu-nav'>".$this->create_menu($username)."</div>";
 
+		return $header;
+	}
+	function general_admin(){
+		$footer="<span>Bản quyền (C) 2013 thuộc Võ Thị Tường Vy</span></br><span>Trường Đại học Bách Khoa - Đại học Đà Nẵng</span></br>";
+		$footer.="<span>Địa chỉ: 272 Thái Thị Bôi, Quận Thanh Khê, Đà Nẵng</span></br><span>Điện thoại: 0905743649</span>";
+		$header="<div id='logo' style='width:1200px;'>".
+		$this->image("image/logo.jpg", array('alt' => 'luatvn', 'class' => 'logoleft')).
+		$this->image("image/logo2.png", array('alt' => 'luatvn','style' => 'margin:10px 0 0 10px'))
+		."	
+		<div class='today'>Hôm nay: ". date('d-m-Y')."</div>";
+//		$header="<div id='logo'><image class='logoleft' src='img/image/logo.jpg' alt='luatvn'/></div><div class='today'>Hôm nay :". date('d-m-Y')."</div> <div class='clear'></div>";		
+		$data = array(
+				"header" => $header,
+				"footer" => $footer,
+		);
+
+		return $data;
+	}
+	function header_admin(){
+		$tt="Administrator";
+		$data= $this->general_admin();
+		$header="<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'> <html xmlns='http://www.w3.org/1999/xhtml'><head>";
+		$header.=$this->charset();
+		$header.="<title>".$tt."</title>";
+		$header.=$this->css(array("styles.css","tabs.css"));
+		$header.= $this->script(array('jquery-1.7.2.min.js','validate.js','highlightNav.js'));
 		return $header;
 	}
 	//
@@ -43,12 +84,43 @@ class CommonHelper extends HtmlHelper{
 		$footer="<div id='footer'>".$data['footer']."</div>";
 		$footer.="</div></body></html>";
 	}
+	
+	//
+	function general_forum(){
+		$footer="<span>Bản quyền (C) 2013 thuộc Võ Thị Tường Vy</span></br><span>Trường Đại học Bách Khoa - Đại học Đà Nẵng</span></br>";
+		$footer.="<span>Địa chỉ: 272 Thái Thị Bôi, Quận Thanh Khê, Đà Nẵng</span></br><span>Điện thoại: 0905743649</span>";
+		$header="<div id='logo'>".
+		$this->image("image/logo.jpg", array('alt' => 'luatvn', 'class' => 'logoleft')).
+		$this->image("image/forum.png", array('alt' => 'luatvn','style' => 'margin:10px 0 0 10px'))
+		."	
+		<div class='today'>Hôm nay: ". date('d-m-Y')."</div>";
+//		$header="<div id='logo'><image class='logoleft' src='img/image/logo.jpg' alt='luatvn'/></div><div class='today'>Hôm nay :". date('d-m-Y')."</div> <div class='clear'></div>";		
+		$header.='<form class="right" action="/luatvnam/Searchs/search" method="POST"><input type="text" id="search" name="info" style="width:200px;margin-top:9px;"/><input class="icsearch" id="btnsearch" type="submit" name="search" value=""/></form></div>';
+		$data = array(
+				"header" => $header,
+				"footer" => $footer,
+		);
+
+		return $data;
+	}
+	
+	//
+	function forum_header(){
+		$tt="Diễn Đàn Học Luật Việt Nam";
+		$data= $this->general();
+		$header="<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'> <html xmlns='http://www.w3.org/1999/xhtml'><head>";
+		$header.=$this->charset();
+		$header.="<title>".$tt."</title>";
+		$header.=$this->css(array("styles.css","tabs.css"));
+		$header.= $this->script(array('jquery-1.7.2.min.js','validate.js','news.js','general.js','highlightNav.js'));	
+		return $header;
+	}
+	
 	//
 	function create_menu($username){
 
 		$menu="<ul class='nav'><li class='highlight'>".$this->link('Trang chủ',array('controller' => 'users','action' => 'index','full_base' => true)
-		)."</li><li class=''>";
-		$menu.=$this->link('Giới thiệu',array('controller' => 'gioithieu','action' => '','full_base' => true));		
+		)."</li><li class=''>";	
 		$menu.="</li><li class=''>".$this->link('Tin tức-sự kiện',array('controller' => 'tintuc','action' => '','full_base' => true))."<ul>";
 		/*include_once('includes/connect-db.inc');
 		 $query = mysql_query("SELECT * FROM tbltheloai,tbltintuc WHERE tbltheloai.id_theloai=tbltintuc.id_theloai GROUP BY tbltintuc.id_theloai");
@@ -57,15 +129,18 @@ class CommonHelper extends HtmlHelper{
 		 }*/
 		$menu.="</ul></li><li class=''>".$this->link('Download',array('controller' => 'Uploads','action' => 'index','full_base' => true))."</li>";
 		$menu.="<li class=''>".$this->link('Diễn đàn',array('controller' => 'Forums','action' => 'index','full_base' => true))."</li>";
-		$menu.="<li class=''>".$this->link('Thi online',array('controller' => 'tests','action' => '','full_base' => true))."</li>";
-		$menu.="<li class=''>".$this->link('Tư vấn pháp luật',array('controller' => 'Tuvan','action' => 'index','full_base' => true))."</li>";
 		
+		$menu.="<li class=''>".$this->link('Tư vấn pháp luật',array('controller' => 'Tuvan','action' => 'index','full_base' => true));
+		$menu.="<ul><li>".$this->link("Đặt câu hỏi",array('controller' => 'Tuvan','action' => 'formConsulting','full_base' => true))."</li>";
+		$menu.="<li>".$this->link("Xem tư vấn",array('controller' => 'Tuvan','action' => 'index','full_base' => true))."</li></ul></li>";
 		if(!isset($username)){
+			$menu.="<li class=''>".$this->link('Thi online',array('controller' => 'Users','action' => 'login','full_base' => true))."</li>";
 			$menu.="<li id='' style='float:right'>".$this->link('Đăng ký',array('controller' => 'users','action' => 'register','full_base' => true))."</li>";
 			$menu.="<li id='login' style='float:right'><a href='#'>Đăng nhập</a></li>";
 				
 		}
 		else {
+			$menu.="<li class=''>".$this->link('Thi online',array('controller' => 'tests','action' => '','full_base' => true))."</li>";
 			$menu.="<li style='float:right'>".$this->link('Thoát',array('controller' => 'users','action' => 'logout','full_base' => true))."</li>";
 			$menu.="<li style='float:right'>".$this->link('Cá nhân',array('controller' => 'users','action' => 'profile','full_base' => true,$username))."</li>";
 			$menu.="<span class='titlelog'>Xin chào: ".$username." </span>";
@@ -90,21 +165,16 @@ class CommonHelper extends HtmlHelper{
 		$right.="<div class='jcarouse' id='link12'><ul>";
 		foreach ($data as $item){
 			$right.="<li><div class='thumb'>";
-			$right.=$this->image("anhTintuc/".$item['tbltintucs']['ten_anh'], array('repeat alt' =>"img".$item['tbltintucs']['id_tintuc'],'title'=>$this->noidungtt(10, $item['tbltintucs']['tieude'])));
+		//	$right.=$this->image($item['tbltintucs']['ten_anh'], array('repeat alt' =>"img".$item['tbltintucs']['id_tintuc'],'title'=>$this->noidungtt(10, $item['tbltintucs']['tieude'])));
 			//$right.="<img src='anhTintuc/".$item['tbltintucs']['ten_anh']."' repeat alt='".$item['tbltintucs']['tieude']."' title='".$item['tbltintucs']['tieude']."' />";
 			$right.="</div><div class='info'>";
 			$tt=$this->noidungtt(12, $item['tbltintucs']['tieude']);
 			$right.=$this->link($tt,array('controller' => 'Tbltintucs','action' => 'view',$item['tbltintucs']['id_tintuc']))."</div><div class='clr'></div></li>";
 		}
 		$right.="</ul></div></div>";
-		/*$right.="<div class='block' id='link'>";
-		 $right.="<div class='block-title'>THĂM DÒ <div id='show' class='mo3'>-</div> <div id='show' class='dong3'>+</div></div>";
-		 $right.="<div class='block-content' id='link13'><div class='div-limited'>";
-		 /*<?php
-		 // error_reporting(0);
-		 include('modules/giaodien/poll.module.php');
-		 ?>*/
-		//$right.="</div></div></div>";
+		$right.="<div class='block' id='link'>";
+		$right.='<iframe src="//www.facebook.com/plugins/likebox.php?href=https%3A%2F%2Fwww.facebook.com%2Fpages%2FH%25E1%25BB%258Dc-t%25E1%25BA%25ADp-Ph%25C3%25A1p-lu%25E1%25BA%25ADt-Vi%25E1%25BB%2587t-Nam%2F1427213424218495%3Fref%3Dhl&amp;width=262&amp;height=290&amp;colorscheme=light&amp;show_faces=true&amp;header=true&amp;stream=false&amp;show_border=true" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:262px; height:220px;" allowTransparency="true"></iframe>';
+		$right.="</div>";
 		$right.="<div class='block' id='link'><div class='block-title'>Thống Kê</div>";
 		$right.="<div class='block-content' style='height: 50px; padding: 10px 0 10px 10px;'>";
 		/*$data=$time->query("select * from thamdos order by qid desc");*/
@@ -162,7 +232,7 @@ class CommonHelper extends HtmlHelper{
 		$data=$time->query("SELECT id_tintuc,ten_anh,tieude FROM tbltintucs WHERE hien_an = 1 LIMIT 0,7");
 		$slider="<div id='sliderFrame'><div id='slider'>";
 		foreach($data as $item){
-			$slider.=$this->image("anhTintuc/".$item['tbltintucs']['ten_anh'], array('repeat alt' => $item['tbltintucs']['tieude'],'title'=>$item['tbltintucs']['id_tintuc']));
+			$slider.=$this->image($item['tbltintucs']['ten_anh'], array('repeat alt' => $item['tbltintucs']['tieude'],'title'=>$item['tbltintucs']['id_tintuc']));
 		}
 		$slider.="</div></div>";
 		return $slider;
@@ -172,6 +242,7 @@ class CommonHelper extends HtmlHelper{
 	function login(){
 		$login = "<div class='login' style='display:none'>";
 		$login.="<div class='title'><h1>Login</h1><a href='#' class='close'></a></div>";
+		
 		$login.="<form method='post' action='/luatvnam/users/login'>";
 		$login.="<p><input type='text' id='username' name='username' value='' placeholder='Username'></p>";
 		$login.="<input type='password' id='password' name='password' value='' placeholder='Password'></p>";

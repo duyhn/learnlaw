@@ -1,7 +1,30 @@
 #Mon May 12 18:51:02 ICT 2014
 eclipse.preferences.version=1
+encoding//app/Controller/AdminController.php=UTF-8
 encoding//app/Controller/AppController.php=UTF-8
+encoding//app/Controller/TestsController.php=UTF-8
+encoding//app/Controller/TuvanController.php=UTF-8
 encoding//app/Controller/UsersController.php=UTF-8
 encoding//app/View/Helper/CommonHelper.php=UTF-8
+<<<<<<< .mine
+encoding//app/View/Helper/ContentnewsHelper.php=UTF-8
+encoding//app/View/Helper/UserHelper.php=UTF-8
+encoding//app/View/Layouts/gioithieu.ctp=UTF-8
+=======
+>>>>>>> .r21
 encoding//app/View/Layouts/template.ctp=UTF-8
+<<<<<<< .mine
+encoding//app/View/Tuvan/index.ctp=UTF-8
+encoding//app/View/admin/admin_manage_question.ctp=UTF-8
+encoding//app/View/gioithieu/index.ctp=UTF-8
+encoding//app/View/templates/index.ctp=UTF-8
+encoding//app/View/tests/index.ctp=UTF-8
+encoding//app/View/tests/submittest.ctp=UTF-8
+encoding//app/View/tests/test_online.ctp=UTF-8
+encoding//app/View/users/index.ctp=UTF-8
+encoding//app/View/users/profile.ctp=UTF-8
+encoding/<project>=UTF-8
+encoding/app=UTF-8
+=======
 encoding//app/View/Uploads/view.ctp=UTF-8
+>>>>>>> .r21

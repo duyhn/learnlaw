@@ -27,12 +27,13 @@ echo $this->Common->script("tuvanonline.js");
                 </div>
                 <div class="content1">
                 <div class="title">CHI TIẾT</div>
-                <div class="content2">
+                <div class="content2" id="detailTuvan">
                 
                  <?php
                  //print_r($consulting);
                  $html="<h3>".$consulting['Consulting']['title']."</h3>";
                  $html.="<p><i>".$consulting['Consulting']['contents']."</i></p><hr>";
+                 
                  $html.=$consulting['Resultconsulting'][0]['contents'];
                  echo $html;
                  ?>

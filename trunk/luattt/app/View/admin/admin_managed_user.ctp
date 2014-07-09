@@ -1,8 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <?php
-$head=$this->Common->general();
-echo $this->Common->create_heaeder();
-
+$head=$this->Common->general_admin();
+echo $this->Common->header_admin();
+echo $this->Common->script("admin.js");
+echo $this->Common->script("user.js");
 ?>
 </head>
 <body>
@@ -13,6 +13,13 @@ echo $this->Common->create_heaeder();
 				<div class="containrightad">
 					<div class="tieude tenthongbao transHoa">Quản lý người dùng</div>
 						<div class="clear cach"></div>
+	                   <?php if(isset($msg)){
+                    	$css='<script type="text/javascript">
+                    	var txt = new String('.$msg.');
+                    	 alert(txt);</script>';
+                    		echo $css;
+                    	}
+                    	?>
 	                    <?php 
 		                    $user=(isset($user)?$user:null); 
 		                    echo $this->User->create_formManageUser($role,$user);	                    	

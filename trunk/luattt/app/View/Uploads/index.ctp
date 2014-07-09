@@ -20,33 +20,25 @@ echo $this->Common->create_heaeder();
 <div id="main">
 	<div id="sidebar-right"><?php echo $this->Common->create_right(); ?></div>
 	<div class="content1">
-		<div class="content2">
-		<div class="tieude tenthongbao float">Tài Liệu</div>
+		<div class="content">
+		<div class="title">Tài Liệu > Thể loại tài liệu</div>
 		
-		<table cellspacing="0" class="sizetb clear">
-			<thead class="tbtailieu">
-				<tr>
-					<th class="tdstt">STT</th>
-					<th>Loại tài liệu</th>
-				</tr>
-			<thead>
+		<table cellspacing="0" class="sizetb clear">			
 			<?php 
 			$i=0;
+			//print_r($files[0]);
 			foreach ($files as $file): 
-				$class="even";
-				if(($i%2)!=0){
-					$class="odd";
-				}
+				
 			?>
-				<tr id="trupload" class="<?php echo $class ?>">
-					<td><?php echo $file['Tblloaitailieu']['idloai']; ?></td>
-					<td><?php 
+				<tr>
+					<td><span class="ictick"></span><?php 
 					$td=$file['Tblloaitailieu']['tenloai'];
 					echo $this->Html->link($td,array('controller' => 'Uploads','action' => 'view',$file['Tblloaitailieu']['idloai']))?>
+					<span>(<?php echo $file[0]['countfile'] ?>)</span>
 					</td>
 		
 				</tr>
-			<?php $i++; 
+			<?php
 			endforeach; ?>
 		</table>
 	
